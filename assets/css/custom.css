@@ -1,4 +1,10 @@
-body{
+body {
     width: 1000px;
     margin: 0 auto; /* Centraliza o conteúdo */
+}
+
+@media (max-width: 600px) {
+    body {
+        width: 100%; /* Faz o corpo ocupar 100% da largura da tela em dispositivos menores */
+    }
 }
