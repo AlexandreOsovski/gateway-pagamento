@@ -92,13 +92,13 @@ p {
 }
 
 a {
-  color: #3646cd;
+  color #5930bc;
   text-decoration: none;
   transition: all 0.3s linear;
 }
 a:hover, a:active {
   text-decoration: none;
-  color: #3646cd;
+  color: #5930bc;
 }
 a:hover.redirect-link i, a:active.redirect-link i {
   transform: translateX(5px);
@@ -927,10 +927,10 @@ select.form-control:focus, select.form-control:valid {
 
 .option-card-violet {
   background-color: #f0efff;
-  box-shadow: 0 2px 0 0 #6e5fff;
+  box-shadow: 0 2px 0 0 #580cd4;
 }
 .option-card-violet a i {
-  color: #6e5fff;
+  color: #580cd4;
 }
 
 .option-card-yellow {
@@ -1044,8 +1044,8 @@ select.form-control:focus, select.form-control:valid {
   width: 45px;
   height: 45px;
   border-radius: 5px;
-  background-color: #3646cd;
-  background-image: linear-gradient(0deg, rgb(9, 32, 63) 0%, rgb(83, 120, 149) 100%);
+
+
   margin-right: 10px;
   overflow: hidden;
   display: flex;
@@ -1183,7 +1183,7 @@ select.form-control:focus, select.form-control:valid {
   align-items: center;
   justify-content: center;
   margin-bottom: 5px;
-  background-color: #3646cd;
+
   margin-left: auto;
   margin-right: auto;
 }

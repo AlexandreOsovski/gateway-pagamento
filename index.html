@@ -27,24 +27,16 @@
         <link rel="stylesheet" href="assets/css/style.css" type="text/css" media="all" />
         <!-- responsive css -->
         <link rel="stylesheet" href="assets/css/responsive.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="./assets/css/custom.css">
 </head>
 
     <body>
-        <!-- Preloader -->
-        <div class="preloader">
-            <div class="preloader-wrapper">
-                <div class="preloader-content">
-                    <img src="assets/images/preloader-logo.png" alt="logo">
-                    <h3>Online Banking</h3>
-                </div>
-            </div>
+        <div>
+            <video playsinline autoplay muted loop id="bgvid">
+                <source src="assets/video/bgone.mp4" type="video/mp4" />
+            </video>
         </div>
-        <!-- Preloader -->
-
-        <!-- Header-bg -->
-        <div class="header-bg header-bg-1"></div>
-        <!-- Header-bg -->
 
         <!-- Appbar -->
         <div class="fixed-top">
@@ -53,22 +45,22 @@
                     <div class="appbar-container">
                         <div class="appbar-item appbar-actions">
                             <div class="appbar-action-item">
-                                <a href="#" class="appbar-action-bar" data-bs-toggle="modal" data-bs-target="#sidebarDrawer"><i class="flaticon-menu"></i></a>
+                                <a href="#" class="appbar-action-bar" data-bs-toggle="modal" data-bs-target="#sidebarDrawer"><i class="color-fla flaticon-menu"></i></a>
                             </div>
                         </div>
                         <div class="appbar-item appbar-brand me-auto">
                             <a href="index.html">
-                                <img src="assets/images/logo.png" alt="logo" class="main-logo">
-                                <img src="assets/images/logo-hover.png" alt="logo" class="hover-logo">
+                                <img width="150px" src="assets/images/horiizom/logo.svg" alt="logo" class="main-logo">
+                                <img width="150px" src="assets/images/horiizom/logo-hover.svg" alt="logo" class="hover-logo">
                             </a>
                         </div>
                         <div class="appbar-item appbar-options">
                             <div class="appbar-option-item appbar-option-notification">
                                 <a href="notifications.html"><i class="flaticon-bell"></i></a>
-                                <span class="option-badge">5</span>
+                                <span style="color: white;" class="option-badge">5</span>
                             </div>
                             <div class="appbar-option-item appbar-option-profile">
-                                <a href="settings.html"><img src="assets/images/profile.jpg" alt="profile"></a>
+                                <a href="settings.html"><img src="assets/images/horiizom/perfil.svg" alt="profile"></a>
                             </div>
                         </div>
                     </div>
@@ -85,7 +77,7 @@
                     <div class="add-card-inner">
                         <div class="add-card-item add-card-info">
                             <p>Meu Saldo</p>
-                            <h3>R$10,450.50</h3>
+                            <h3 class="color-theme">R$10,450.50</h3>
                         </div>
                         <div class="add-card-item add-balance" data-bs-toggle="modal" data-bs-target="#addBalance">
                             <a href="#"><i class="flaticon-plus"></i></a>
@@ -108,7 +100,7 @@
                             </div>
                         </div>
                         <div class="col pb-15">
-                            <div class="option-card option-card-yellow">
+                            <div class="option-card option-card-violet">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#sendMoney">
                                     <div class="option-card-icon">
                                         <i class="flaticon-right-arrow"></i>
@@ -118,17 +110,17 @@
                             </div>
                         </div>
                         <div class="col pb-15">
-                            <div class="option-card option-card-blue">
+                            <div class="option-card option-card-violet">
                                 <a href="my-cards.html">
                                     <div class="option-card-icon">
                                         <i class="flaticon-credit-card"></i>
                                     </div>
-                                    <p>Comprar Cripto</p>
+                                    <p>Criar Link</p>
                                 </a>
                             </div>
                         </div>
                         <div class="col pb-15">
-                            <div class="option-card option-card-red">
+                            <div class="option-card option-card-violet">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#exchange">
                                     <div class="option-card-icon">
                                         <i class="flaticon-exchange-arrows"></i>
@@ -146,7 +138,7 @@
                         <div class="col col-sm-6 pb-15">
                             <div class="feature-card feature-card-red">
                                 <div class="feature-card-thumb">
-                                    <i class="flaticon-income"></i>
+                                    <i class="fas fa-coins"></i>
                                 </div>
                                 <div class="feature-card-details">
                                     <p>Saldo em Reais</p>
@@ -157,7 +149,7 @@
                         <div class="col col-sm-6 pb-15">
                             <div class="feature-card feature-card-blue">
                                 <div class="feature-card-thumb">
-                                    <i class="flaticon-expenses"></i>
+                                    <i class="fas fa-dollar-sign"></i>
                                 </div>
                                 <div class="feature-card-details">
                                     <p>Saldo em USDT</p>
@@ -168,7 +160,7 @@
                         <div class="col col-sm-6 pb-15">
                             <div class="feature-card feature-card-violet">
                                 <div class="feature-card-thumb">
-                                    <i class="flaticon-invoice"></i>
+                                    <i class="fas fa-receipt"></i>
                                 </div>
                                 <div class="feature-card-details">
                                     <p>Ultimo Recebimento</p>
@@ -179,7 +171,7 @@
                         <div class="col col-sm-6 pb-15">
                             <div class="feature-card feature-card-green">
                                 <div class="feature-card-thumb">
-                                    <i class="flaticon-savings"></i>
+                                    <i class="fas fa-paper-plane"></i>
                                 </div>
                                 <div class="feature-card-details">
                                     <p>Ultimo valor enviado</p>
@@ -202,7 +194,7 @@
                         <a href="transaction-details.html">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
-                                    <img src="assets/images/user-2.jpg" alt="user">
+                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
                                 </div>
                                 <div class="transaction-info-text">
                                     <h3>Brenda Davis</h3>
@@ -210,7 +202,7 @@
                                 </div>
                             </div>
                             <div class="transaction-card-det negative-number">
-                                -$185.00
+                                - R$185.00
                             </div>
                         </a>
                     </div>
@@ -218,14 +210,14 @@
                         <a href="transaction-details.html">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
-                                    <img src="assets/images/user-cm-logo-1.png" alt="user">
+                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
                                 </div>
                                 <div class="transaction-info-text">
                                     <h3>Venda de Produtos</h3>
                                     <p>Aprovado</p>
                                 </div>
                             </div>
-                            <div class="transaction-card-det">
+                            <div class="transaction-card-det receive-money">
                                 +R$159.99
                             </div>
                         </a>
@@ -234,14 +226,14 @@
                         <a href="transaction-details.html">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
-                                    <img src="assets/images/user-1.jpg" alt="user">
+                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
                                 </div>
                                 <div class="transaction-info-text">
                                     <h3>Venda de Produtos</h3>
                                     <p>Aprovado</p>
                                 </div>
                             </div>
-                            <div class="transaction-card-det">
+                            <div class="transaction-card-det receive-money">
                                 +R$159.99
                             </div>
                         </a>
@@ -250,14 +242,14 @@
                         <a href="transaction-details.html">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
-                                    <img src="assets/images/user-3.jpg" alt="user">
+                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
                                 </div>
                                 <div class="transaction-info-text">
                                     <h3>Compra de USDT</h3>
                                     <p>Aprovado</p>
                                 </div>
                             </div>
-                            <div class="transaction-card-det">
+                            <div class="transaction-card-det negative-number">
                                 -R$2.573,00
                             </div>
                         </a>
@@ -276,7 +268,7 @@
                             <div class="user-card">
                                 <a href="#">
                                     <div class="user-card-thumb">
-                                        <img src="assets/images/user-1.jpg" alt="user">
+                                        <img width="100" src="assets/images/horiizom/perfil12.svg" alt="user">
                                     </div>
                                     <h3>Brittany</h3>
                                 </a>
@@ -286,7 +278,7 @@
                             <div class="user-card">
                                 <a href="#">
                                     <div class="user-card-thumb">
-                                        <img src="assets/images/user-2.jpg" alt="user">
+                                        <img width="100" src="assets/images/horiizom/perfil12.svg" alt="user">
                                     </div>
                                     <h3>Jablonski</h3>
                                 </a>
@@ -296,7 +288,7 @@
                             <div class="user-card">
                                 <a href="#">
                                     <div class="user-card-thumb">
-                                        <img src="assets/images/user-4.jpg" alt="user">
+                                        <img width="100" src="assets/images/horiizom/perfil12.svg" alt="user">
                                     </div>
                                     <h3>Patricia</h3>
                                 </a>
@@ -306,7 +298,7 @@
                             <div class="user-card">
                                 <a href="#">
                                     <div class="user-card-thumb">
-                                        <img src="assets/images/user-3.jpg" alt="user">
+                                        <img width="100" src="assets/images/horiizom/perfil12.svg" alt="user">
                                     </div>
                                     <h3>Chancey</h3>
                                 </a>
@@ -418,7 +410,7 @@
                 <!-- Saving-goals-section -->
                 <div class="saving-goals-section pb-15">
                     <div class="section-header">
-                        <h2>Saving Goals</h2>
+                        <h2>Staking</h2>
                         <div class="view-all">
                             <a href="my-savings.html">View All</a>
                         </div>
@@ -482,9 +474,9 @@
                 <!-- Latest-news-section -->
                 <div class="latest-news-section pb-15">
                     <div class="section-header">
-                        <h2>Latest News</h2>
+                        <h2>Ultimas Notícias</h2>
                         <div class="view-all">
-                            <a href="blogs.html">View All</a>
+                            <a href="blogs.html">Ver Todas</a>
                         </div>
                     </div>
                     <div class="row gx-3">
@@ -492,15 +484,15 @@
                             <div class="blog-card">
                                 <div class="blog-card-thumb">
                                     <a href="#">
-                                        <img src="assets/images/blogs/blog-1.jpg" alt="blog">
+                                        <img src="assets/images/horiizom/notice1.png" alt="blog">
                                     </a>
                                 </div>
                                 <div class="blog-card-details">
                                     <ul class="blog-entry">
-                                        <li>Smith Rob</li>
-                                        <li>15 Jan, 2024</li>
+                                        <li>Globo Play</li>
+                                        <li>15 Maio, 2024</li>
                                     </ul>
-                                    <h3><a href="#">Financing Loans Available To Small Businesses</a></h3>
+                                    <h3><a href="https://globoplay.globo.com/v/12642390/">Dropshipping: conheça as vantagens da técnica que exige baixo investimento e estoque.</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -508,7 +500,7 @@
                             <div class="blog-card">
                                 <div class="blog-card-thumb">
                                     <a href="#">
-                                        <img src="assets/images/blogs/blog-2.jpg" alt="blog">
+                                        <img src="assets/images/horiizom/notice2.png" alt="blog">
                                     </a>
                                 </div>
                                 <div class="blog-card-details">
@@ -516,7 +508,7 @@
                                         <li>John Doe</li>
                                         <li>13 Jan, 2024</li>
                                     </ul>
-                                    <h3><a href="#">Need Financial Help To Open Your New Business</a></h3>
+                                    <h3><a href="https://economia.uol.com.br/cotacoes/noticias/redacao/2024/06/07/dolar-sobe-144-para-r-53247-com-dados-de-empregos-dos-eua.htm">Dólar sobe 1,44% em relação ao real brasileiro, atingindo o valor de R$ 5,3247, em reação aos dados de empregos dos Estados Unidos</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -530,7 +522,7 @@
         <!-- Footer -->
         <footer class="footer-bg">
             <div class="container">
-                <p>Copyright Oban. Designed & Developed By <a href="https://envytheme.com/" target="_blank">EnvyTheme</a></p>
+                <p>Copyright, Todos os seus direitos reservados <a href="https://envytheme.com/" target="_blank"><span style="color: white;">HORIIZOM</span></a></p>
             </div>
         </footer>
         <!-- Footer -->
@@ -548,25 +540,25 @@
                     <div class="navbar-content-item">
                         <a href="pages.html">
                             <i class="flaticon-invoice"></i>
-                            Pages
+                            Financeiro
                         </a>
                     </div>
                     <div class="navbar-content-item">
                         <a href="components.html">
-                            <i class="flaticon-menu-1"></i>
-                            Components
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar PIX
                         </a>
                     </div>
                     <div class="navbar-content-item">
                         <a href="my-cards.html">
-                            <i class="flaticon-credit-card"></i>
-                            My Cards
+                            <i class="fas fa-cogs"></i>
+                            API
                         </a>
                     </div>
                     <div class="navbar-content-item">
                         <a href="settings.html">
-                            <i class="flaticon-settings"></i>
-                            Setting
+                            <i class="fas fa-user"></i>
+                            Meus Dados
                         </a>
                     </div>
                 </div>
@@ -871,7 +863,7 @@
                     <div class="modal-header sidebar-modal-header">
                         <div class="sidebar-profile-info">
                             <div class="sidebar-profile-thumb">
-                                <img src="assets/images/profile.jpg" alt="profile">
+                                <img src="assets/images/horiizom/perfil.svg" alt="profile">
                             </div>
                             <div class="sidebar-profile-text">
                                 <h3>Brenda Davis</h3>
@@ -882,8 +874,8 @@
                     </div>
                     <div class="sidebar-profile-wallet">
                         <div class="add-card-info">
-                            <p>Your Wallet</p>
-                            <h3>$1,450.50</h3>
+                            <p>Meu Saldo</p>
+                            <h3>R$10,450.50</h3>
                         </div>
                     </div>
                     <div class="modal-body">
@@ -891,13 +883,14 @@
                             <div class="sidebar-nav-item">
                                 <h3>Oban Menu</h3>
                                 <ul class="sidebar-nav-list">
-                                    <li><a href="index.html" class="active"><i class="flaticon-house"></i> Home</a></li>
-                                    <li><a href="pages.html"><i class="flaticon-invoice"></i> Pages</a></li>
-                                    <li><a href="components.html"><i class="flaticon-menu-1"></i> Components</a></li>
-                                    <li><a href="my-cards.html"><i class="flaticon-credit-card"></i> My Cards</a></li>
-                                    <li><a href="settings.html"><i class="flaticon-settings"></i> Settings</a></li>
-                                    <li><a href="contact-us.html"><i class="flaticon-call-center-agent"></i> Contact Us</a></li>
-                                    <li><a href="#"><i class="flaticon-logout"></i> Logout</a></li>
+                                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                                    <li><a href="pages.html"><i class="fas fa-file-invoice-dollar"></i> Financeiro</a></li>
+                                    <li><a href="components.html"><i class="fas fa-chevron-down"></i> Transferir</a></li>
+                                    <li><a href="my-cards.html"><i class="fas fa-link"></i> Criar Link</a></li>
+                                    <li><a href="settings.html"><i class="fas fa-exchange-alt"></i> Converter</a></li>
+                                    <li><a href="settings.html"><i class="fas fa-user-cog"></i> Meus Dados</a></li>
+                                    <li><a href="contact-us.html"><i class="fas fa-headset"></i> Suporte</a></li>
+                                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                                 </ul>
                             </div>
                         </div>

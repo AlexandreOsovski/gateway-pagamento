@@ -3,17 +3,74 @@ body {
     margin: 0 auto; /* Centraliza o conteúdo */
 }
 
-header {
-    width: 100px !important;
-    margin: 0 auto; /* Centraliza o conteúdo */
-}
-
 @media (max-width: 600px) {
     body {
         width: 100%; /* Faz o corpo ocupar 100% da largura da tela em dispositivos menores */
     }
-    head {
-        width: 100%; /* Faz o corpo ocupar 100% da largura da tela em dispositivos menores */
-    }
 }
 
+.feature-card {
+    box-shadow: 0 3px 0 0 #1b1464 ;
+}
+
+#bgvid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    object-fit: cover;
+    z-index: 0; /* Video de fundo */
+    opacity: 85% !important;
+}
+
+.color-theme{
+    color: #7d4eff !important;
+}
+
+.feature-card{
+    box-shadow: 0 3px 0 0 #7d4eff !important;
+}
+
+.feature-card-red .feature-card-thumb i {
+    color: #7d4eff !important;
+}
+
+.feature-card-blue .feature-card-thumb i {
+    color: #7d4eff !important;
+}
+
+.feature-card-violet .feature-card-thumb i {
+    color: #7d4eff !important;
+}
+
+.feature-card-green .feature-card-thumb i {
+    color: #7d4eff !important;
+}
+
+a:hover, a:active{
+    color: #7d4eff !important;
+}
+
+.negative-number{
+    color: red;
+}
+
+.receive-money{
+    color: green;
+}
+
+a{
+    color: #7d4eff !important;
+}
+
+footer.footer-bg{
+    background-color: #7d4eff;
+}
+
+.flaticon-menu{
+    color: white !important;
+}
+.appbar-area.is-sticky .appbar-action-bar {
+    background-color: #7d4eff;
+}
