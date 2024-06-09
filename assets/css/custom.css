@@ -74,3 +74,15 @@ footer.footer-bg{
 .appbar-area.is-sticky .appbar-action-bar {
     background-color: #7d4eff;
 }
+
+.progress-card-red .circle-progress-fill {
+    stroke: #7d4eff !important;
+}
+
+.color-green{
+    color: green !important;
+}
+
+.color-white{
+    color: white !important;
+}

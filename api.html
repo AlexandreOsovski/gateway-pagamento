@@ -27,20 +27,11 @@
         <link rel="stylesheet" href="assets/css/style.css" type="text/css" media="all" />
         <!-- responsive css -->
         <link rel="stylesheet" href="assets/css/responsive.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="./assets/css/custom.css">
     </head>
 
     <body>
-        <!-- Preloader -->
-        <div class="preloader">
-            <div class="preloader-wrapper">
-                <div class="preloader-content">
-                    <img src="assets/images/preloader-logo.png" alt="logo">
-                    <h3>Online Banking</h3>
-                </div>
-            </div>
-        </div>
-        <!-- Preloader -->
-
         <!-- Header-bg -->
         <div class="header-bg header-bg-1"></div>
         <!-- Header-bg -->
@@ -59,7 +50,7 @@
                             </div>
                         </div>
                         <div class="appbar-item appbar-page-title">
-                            <h3>My Savings</h3>
+                            <h3>Minhas API'S</h3>
                         </div>
                         <div class="appbar-item appbar-options">
                             <div class="appbar-option-item appbar-option-notification">
@@ -67,7 +58,7 @@
                                 <span class="option-badge">5</span>
                             </div>
                             <div class="appbar-option-item appbar-option-profile">
-                                <a href="settings.html"><img src="assets/images/profile.jpg" alt="profile"></a>
+                                <a href="perfil.html"><img src="assets/images/profile.jpg" alt="profile"></a>
                             </div>
                         </div>
                     </div>
@@ -82,7 +73,12 @@
                 <!-- Page-header -->
                 <div class="page-header">
                     <div class="page-header-title page-header-item">
-                        <h3>Saving Goals</h3>
+                        <h3>Minhas API's</h3>
+                    </div>
+                    <div>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#withdraw">
+                            <p">Adicionar API</p>
+                        </a>
                     </div>
                 </div>
                 <!-- Page-header -->
@@ -91,111 +87,103 @@
                 <div class="saving-goals-section">
                     <div class="progress-card progress-card-red mb-15">
                         <div class="progress-card-info">
-                            <div class="circular-progress" data-note="50.85">
+                            <div class="circular-progress" data-note="100">
                                 <svg width="55" height="55" class="circle-svg">
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
                                 </svg>
                                 <div class="percent">
-                                    <span class="percent-int">0</span>%
+                                    <i class="">API</i>
                                 </div>
                             </div>
                             <div class="progress-info-text">
-                                <h3>New Gadget</h3>
-                                <p>Lifestyle</p>
+                                <h3>Vegas</h3>
+                                <p>24/05/2000</p>
+                                <p>API ID: 66652421840d7</p>
+                                <p>API KEY: 36927f64b63933dfe8fbdbca53a65d6e</p>
                             </div>
                         </div>
-                        <div class="progress-card-amount">$250.00</div>
-                    </div>
-                    <div class="progress-card progress-card-blue mb-15">
-                        <div class="progress-card-info">
-                            <div class="circular-progress" data-note="25">
-                                <svg width="55" height="55" class="circle-svg">
-                                    <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
-                                    <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
-                                </svg>
-                                <div class="percent">
-                                    <span class="percent-int">0</span>%
-                                </div>
-                            </div>
-                            <div class="progress-info-text">
-                                <h3>New Apartment</h3>
-                                <p>Living</p>
-                            </div>
-                        </div>
-                        <div class="progress-card-amount">$5000.00</div>
-                    </div>
-                    <div class="progress-card progress-card-green mb-15">
-                        <div class="progress-card-info">
-                            <div class="circular-progress" data-note="75">
-                                <svg width="55" height="55" class="circle-svg">
-                                    <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
-                                    <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
-                                </svg>
-                                <div class="percent">
-                                    <span class="percent-int">0</span>%
-                                </div>
-                            </div>
-                            <div class="progress-info-text">
-                                <h3>Education</h3>
-                                <p>Lifestyle</p>
-                            </div>
-                        </div>
-                        <div class="progress-card-amount">$1250.00</div>
+                        <div class="progress-card-amount color-green">Ativa</div>
                     </div>
                     <div class="progress-card progress-card-red mb-15">
                         <div class="progress-card-info">
-                            <div class="circular-progress" data-note="60">
+                            <div class="circular-progress" data-note="100">
                                 <svg width="55" height="55" class="circle-svg">
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
                                 </svg>
                                 <div class="percent">
-                                    <span class="percent-int">0</span>%
+                                    <i class="">API</i>
                                 </div>
                             </div>
                             <div class="progress-info-text">
-                                <h3>Finance</h3>
-                                <p>Business</p>
+                                <h3>Save Money</h3>
+                                <p>24/05/2000</p>
+                                <p>API ID: 66652421840d7</p>
+                                <p>API KEY: 36927f64b63933dfe8fbdbca53a65d6e</p>
                             </div>
                         </div>
-                        <div class="progress-card-amount">$120.00</div>
+                        <div class="progress-card-amount color-green">Ativa</div>
                     </div>
-                    <div class="progress-card progress-card-blue mb-15">
+                    <div class="progress-card progress-card-red mb-15">
                         <div class="progress-card-info">
-                            <div class="circular-progress" data-note="45">
+                            <div class="circular-progress" data-note="100">
                                 <svg width="55" height="55" class="circle-svg">
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
                                 </svg>
                                 <div class="percent">
-                                    <span class="percent-int">0</span>%
+                                    <i class="">API</i>
                                 </div>
                             </div>
                             <div class="progress-info-text">
-                                <h3>New Home</h3>
-                                <p>Living</p>
+                                <h3>Shopify</h3>
+                                <p>24/05/2000</p>
+                                <p>API ID: 66652421840d7</p>
+                                <p>API KEY: 36927f64b63933dfe8fbdbca53a65d6e</p>
                             </div>
                         </div>
-                        <div class="progress-card-amount">$3000.00</div>
+                        <div class="progress-card-amount color-green">Ativa</div>
                     </div>
-                    <div class="progress-card progress-card-green mb-15">
+                    <div class="progress-card progress-card-red mb-15">
                         <div class="progress-card-info">
-                            <div class="circular-progress" data-note="60">
+                            <div class="circular-progress" data-note="100">
                                 <svg width="55" height="55" class="circle-svg">
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
                                     <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
                                 </svg>
                                 <div class="percent">
-                                    <span class="percent-int">0</span>%
+                                    <i class="">API</i>
                                 </div>
                             </div>
                             <div class="progress-info-text">
-                                <h3>Software</h3>
-                                <p>Development</p>
+                                <h3>Vega one</h3>
+                                <p>24/05/2000</p>
+                                <p>API ID: 66652421840d7</p>
+                                <p>API KEY: 13121321321b4345f4324d234d324bc</p>
                             </div>
                         </div>
-                        <div class="progress-card-amount">$350.00</div>
+                        <div class="progress-card-amount color-green">Ativa</div>
+                    </div>
+                    <div class="progress-card progress-card-red mb-15">
+                        <div class="progress-card-info">
+                            <div class="circular-progress" data-note="100">
+                                <svg width="55" height="55" class="circle-svg">
+                                    <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-path"></circle>
+                                    <circle cx="28" cy="27" r="25" class="circle-progress circle-progress-fill"></circle>
+                                </svg>
+                                <div class="percent">
+                                    <i class="">API</i>
+                                </div>
+                            </div>
+                            <div class="progress-info-text">
+                                <h3>Vegas</h3>
+                                <p>24/05/2000</p>
+                                <p>API ID: 66652421840d7</p>
+                                <p>API KEY: 36927f64b63933dfe8fbdbca53a65d6e</p>
+                            </div>
+                        </div>
+                        <div class="progress-card-amount color-green">Ativa</div>
                     </div>
                 </div>
                 <!-- Saving-goals-section -->
@@ -208,33 +196,33 @@
             <div class="container">
                 <div class="navbar-content ">
                     <div class="navbar-content-item">
-                        <a href="index.html">
+                        <a href="index.html" class="active">
                             <i class="flaticon-house"></i>
                             Home
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="pages.html" class="active">
+                        <a href="financeiro.html">
                             <i class="flaticon-invoice"></i>
-                            Pages
+                            Financeiro
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="components.html">
-                            <i class="flaticon-menu-1"></i>
-                            Components
+                        <a href="#">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar PIX
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="my-cards.html">
-                            <i class="flaticon-credit-card"></i>
-                            My Cards
+                        <a href="api.html">
+                            <i class="fas fa-cogs"></i>
+                            API
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="settings.html">
-                            <i class="flaticon-settings"></i>
-                            Setting
+                        <a href="perfil.html">
+                            <i class="fas fa-user"></i>
+                            Meus Dados
                         </a>
                     </div>
                 </div>
@@ -249,35 +237,68 @@
                     <div class="modal-header sidebar-modal-header">
                         <div class="sidebar-profile-info">
                             <div class="sidebar-profile-thumb">
-                                <img src="assets/images/profile.jpg" alt="profile">
+                                <img src="assets/images/horiizom/newperfil.svg" alt="profile">
                             </div>
                             <div class="sidebar-profile-text">
-                                <h3>Brenda Davis</h3>
-                                <p><a href="tel:1545-8880">1545 8880</a></p>
+                                <h3>Usuario Master</h3>
+                                <p>Codigo de usuario: HRM1023</p>
                             </div>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="sidebar-profile-wallet">
                         <div class="add-card-info">
-                            <p>Your Wallet</p>
-                            <h3>$1,450.50</h3>
+                            <p>Meu Saldo</p>
+                            <h3>R$10,450.50</h3>
                         </div>
                     </div>
                     <div class="modal-body">
                         <div class="sidebar-nav">
                             <div class="sidebar-nav-item">
-                                <h3>Oban Menu</h3>
+                                <h3>Menu</h3>
                                 <ul class="sidebar-nav-list">
-                                    <li><a href="index.html"><i class="flaticon-house"></i> Home</a></li>
-                                    <li><a href="pages.html" class="active"><i class="flaticon-invoice"></i> Pages</a></li>
-                                    <li><a href="components.html"><i class="flaticon-menu-1"></i> Components</a></li>
-                                    <li><a href="my-cards.html"><i class="flaticon-credit-card"></i> My Cards</a></li>
-                                    <li><a href="settings.html"><i class="flaticon-settings"></i> Settings</a></li>
-                                    <li><a href="contact-us.html"><i class="flaticon-call-center-agent"></i> Contact Us</a></li>
-                                    <li><a href="#"><i class="flaticon-logout"></i> Logout</a></li>
+                                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                                    <li><a href="financeiro.html"><i class="fas fa-file-invoice-dollar"></i> Financeiro</a></li>
+                                    <li><a href="components.html"><i class="fas fa-chevron-down"></i> Transferir</a></li>
+                                    <li><a href="#"><i class="fas fa-link"></i> Criar Link</a></li>
+                                    <li><a href="perfil.html"><i class="fas fa-exchange-alt"></i> Converter</a></li>
+                                    <li><a href="perfil.html"><i class="fas fa-user-cog"></i> Meus Dados</a></li>
+                                    <li><a href="contact-us.html"><i class="fas fa-headset"></i> Suporte</a></li>
+                                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="withdraw" tabindex="-1" aria-labelledby="withdraw" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="container">
+                        <div class="modal-header">
+                            <div class="modal-header-title">
+                                <i class="color-blue"></i>
+                                <h5 class="modal-title">Adicionar API</h5>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group mb-15">
+                                    <label for="input3" class="form-label">Nome da API</label>
+                                    <input type="email" class="form-control" id="input3" placeholder="Digite o nome da API">
+                                </div>
+                                <!-- <div class="form-group mb-15">
+                                    <label for="input4" class="form-label">To</label>
+                                    <input type="email" class="form-control" id="input4" placeholder="Alicia Williams">
+                                </div>
+                                <div class="form-group mb-15">
+                                    <label for="input5" class="form-label">Enter Amount</label>
+                                    <input type="email" class="form-control" id="input5" placeholder="$ 458.00">
+                                </div> -->
+                                <button style="color: white;" type="submit" class="btn main-btn main-btn-lg full-width">Criar</button>
+                            </form>
                         </div>
                     </div>
                 </div>

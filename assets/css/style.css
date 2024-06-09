@@ -181,7 +181,7 @@ button:focus, button:active {
   position: relative;
   border-radius: 3px;
   z-index: 0 !important;
-  background-color: #3646cd;
+  background-color: #7d4eff !important;
   white-space: nowrap;
 }
 .main-btn i {
@@ -1264,7 +1264,7 @@ select.form-control:focus, select.form-control:valid {
   stroke: #ff5f5f;
 }
 .progress-card-red .progress-card-amount {
-  color: #ff5f5f;
+  color: green;
 }
 
 .progress-card-violet .circle-progress-fill {

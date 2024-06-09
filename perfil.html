@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zxx">
     
-<!-- Mirrored from templates.envytheme.com/oban/default/settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Jun 2024 21:05:34 GMT -->
+<!-- Mirrored from templates.envytheme.com/oban/default/perfil.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Jun 2024 21:05:34 GMT -->
 <head>
         <meta charset="utf-8">
         <meta name="description" content="Oban">
@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="assets/css/style.css" type="text/css" media="all" />
         <!-- responsive css -->
         <link rel="stylesheet" href="assets/css/responsive.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="./assets/css/custom.css">
     </head>
 
     <body>
@@ -62,7 +64,7 @@
                             </div>
                         </div>
                         <div class="appbar-item appbar-page-title">
-                            <h3>Setting</h3>
+                            <h3>Meu Perfil</h3>
                         </div>
                         <div class="appbar-item appbar-options">
                             <div class="appbar-option-item appbar-option-notification">
@@ -70,7 +72,7 @@
                                 <span class="option-badge">5</span>
                             </div>
                             <div class="appbar-option-item appbar-option-profile">
-                                <a href="settings.html"><img src="assets/images/profile.jpg" alt="profile"></a>
+                                <a href="perfil.html"><img src="assets/images/horiizom/newperfil.svg" alt="profile"></a>
                             </div>
                         </div>
                     </div>
@@ -86,7 +88,7 @@
                 <div class="setting-section pb-15">
                     <div class="user-setting-thumb">
                         <div class="user-setting-thumb-up">
-                            <img src="assets/images/profile.jpg" alt="profile">
+                            <img src="assets/images/horiizom/newperfil.svg" alt="profile">
                         </div>
                         <label for="upThumb">
                             <i class="flaticon-camera"></i>
@@ -97,32 +99,26 @@
                     <!-- Setting-list -->
                     <div class="setting-list">
                         <ul>
+                            <!-- <li>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#userName">Mudar Nome</a>
+                            </li> -->
                             <li>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#userName">Change Username</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#emailModal">Alterar Email</a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#emailModal">Update E-mail</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#addressModal">Endereço</a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#addressModal">Address</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#birthdayModal">Nascimento</a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#birthdayModal">Birthday</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#languageModal">Linguagem</a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#languageModal">Language</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">Senha</a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">Update Password</a>
-                            </li>
-                            <li class="setting-toggle-btn">
-                                <a href="#">
-                                    Notifications Sound
-                                </a>
-                                <button></button>
-                            </li>
-                            <li>
-                                <a href="#">Logout</a>
+                                <a href="#">Sair</a>
                             </li>
                         </ul>
                     </div>
@@ -138,33 +134,33 @@
             <div class="container">
                 <div class="navbar-content ">
                     <div class="navbar-content-item">
-                        <a href="index.html">
+                        <a href="index.html" class="active">
                             <i class="flaticon-house"></i>
                             Home
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="pages.html">
+                        <a href="financeiro.html">
                             <i class="flaticon-invoice"></i>
-                            Pages
+                            Financeiro
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="components.html">
-                            <i class="flaticon-menu-1"></i>
-                            Components
+                        <a href="#">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar PIX
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="my-cards.html">
-                            <i class="flaticon-credit-card"></i>
-                            My Cards
+                        <a href="api.html">
+                            <i class="fas fa-cogs"></i>
+                            API
                         </a>
                     </div>
                     <div class="navbar-content-item">
-                        <a href="settings.html" class="active">
-                            <i class="flaticon-settings"></i>
-                            Setting
+                        <a href="perfil.html">
+                            <i class="fas fa-user"></i>
+                            Meus Dados
                         </a>
                     </div>
                 </div>
@@ -205,7 +201,7 @@
                     <div class="container">
                         <div class="modal-header">
                             <div class="modal-header-title">
-                                <h5 class="modal-title">Update E-mail</h5>
+                                <h5 class="modal-title">Alterar Email</h5>
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -215,7 +211,7 @@
                                     <label class="form-label">Email</label>
                                     <input type="text" class="form-control" placeholder="doe@example.com" value="doe@example.com">
                                 </div>
-                                <button type="submit" class="btn main-btn main-btn-lg full-width">Update E-mail</button>
+                                <button type="submit" class="btn main-btn main-btn-lg full-width">Salvar</button>
                             </form>
                         </div>
                     </div>
@@ -231,17 +227,17 @@
                     <div class="container">
                         <div class="modal-header">
                             <div class="modal-header-title">
-                                <h5 class="modal-title">Address</h5>
+                                <h5 class="modal-title">Endereço</h5>
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
                                 <div class="form-group mb-15">
-                                    <label class="form-label">Address</label>
-                                    <input type="text" class="form-control" placeholder="6890 Blvd, The Bronx, NY 1058 New York, USA">
+                                    <label class="form-label">Endereço</label>
+                                    <input type="text" class="form-control" placeholder="Rua exemplo, bairro exemplo, cidade exemplo.">
                                 </div>
-                                <button type="submit" class="btn main-btn main-btn-lg full-width">Update Address</button>
+                                <button type="submit" class="btn main-btn main-btn-lg full-width"> Salvar</button>
                             </form>
                         </div>
                     </div>
@@ -257,17 +253,17 @@
                     <div class="container">
                         <div class="modal-header">
                             <div class="modal-header-title">
-                                <h5 class="modal-title">Birthday</h5>
+                                <h5 class="modal-title">Data de nascimento</h5>
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
                                 <div class="form-group mb-15">
-                                    <label class="form-label">Birthday</label>
+                                    <label class="form-label">Data de nascimento</label>
                                     <input type="date" class="form-control">
                                 </div>
-                                <button type="submit" class="btn main-btn main-btn-lg full-width">Update Birthday</button>
+                                <button type="submit" class="btn main-btn main-btn-lg full-width">Salvar</button>
                             </form>
                         </div>
                     </div>
@@ -283,7 +279,7 @@
                     <div class="container">
                         <div class="modal-header">
                             <div class="modal-header-title">
-                                <h5 class="modal-title">Change Language</h5>
+                                <h5 class="modal-title">Alterar Linguagem</h5>
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -325,7 +321,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn main-btn main-btn-lg full-width">Change Language</button>
+                                <button type="submit" class="btn main-btn main-btn-lg full-width">Salvar</button>
                             </form>
                         </div>
                     </div>
@@ -341,14 +337,14 @@
                     <div class="container">
                         <div class="modal-header">
                             <div class="modal-header-title">
-                                <h5 class="modal-title">Change Password</h5>
+                                <h5 class="modal-title">Alterar Senha</h5>
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
                                 <div class="form-group pb-15">
-                                    <label>Current Password</label>
+                                    <label>Atual Senha</label>
                                     <div class="input-group">
                                         <input type="password" name="password" class="form-control password" required placeholder="**********">
                                         <span class="input-group-text reveal">
@@ -358,7 +354,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group pb-15">
-                                    <label>New Password</label>
+                                    <label>Nova Senha</label>
                                     <div class="input-group">
                                         <input type="password" name="password" class="form-control password" required placeholder="**********">
                                         <span class="input-group-text reveal">
@@ -368,7 +364,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group pb-15">
-                                    <label>Confirm Password</label>
+                                    <label>Confirmar Senha</label>
                                     <div class="input-group">
                                         <input type="password" name="password" class="form-control password" required placeholder="**********">
                                         <span class="input-group-text reveal">
@@ -377,7 +373,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn main-btn main-btn-lg full-width">Change Password</button>
+                                <button type="submit" class="btn main-btn main-btn-lg full-width">Salvar</button>
                             </form>
                         </div>
                     </div>
@@ -396,8 +392,8 @@
                                 <img src="assets/images/profile.jpg" alt="profile">
                             </div>
                             <div class="sidebar-profile-text">
-                                <h3>Brenda Davis</h3>
-                                <p><a href="tel:1545-8880">1545 8880</a></p>
+                                <h3>Usuario Master</h3>
+                                  <p>Codigo de usuario: HRM1023</p>
                             </div>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -417,7 +413,7 @@
                                     <li><a href="pages.html"><i class="flaticon-invoice"></i> Pages</a></li>
                                     <li><a href="components.html"><i class="flaticon-menu-1"></i> Components</a></li>
                                     <li><a href="my-cards.html"><i class="flaticon-credit-card"></i> My Cards</a></li>
-                                    <li><a href="settings.html" class="active"><i class="flaticon-settings"></i> Settings</a></li>
+                                    <li><a href="perfil.html" class="active"><i class="flaticon-settings"></i> Settings</a></li>
                                     <li><a href="contact-us.html"><i class="flaticon-call-center-agent"></i> Contact Us</a></li>
                                     <li><a href="#"><i class="flaticon-logout"></i> Logout</a></li>
                                 </ul>
@@ -453,5 +449,5 @@
         <script src="assets/js/script.js"></script>
     </body>
 
-<!-- Mirrored from templates.envytheme.com/oban/default/settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Jun 2024 21:05:38 GMT -->
+<!-- Mirrored from templates.envytheme.com/oban/default/perfil.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Jun 2024 21:05:38 GMT -->
 </html>
