@@ -718,7 +718,7 @@ select.form-control:focus, select.form-control:valid {
   width: 100%;
   z-index: 999999;
   position: fixed;
-  background-color: #fff;
+  background-color: #ffffff43;
   top: 0;
   box-shadow: 0px 2px 4px 0px rgba(74, 74, 74, 0.05);
 }
