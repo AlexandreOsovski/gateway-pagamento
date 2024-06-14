@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\ClientModel;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\ClientRepository;
+use App\Repositories\Interfaces\ClientInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind('App\Repositories\ClientRepository', function () {
+            return new ClientRepository(new ClientModel());
+        });
     }
 
     /**

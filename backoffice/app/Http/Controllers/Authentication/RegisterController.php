@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Authentication;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Services\Client\ClientRegistrationService;
+use App\Services\ClientRegistrationService;
 
 class RegisterController extends Controller
 {

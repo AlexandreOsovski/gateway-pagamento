@@ -33,7 +33,6 @@ class ClientModel extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 

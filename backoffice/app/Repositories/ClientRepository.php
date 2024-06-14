@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Client\Repositories;
+namespace App\Repositories;
 
 use App\Repositories\Interfaces\ClientInterface;
 use App\Models\ClientModel;
