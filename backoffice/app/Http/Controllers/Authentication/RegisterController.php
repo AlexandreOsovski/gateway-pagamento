@@ -3,51 +3,57 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\{
-    Support\Facades\Validator,
-    Http\Request
-};
-use App\Models\ClientModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Services\Client\ClientRegistrationService;
 
 class RegisterController extends Controller
 {
+    private $clientRegistrationService;
 
-    private $client;
-
-    public function __construct(ClientModel $client)
+    public function __construct(ClientRegistrationService $clientRegistrationService)
     {
-        $this->client = $client;
+        $this->clientRegistrationService = $clientRegistrationService;
     }
 
     public function index()
     {
-        return view("authentication/register");
+        return view("authentication.register");
     }
 
     public function register(Request $request)
     {
-        $rules = [
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3',
-            'email' => 'required|string',
+            'email' => 'required|string|email|unique:clients,email',
             'password' => 'required|string',
             'document_type' => 'required|string',
-            'document_number' => 'required|string',
-        ];
-
-        $messages = [
+            'document_number' => 'required|string|unique:clients,document_number',
+        ], [
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser uma string.',
             'name.min' => 'O campo nome deve ter pelo menos 3 caracteres.',
-        ];
+            'email.required' => 'O campo email é obrigatório.',
+            'email.string' => 'O campo email deve ser uma string.',
+            'email.email' => 'Por favor, insira um endereço de email válido.',
+            'email.unique' => 'Este email já está sendo usado em outra conta.',
+            'password.required' => 'O campo senha é obrigatório.',
+            'password.string' => 'O campo senha deve ser uma string.',
+            'document_type.required' => 'O campo tipo de documento é obrigatório.',
+            'document_type.string' => 'O campo tipo de documento deve ser uma string.',
+            'document_number.required' => 'O campo número do documento é obrigatório.',
+            'document_number.string' => 'O campo número do documento deve ser uma string.',
+            'document_number.unique' => 'Este número de documento já está sendo usado em outra conta.',
+        ]);
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+
         if ($validator->fails()) {
-
             $errors = $validator->errors()->all();
-            $errorMessage = implode('<br>', $errors);
+            foreach ($errors as $value) {
+                toastr($value, 'error', 'Erro');
+            }
 
-            toastr($errorMessage, 'error', 'Erro');
             return redirect()->back();
         }
 
@@ -56,16 +62,9 @@ class RegisterController extends Controller
             return redirect()->back();
         }
 
-        $client = $this->client;
-        $client->name = $request->input('name');
-        $client->email = $request->input('email');
-        $client->password = $request->input('password');
-        $client->document_number = $request->input('document_number');
-        $client->document_type = $request->input('document_type');
-        $client->status = 'active';
-        $client->save();
+        $result = $this->clientRegistrationService->register($request->all());
 
-        if ($client) {
+        if ($result) {
             toastr('Cadastro criado com sucesso', 'success', 'Sucesso');
             return redirect()->route('login.get');
         } else {
