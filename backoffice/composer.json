@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.0",
+        "livewire/livewire": "^3.5",
         "mercadopago/dx-php": "3.0.2",
         "owenvoke/blade-fontawesome": "^2.5",
         "parfaitementweb/filament-country-field": "^2.0",
