@@ -25,7 +25,36 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
+        $result = $this->validateData($request->all());
+        if (!$result) {
+            return redirect()->back();
+        }
+
+        if (!$request->has('terms_use')) {
+            toastr('Você precisa aceitar os termos de uso', 'error', 'Erro');
+            return redirect()->back();
+        }
+
+        $result = $this->clientRegistrationService->create($request->all());
+
+        if ($result) {
+            toastr('Cadastro criado com sucesso', 'success', 'Sucesso');
+            return redirect()->route('login.get');
+        } else {
+            toastr('Houve um erro ao realizar o cadastro, tente novamente', 'error', 'Erro');
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * getErrors function
+     *
+     * @param object $data
+     * @return boolean
+     */
+    private function validateData($dataObject): bool
+    {
+        $validator = Validator::make($dataObject, [
             'name' => 'required|string|min:3',
             'email' => 'required|string|email|unique:clients,email',
             'password' => 'required|string',
@@ -48,29 +77,13 @@ class RegisterController extends Controller
             'document_number.unique' => 'Este número de documento já está sendo usado em outra conta.',
         ]);
 
-
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             foreach ($errors as $value) {
                 toastr($value, 'error', 'Erro');
             }
-
-            return redirect()->back();
+            return false;
         }
-
-        if (!$request->has('terms_use')) {
-            toastr('Você precisa aceitar os termos de uso', 'error', 'Erro');
-            return redirect()->back();
-        }
-
-        $result = $this->clientRegistrationService->create($request->all());
-
-        if ($result) {
-            toastr('Cadastro criado com sucesso', 'success', 'Sucesso');
-            return redirect()->route('login.get');
-        } else {
-            toastr('Houve um erro ao realizar o cadastro, tente novamente', 'error', 'Erro');
-            return redirect()->back();
-        }
+        return true;
     }
 }
