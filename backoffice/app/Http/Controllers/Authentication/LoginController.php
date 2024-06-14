@@ -54,4 +54,14 @@ class LoginController extends Controller
         toastr('Houve um erro ao tentar realizar o login', 'error', 'Erro');
         return redirect()->back();
     }
+
+    public function logout()
+    {
+        Auth::guard('client')->logout();
+        Auth::guard('web')->logout();
+
+        toastr('Você saiu com sucesso. Até logo!', 'success');
+
+        return redirect()->route('login.get');
+    }
 }

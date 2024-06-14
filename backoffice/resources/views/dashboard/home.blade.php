@@ -927,7 +927,15 @@
                                 <li><a href="perfil.html"><i class="fas fa-exchange-alt"></i> Converter</a></li>
                                 <li><a href="perfil.html"><i class="fas fa-user-cog"></i> Meus Dados</a></li>
                                 <li><a href="contact-us.html"><i class="fas fa-headset"></i> Suporte</a></li>
-                                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            style="margin-left: 10px; background: transparent; color: #7d4eff; "><i
+                                                class="fas fa-sign-out-alt"></i> Sair</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </div>

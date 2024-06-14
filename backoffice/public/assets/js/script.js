@@ -21,10 +21,10 @@ jQuery(function ($) {
         let note = Math.round(display.dataset.note);
         let [int] = display.dataset.note.split('.');
         [int] = [Number(int)];
-      
+
         strokeTransition(display, note);
-      
-        increaseNumber(display, int, 'int');
+
+        // increaseNumber(display, int, 'int');
     });
 
     function strokeTransition(display, note) {
@@ -39,19 +39,19 @@ jQuery(function ($) {
         setTimeout(() => progress.style.strokeDashoffset = offset, 100);
     }
 
-    function increaseNumber(display, number, className) {
-        let element = display.querySelector(`.percent-${className}`),
-            decPoint = className === 'int' ? '' : '',
-            interval = transitionDuration / number,
-            counter = 0;
-      
-        let increaseInterval = setInterval(() => {
-          if (counter === number) { window.clearInterval(increaseInterval); }
-      
-          element.textContent = counter + decPoint;
-          counter++;
-        }, interval);
-    }
+    // function increaseNumber(display, number, className) {
+    //     let element = display.querySelector(`.percent-${className}`),
+    //         decPoint = className === 'int' ? '' : '',
+    //         interval = transitionDuration / number,
+    //         counter = 0;
+
+    //     let increaseInterval = setInterval(() => {
+    //       if (counter === number) { window.clearInterval(increaseInterval); }
+
+    //       element.textContent = counter + decPoint;
+    //       counter++;
+    //     }, interval);
+    // }
 
     // Preloader
     $("body").addClass("pre-loaded");
@@ -74,7 +74,7 @@ jQuery(function ($) {
 
     // Back-page
     $('.back-page').on("click", function() {
-        history.go(-1);   
+        history.go(-1);
         return false;
     });
 
@@ -131,7 +131,7 @@ jQuery(function ($) {
         e.preventDefault();
         return false;
     }
-    
+
     function onFocus(e) {
         $(e.target).select();
     }
@@ -197,8 +197,8 @@ jQuery(function ($) {
         }
     })
     // $("body").on('click', function (e) {
-    //     if (!$(".search-animate-form button").is(e.target) 
-    //         && $(".search-animate-form button").has(e.target).length === 0 
+    //     if (!$(".search-animate-form button").is(e.target)
+    //         && $(".search-animate-form button").has(e.target).length === 0
     //         && $(".search-animate-form").has(e.target).length === 0
     //     ) {
     //         $(".search-animate-form").removeClass("active");

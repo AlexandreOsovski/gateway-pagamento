@@ -43,6 +43,7 @@ class ClientModel extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
 }

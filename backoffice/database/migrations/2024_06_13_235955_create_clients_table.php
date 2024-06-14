@@ -14,6 +14,8 @@ return new class extends Migration
             $table->uuid('uuid')->default(UuidV8::uuid4());
             $table->string('name');
             $table->string('email')->unique();
+            $table->enum('document_type', ['RG', 'CPF', 'CNH', 'NULL'])->default('NULL');
+            $table->string('document_number')->nullable();
             $table->string('password');
             $table->string('status')->default('active');
             $table->string('avatar')->nullable();

@@ -15,7 +15,9 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register.ge
 
 
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
 Route::middleware(['auth.client'])->group(function () {
     Route::get('/dashboard', [DashboardController::class,  'index'])->name('dashboard.get');
+    Route::delete('/logout', [LoginController::class, 'logout'])->name('logout');
 });

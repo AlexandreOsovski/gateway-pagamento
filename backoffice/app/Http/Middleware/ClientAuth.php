@@ -12,12 +12,11 @@ class ClientAuth
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(Auth::guard('client')->check()){
+        if (Auth::guard('client')->check() || Auth::guard('web')->check()) {
 
             return $next($request);
         }
 
         return redirect()->route('client.auth.get');
-
     }
 }
