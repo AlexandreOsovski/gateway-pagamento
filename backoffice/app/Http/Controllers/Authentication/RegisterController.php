@@ -11,6 +11,7 @@ class RegisterController extends Controller
 {
     private $clientRegistrationService;
 
+
     public function __construct(ClientRegistrationService $clientRegistrationService)
     {
         $this->clientRegistrationService = $clientRegistrationService;
@@ -62,7 +63,7 @@ class RegisterController extends Controller
             return redirect()->back();
         }
 
-        $result = $this->clientRegistrationService->register($request->all());
+        $result = $this->clientRegistrationService->create($request->all());
 
         if ($result) {
             toastr('Cadastro criado com sucesso', 'success', 'Sucesso');
