@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
+
 
 class ClientModel extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = "clients";
+    protected $table = "client";
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +22,9 @@ class ClientModel extends Authenticatable
     protected $fillable = [
         'avatar',
         'name',
+        'indicator_id',
+        'balance',
+        'balance_usdt',
         'email',
         'document_type',
         'document_number',

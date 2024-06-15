@@ -7,17 +7,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function pre($dados) : array
+    public function pre($dados): array
     {
         echo '<pre>';
         print_r($dados);
@@ -25,13 +22,13 @@ class Controller extends BaseController
         die();
     }
 
-//    public function generateQrCode($link)
-//    {
-//        $qrCode = QrCode::format('svg')->size(250)->generate($link);
-//        return $qrCode;
-//    }
+    //    public function generateQrCode($link)
+    //    {
+    //        $qrCode = QrCode::format('svg')->size(250)->generate($link);
+    //        return $qrCode;
+    //    }
 
-    public function saveAvatar($request, $user_avatar, $path_to_save)
+    public function saveAvatar($request, $user_avatar)
     {
         $avatar = null;
         $requestImage = $request->file('avatar');
@@ -45,9 +42,9 @@ class Controller extends BaseController
                 }
             }
             $imageName = md5($requestImage . strtotime('now')) . '.' . strtolower($requestImage->getClientOriginalName());
-            $requestImage->move(public_path('storage/' . $path_to_save . '/'), $imageName);
+            $requestImage->move(public_path('storage/'), $imageName);
             Storage::disk('local')->put($imageName, ($imageName));
-            $avatar = $path_to_save . '/' . $imageName;
+            $avatar = '/' . $imageName;
         }
         return $avatar;
     }
@@ -96,15 +93,14 @@ class Controller extends BaseController
     private function getImageByLink($link)
     {
         $fileName = basename($link);
-        if($fileName){
-            if (Storage::disk('s3')->exists('public/'. $fileName)) {
+        if ($fileName) {
+            if (Storage::disk('s3')->exists('public/' . $fileName)) {
                 return $fileName;
             } else {
                 return null;
             }
         }
         return null;
-
     }
 
 
@@ -134,5 +130,4 @@ class Controller extends BaseController
             ->with('categoryName')
             ->paginate($perPage);
     }
-
 }

@@ -2,10 +2,14 @@
 
 use App\Http\Controllers\{
     Authentication\LoginController,
-    Dashboard\DashboardController,
     Authentication\RegisterController,
-};
 
+    Dashboard\DashboardController,
+    Dashboard\FinanceController,
+    Dashboard\ProfileController,
+    Dashboard\KeysApiController,
+};
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,5 +23,13 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::middleware(['auth.client'])->group(function () {
     Route::get('/dashboard', [DashboardController::class,  'index'])->name('dashboard.get');
+    Route::get('/finance', [FinanceController::class,  'index'])->name('finance.get');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.get');
+    Route::get('/keys-api', [KeysApiController::class, 'index'])->name('keysapi.get');
+
+    Route::post('/keys-api-post', [KeysApiController::class, 'store'])->name('keysapi.post');
+
+    Route::put('/alter-data', [ProfileController::class, 'update'])->name('alterdata.put');
+
     Route::delete('/logout', [LoginController::class, 'logout'])->name('logout');
 });

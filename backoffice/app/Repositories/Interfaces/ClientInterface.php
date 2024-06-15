@@ -34,7 +34,7 @@ interface ClientInterface
      * @param string $id The ID of the client to be updated.
      * @return ClientModel The updated client.
      */
-    public function update(ClientModel $client, string $id): ?ClientModel;
+    public function update(array $client, string $id): bool;
 
     /**
      * Delete a client based on ID.
@@ -51,4 +51,6 @@ interface ClientInterface
      * @return ClientModel|null The found client or null if not found.
      */
     public function find(string $id): ?ClientModel;
+
+    public function verifyOldPassword(string $oldPassword, int $userId): bool;
 }

@@ -17,6 +17,6 @@ class ClientAuth
             return $next($request);
         }
 
-        return redirect()->route('client.auth.get');
+        return redirect()->route('login.get');
     }
 }

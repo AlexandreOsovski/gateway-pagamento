@@ -42,6 +42,17 @@ class ClientRepository implements ClientInterface
     }
 
     /**
+     * Find a client based on ID.
+     *
+     * @param string $id The ID of the client to be found.
+     * @return ClientModel|null The found client or null if not found.
+     */
+    public function find(string $id): ?ClientModel
+    {
+        return $this->model->find($id);
+    }
+
+    /**
      * Create a new client.
      *
      * @param ClientModel $client The client model instance to be created.
@@ -60,15 +71,16 @@ class ClientRepository implements ClientInterface
      * @param string $id The ID of the client to be updated.
      * @return ClientModel|null The updated client model or null if not found.
      */
-    public function update(ClientModel $client, string $id): ?ClientModel
+    public function update(array $client, string $id): bool
     {
         $existingClient = $this->model->find($id);
 
         if ($existingClient) {
-            return $existingClient->update($client->toArray());
+            $result = $existingClient->update((array)$client);
+            return $result ? true : false;
         }
 
-        return null;
+        return false;
     }
 
     /**
@@ -88,14 +100,11 @@ class ClientRepository implements ClientInterface
         return false;
     }
 
-    /**
-     * Find a client based on ID.
-     *
-     * @param string $id The ID of the client to be found.
-     * @return ClientModel|null The found client or null if not found.
-     */
-    public function find(string $id): ?ClientModel
+    public function verifyOldPassword(string $oldPassword, int $userId): bool
     {
-        return $this->model->find($id);
+        $client = $this->model->find($userId);
+        $verify = password_verify($oldPassword, $client->password);
+
+        return $verify ? true : false;
     }
 }

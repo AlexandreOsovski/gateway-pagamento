@@ -5,16 +5,15 @@ namespace App\Http\Controllers\Authentication;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Services\ClientRegistrationService;
+use App\Services\ClientService;
 
 class RegisterController extends Controller
 {
-    private $clientRegistrationService;
+    private $clientService;
 
-
-    public function __construct(ClientRegistrationService $clientRegistrationService)
+    public function __construct(ClientService $clientService)
     {
-        $this->clientRegistrationService = $clientRegistrationService;
+        $this->clientService = $clientService;
     }
 
     public function index()
@@ -35,7 +34,7 @@ class RegisterController extends Controller
             return redirect()->back();
         }
 
-        $result = $this->clientRegistrationService->create($request->all());
+        $result = $this->clientService->create($request->all());
 
         if ($result) {
             toastr('Cadastro criado com sucesso', 'success', 'Sucesso');
