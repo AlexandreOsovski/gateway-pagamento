@@ -50,8 +50,6 @@ class ClientService
             }
         }
 
-
-
         $clientDataUpdate = [
             'avatar' => isset($client['avatar']) ? $this->saveAvatar($client, $clientData->avatar) : $clientData->avatar,
             'name' => $client["name"] ?? $clientData->name,

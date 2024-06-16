@@ -55,10 +55,10 @@ class RegisterController extends Controller
     {
         $validator = Validator::make($dataObject, [
             'name' => 'required|string|min:3',
-            'email' => 'required|string|email|unique:clients,email',
+            'email' => 'required|string|email|unique:client,email',
             'password' => 'required|string',
             'document_type' => 'required|string',
-            'document_number' => 'required|string|unique:clients,document_number',
+            'document_number' => 'required|string|unique:client,document_number',
         ], [
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser uma string.',
