@@ -23,6 +23,7 @@ class MovementRepository implements MovementsInterface
     {
         return $this->model
             ->where('client_id', $userId)
+            ->orderBy('id', 'desc')
             ->get()
             ->toArray();
     }

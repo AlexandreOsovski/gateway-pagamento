@@ -47,6 +47,7 @@ class KeysApiRepository implements KeysApiInterface
     {
         return $this->model
             ->where('client_id', $userId)
+            ->orderBy('id', 'desc')
             ->get()
             ->toArray();
     }

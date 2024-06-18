@@ -41,10 +41,10 @@ class NotificationController extends Controller
         $result = $this->service->delete($request->notification_id, $client_id);
         if ($result) {
             toastr('Notificação deletada com sucesso.', 'success');
-            return redirect()->back();
+            return redirect()->route('notification.get');
         } else {
             toastr('Houve um erro ao deletar a notificação', 'error');
-            return redirect()->back();
+            return redirect()->route('notification.get');
         }
     }
 }

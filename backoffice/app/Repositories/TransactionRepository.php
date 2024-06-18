@@ -23,6 +23,7 @@ class TransactionRepository implements TransactionInterface
     {
         return $this->model
             ->where('client_id', $userId)
+            ->orderBy('id', 'desc')
             ->get()
             ->toArray();
     }

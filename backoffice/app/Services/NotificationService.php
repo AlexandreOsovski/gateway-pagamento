@@ -13,14 +13,13 @@ class NotificationService
         $this->repository = $notificationRepository;
     }
 
-    public function create(array $data): bool
+    public function create(int $userId, string $icon, string $title, string $body): bool
     {
-
         $notification = $this->repository->create(new NotificationModel([
-            'client_id' => $data['client_id'],
-            'icon' => $data['icon'],
-            'title' => $data['data'],
-            'body' => $data['body'],
+            'client_id' => $userId,
+            'icon' => $icon,
+            'title' => $title,
+            'body' => $body,
         ]));
 
         return $notification ? true : false;

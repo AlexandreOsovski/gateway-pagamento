@@ -18,6 +18,7 @@ class NotificationRepository implements NotificationInterface
     {
         return $this->model
             ->where('client_id', $userId)
+            ->orderBy('id', 'desc')
             ->get()
             ->toArray();
     }
