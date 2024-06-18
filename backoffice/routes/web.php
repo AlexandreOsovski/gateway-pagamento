@@ -8,8 +8,9 @@ use App\Http\Controllers\{
     Dashboard\FinanceController,
     Dashboard\ProfileController,
     Dashboard\KeysApiController,
+    Dashboard\NotificationController
 };
-use GuzzleHttp\Client;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,14 +23,21 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
 Route::middleware(['auth.client'])->group(function () {
+    #GET
     Route::get('/dashboard', [DashboardController::class,  'index'])->name('dashboard.get');
     Route::get('/finance', [FinanceController::class,  'index'])->name('finance.get');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.get');
     Route::get('/keys-api', [KeysApiController::class, 'index'])->name('keysapi.get');
+    Route::get('/notification', [NotificationController::class, 'index'])->name('notification.get');
 
+    #POST
     Route::post('/keys-api-post', [KeysApiController::class, 'store'])->name('keysapi.post');
 
+    #PUT
     Route::put('/alter-data', [ProfileController::class, 'update'])->name('alterdata.put');
+    Route::put('/read-notification', [NotificationController::class, 'readNotification'])->name('notification.put');
 
+    #DELETE
+    Route::delete('/notification-delete', [NotificationController::class, 'delete'])->name('notification.delete');
     Route::delete('/logout', [LoginController::class, 'logout'])->name('logout');
 });

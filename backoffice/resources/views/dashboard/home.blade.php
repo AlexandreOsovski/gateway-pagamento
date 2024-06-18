@@ -26,12 +26,18 @@
                     </div>
                     <div class="appbar-item appbar-options">
                         <div class="appbar-option-item appbar-option-notification">
-                            <a href="notifications.html"><i class="flaticon-bell"></i></a>
-                            <span style="color: white;" class="option-badge">5</span>
+                            <a href="{{ route('notification.get') }}"><i class="flaticon-bell"></i></a>
+                            @include('livewire.components.notification')
                         </div>
+                        @php
+                            if (empty(Auth::guard('client')->user()->avatar)) {
+                                $avatar = 'assets/images/horiizom/newperfil.svg';
+                            } else {
+                                $avatar = Auth::guard('client')->user()->avatar;
+                            }
+                        @endphp
                         <div class="appbar-option-item appbar-option-profile">
-                            <a href="{{ route('profile.get') }}"><img src="assets/images/horiizom/newperfil.svg"
-                                    alt="profile"></a>
+                            <a href="{{ route('profile.get') }}"><img src="{{ $avatar }}" alt="profile"></a>
                         </div>
                     </div>
                 </div>

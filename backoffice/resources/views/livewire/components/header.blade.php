@@ -21,8 +21,8 @@
                 </div>
                 <div class="appbar-item appbar-options">
                     <div class="appbar-option-item appbar-option-notification">
-                        <a href="notifications.html"><i class="flaticon-bell"></i></a>
-                        <span class="option-badge">5</span>
+                        <a href="{{ route('notification.get') }}"><i class="flaticon-bell"></i></a>
+                        @include('livewire.components.notification')
                     </div>
                     <div class="appbar-option-item appbar-option-profile">
                         <a href="{{ route('profile.get') }}">

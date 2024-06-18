@@ -8,6 +8,7 @@ use App\Models\{
     ClientModel,
     KeysApiModel,
     MovementModel,
+    NotificationModel,
     TransactionModel,
     TransferUserToUserModel,
 };
@@ -16,6 +17,7 @@ use App\Repositories\{
     KeysApiRepository,
     MovementRepository,
     TransactionRepository,
+    NotificationRepository,
 };
 
 
@@ -40,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind('App\Repositories\TransactionRepository', function () {
             return new TransactionRepository(new TransactionModel());
+        });
+
+        $this->app->bind('App\Repositories\NotificationRepository', function () {
+            return new NotificationRepository(new NotificationModel());
         });
 
         // $this->app->bind('App\Repositories\', function () {

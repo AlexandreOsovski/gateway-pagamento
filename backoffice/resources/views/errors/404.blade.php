@@ -65,7 +65,7 @@
                     </div>
                     <div class="appbar-item appbar-options">
                         <div class="appbar-option-item appbar-option-notification">
-                            <a href="notifications.html"><i class="flaticon-bell"></i></a>
+                            <a href="{{ route('notification.get') }}"><i class="flaticon-bell"></i></a>
                             <span class="option-badge">5</span>
                         </div>
                         <div class="appbar-option-item appbar-option-profile">
@@ -164,11 +164,13 @@
                             <h3>Oban Menu</h3>
                             <ul class="sidebar-nav-list">
                                 <li><a href="home.html"><i class="flaticon-house"></i> Home</a></li>
-                                <li><a href="pages.html" class="active"><i class="flaticon-invoice"></i> Pages</a></li>
+                                <li><a href="pages.html" class="active"><i class="flaticon-invoice"></i> Pages</a>
+                                </li>
                                 <li><a href="components.html"><i class="flaticon-menu-1"></i> Components</a></li>
                                 <li><a href="my-cards.html"><i class="flaticon-credit-card"></i> My Cards</a></li>
                                 <li><a href="perfil.html"><i class="flaticon-settings"></i> Settings</a></li>
-                                <li><a href="contact-us.html"><i class="flaticon-call-center-agent"></i> Contact Us</a>
+                                <li><a href="contact-us.html"><i class="flaticon-call-center-agent"></i> Contact
+                                        Us</a>
                                 </li>
                                 <li><a href="#"><i class="flaticon-logout"></i> Logout</a></li>
                             </ul>

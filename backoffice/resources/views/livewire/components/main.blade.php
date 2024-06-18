@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    @if (Request::is('finance') || Request::is('profile') || Request::is('keys-api'))
+    @if (Request::is('finance') || Request::is('profile') || Request::is('keys-api') || Request::is('notification'))
         @include('livewire.components.header')
     @endif
     @include('livewire.components.sidebar')
