@@ -12,7 +12,7 @@
                         </div>
                         <div class="feature-card-details">
                             <p>Saldo em Reais</p>
-                            <h3>R$10.000,00</h3>
+                            <h3>R$ {{ number_format(Auth::guard('client')->user()->balance, 2, ',', '.') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="feature-card-details">
                             <p>Saldo em USDT</p>
-                            <h3>$450.50</h3>
+                            <h3>$ {{ number_format(Auth::guard('client')->user()->balance_usdt, 2, '.', ',') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,12 @@
                         </div>
                         <div class="feature-card-details">
                             <p>Ultimo Recebimento</p>
-                            <h3>R$300.00</h3>
+                            @if ($last_value_received == [null])
+                                <h3>R$ 0,00</h3>
+                            @else
+                                <h3>R$ {{ number_format($last_value_received['amount'], 2, ',', '.') }}</h3>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -45,58 +50,97 @@
                         </div>
                         <div class="feature-card-details">
                             <p>Ultimo valor enviado</p>
-                            <h3>R$285.00</h3>
+                            @if ($last_amount_sent == [null])
+                                <h3>R$ 0,00</h3>
+                            @else
+                                <h3>R$ {{ number_format($last_amount_sent['amount'], 2, ',', '.') }}</h3>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
-            <!-- Page-header -->
-            <!-- <div class="page-header">
-                                        <div class="page-header-title page-header-item">
-                                            <h3>Minha Transações</h3>
-                                        </div>
-                                    </div> -->
-            <!-- Page-header -->
-
             <!-- Transaction-section -->
             <div class="transaction-section pb-15">
                 <div class="section-header">
                     <h2>Hoje</h2>
                 </div>
-                <div class="transaction-card mb-15">
-                    <a href="transaction-details.html">
-                        <div class="transaction-card-info">
-                            <div class="transaction-info-thumb">
-                                <img src="assets/images/horiizom/userbase.svg" alt="user">
-                            </div>
-                            <div class="transaction-info-text">
-                                <h3>Venda de Produto</h3>
-                                <p>Aprovado</p>
-                            </div>
+
+                {{-- @if ($last_value_received != [null])
+                    @foreach ($last_value_received as $itemReceived)
+                        <div class="transaction-card mb-15">
+                            <a href="transaction-details.html">
+                                <div class="transaction-card-info">
+                                    <div class="transaction-info-thumb">
+                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
+                                    </div>
+                                    <div class="transaction-info-text">
+                                        @switch($itemReceived['type_movement'])
+                                            @case('TRANSFER')
+                                                <h3>TRANSFERÊNCIA</h3>
+                                            @break
+
+                                            @case('DEPOSIT')
+                                                <h3>DEPÓSITO</h3>
+                                            @break
+
+                                            @case('WITHDRAWAL')
+                                                <h3>SAQUE</h3>
+                                            @break
+                                        @endswitch
+                                        <p>{!! $itemReceived['description'] !!}</p>
+                                    </div>
+                                </div>
+                                @if ($itemReceived['type'] == 'ENTRY')
+                                    <div class="transaction-card-det receive-money">
+                                        + R$ {{ number_format($itemReceived['amount'], '2', ',', '.') }}
+                                    </div>
+                                @else
+                                    <div class="transaction-card-det text-danger">
+                                        - R$ {{ number_format($itemReceived['amount'], '2', ',', '.') }}
+                                    </div>
+                                @endif
+                            </a>
                         </div>
-                        <div class="transaction-card-det receive-money">
-                            + R$ 185.00
-                        </div>
-                    </a>
-                </div>
-                <div class="transaction-card mb-15">
-                    <a href="transaction-details.html">
-                        <div class="transaction-card-info">
-                            <div class="transaction-info-thumb">
-                                <img src="assets/images/horiizom/userbase.svg" alt="user">
+                    @endforeach
+                @endif --}}
+                @foreach ($last_one_days as $item)
+                    <div class="transaction-card mb-15">
+                        <a href="transaction-details.html">
+                            <div class="transaction-card-info">
+                                <div class="transaction-info-thumb">
+                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
+                                </div>
+                                <div class="transaction-info-text">
+                                    @switch($item['type_movement'])
+                                        @case('TRANSFER')
+                                            <h3>TRANSFERÊNCIA</h3>
+                                        @break
+
+                                        @case('DEPOSIT')
+                                            <h3>DEPÓSITO</h3>
+                                        @break
+
+                                        @case('WITHDRAWAL')
+                                            <h3>SAQUE</h3>
+                                        @break
+                                    @endswitch
+                                    <p>{!! $item['description'] !!}</p>
+                                </div>
                             </div>
-                            <div class="transaction-info-text">
-                                <h3>Venda de Produto</h3>
-                                <p>Aprovado</p>
-                            </div>
-                        </div>
-                        <div class="transaction-card-det receive-money">
-                            + R$ 185.00
-                        </div>
-                    </a>
-                </div>
+                            @if ($item['type'] == 'ENTRY')
+                                <div class="transaction-card-det receive-money">
+                                    + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                </div>
+                            @else
+                                <div class="transaction-card-det text-danger">
+                                    - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                </div>
+                            @endif
+                        </a>
+                    </div>
+                @endforeach
             </div>
             <!-- Transaction-section -->
 
@@ -105,70 +149,42 @@
                 <div class="section-header">
                     <h2>7 dias</h2>
                 </div>
-                <div class="transaction-card mb-15">
-                    <a href="transaction-details.html">
-                        <div class="transaction-card-info">
-                            <div class="transaction-info-thumb">
-                                <img src="assets/images/horiizom/userbase.svg" alt="user">
+                @foreach ($last_seven_days as $item)
+                    <div class="transaction-card mb-15">
+                        <a href="transaction-details.html">
+                            <div class="transaction-card-info">
+                                <div class="transaction-info-thumb">
+                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
+                                </div>
+                                <div class="transaction-info-text">
+                                    @switch($item['type_movement'])
+                                        @case('TRANSFER')
+                                            <h3>TRANSFERÊNCIA</h3>
+                                        @break
+
+                                        @case('DEPOSIT')
+                                            <h3>DEPÓSITO</h3>
+                                        @break
+
+                                        @case('WITHDRAWAL')
+                                            <h3>SAQUE</h3>
+                                        @break
+                                    @endswitch
+                                    <p>{!! $item['description'] !!}</p>
+                                </div>
                             </div>
-                            <div class="transaction-info-text">
-                                <h3>Venda de Produto</h3>
-                                <p>Aprovado</p>
-                            </div>
-                        </div>
-                        <div class="transaction-card-det receive-money">
-                            + R$ 185.00
-                        </div>
-                    </a>
-                </div>
-                <div class="transaction-card mb-15">
-                    <a href="transaction-details.html">
-                        <div class="transaction-card-info">
-                            <div class="transaction-info-thumb">
-                                <img src="assets/images/horiizom/userbase.svg" alt="user">
-                            </div>
-                            <div class="transaction-info-text">
-                                <h3>Venda de Produto</h3>
-                                <p>Aprovado</p>
-                            </div>
-                        </div>
-                        <div class="transaction-card-det receive-money">
-                            + R$ 185.00
-                        </div>
-                    </a>
-                </div>
-                <div class="transaction-card mb-15">
-                    <a href="transaction-details.html">
-                        <div class="transaction-card-info">
-                            <div class="transaction-info-thumb">
-                                <img src="assets/images/horiizom/userbase.svg" alt="user">
-                            </div>
-                            <div class="transaction-info-text">
-                                <h3>Venda de Produto</h3>
-                                <p>Aprovado</p>
-                            </div>
-                        </div>
-                        <div class="transaction-card-det receive-money">
-                            + R$ 185.00
-                        </div>
-                    </a>
-                </div>
-                <div class="transaction-card mb-15">
-                    <a href="transaction-details.html">
-                        <div class="transaction-card-info">
-                            <div class="transaction-info-thumb">
-                                <img src="assets/images/horiizom/userbase.svg" alt="user">
-                            </div>
-                            <div class="transaction-info-text">
-                                <h3>Venda de Produto</h3>
-                                <p>Aprovado</p>
-                            </div>
-                        </div>
-                        <div class="transaction-card-det receive-money">
-                            + R$ 185.00
-                        </div>
-                    </a>
-                </div>
+                            @if ($item['type'] == 'ENTRY')
+                                <div class="transaction-card-det receive-money">
+                                    + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                </div>
+                            @else
+                                <div class="transaction-card-det text-danger">
+                                    - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                </div>
+                            @endif
+                        </a>
+                    </div>
+                @endforeach
             </div>
             <!-- Transaction-section -->
         </div>

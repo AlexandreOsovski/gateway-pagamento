@@ -17,7 +17,7 @@
                     </div>
                     <div class="sidebar-profile-text">
                         <h3>{{ Auth::guard('client')->user()->name }}</h3>
-                        {{-- <p>Codigo de usuario: HRM1023</p> --}}
+                        <p>{{ Auth::guard('client')->user()->uuid }}</p>
                     </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

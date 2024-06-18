@@ -18,6 +18,7 @@ use App\Repositories\{
     MovementRepository,
     TransactionRepository,
     NotificationRepository,
+    TransferUserToUserRepository,
 };
 
 
@@ -46,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind('App\Repositories\NotificationRepository', function () {
             return new NotificationRepository(new NotificationModel());
+        });
+
+        $this->app->bind('App\Repositories\TransferUserToUserRepository', function () {
+            return new TransferUserToUserRepository(new TransferUserToUserModel());
         });
 
         // $this->app->bind('App\Repositories\', function () {

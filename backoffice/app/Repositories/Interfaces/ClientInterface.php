@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\ClientModel;
+use GuzzleHttp\Client;
 
 /**
  * Interface ClientInterface
@@ -51,6 +52,9 @@ interface ClientInterface
      * @return ClientModel|null The found client or null if not found.
      */
     public function find(string $id): ?ClientModel;
+
+    public function findByEmail(string $email): ?ClientModel;
+    public function findByCode(string $code): ?ClientModel;
 
     public function verifyOldPassword(string $oldPassword, int $userId): bool;
 }

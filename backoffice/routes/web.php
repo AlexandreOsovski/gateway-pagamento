@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     Dashboard\FinanceController,
     Dashboard\ProfileController,
     Dashboard\KeysApiController,
-    Dashboard\NotificationController
+    Dashboard\NotificationController,
+    Dashboard\TransferUserToUser,
 };
 
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::middleware(['auth.client'])->group(function () {
 
     #POST
     Route::post('/keys-api-post', [KeysApiController::class, 'store'])->name('keysapi.post');
+    Route::post('/transfer-user-to-user', [TransferUserToUser::class, 'transfer'])->name('transferUserToUser.post');
 
     #PUT
     Route::put('/alter-data', [ProfileController::class, 'update'])->name('alterdata.put');

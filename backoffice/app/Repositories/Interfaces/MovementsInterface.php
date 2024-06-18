@@ -8,7 +8,9 @@ interface MovementsInterface
 {
     public function create(MovementModel $movement): MovementModel;
 
-    public function getAll(int $userId): array;
+    // public function getAllMovements(): array;
 
-    public function getLastFourMovements(int $userId): array;
+    public function getLastFourMovements(int $userId): ?array;
+
+    public function getLastDays(int $userId, int $days): ?array;
 }

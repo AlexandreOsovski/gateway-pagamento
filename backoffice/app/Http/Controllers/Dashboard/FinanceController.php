@@ -4,11 +4,42 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Services\{
+    ClientService,
+    KeysApiService,
+    MovementService,
+    TransactionService,
+    TransferUserToUserService,
+};
 
 class FinanceController extends Controller
 {
+    private $movementService;
+    public function __construct(MovementService $movementService)
+    {
+        $this->movementService = $movementService;
+    }
     public function index()
     {
-        return view("dashboard.finance");
+        $client_id = Auth::guard("client")->user()->id;
+        // dd(
+        //     [
+        //         "last_value_received" => $this->movementService->getLastValueReceived($client_id),
+        //         "last_amount_sent" => $this->movementService->getAmountSent($client_id),
+        //         "last_one_days" => $this->movementService->getLastDays($client_id, 1),
+        //         "last_seven_days" => $this->movementService->getLastDays($client_id, 7),
+        //     ]
+        // );
+        return view(
+            "dashboard.finance",
+            [
+                "last_value_received" => $this->movementService->getLastValueReceived($client_id),
+                "last_amount_sent" => $this->movementService->getAmountSent($client_id),
+                "last_one_days" => $this->movementService->getLastDays($client_id, 1),
+                "last_seven_days" => $this->movementService->getLastDays($client_id, 7),
+            ]
+        );
     }
 }

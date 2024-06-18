@@ -11,15 +11,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="{{ route('transferUserToUser.post') }}" method="POST">
+                        @csrf
+                        @method('POST')
                         <div class="form-group mb-15">
                             <label for="input6" class="form-label">Email ou Codigo de Usuário</label>
-                            <input type="email" class="form-control" id="input6"
+                            <input type="text" name="code_or_email" class="form-control" id="input6"
                                 placeholder="Digite o Email ou Codigo de Usuário">
                         </div>
                         <div class="form-group mb-15">
                             <label for="input5" class="form-label">Valor a Transferir</label>
-                            <input type="email" class="form-control" id="input5"
+                            <input type="text" name="value" class="form-control" id="input5"
                                 placeholder="Digite o valor a ser enviado.">
                         </div>
                         <div class="form-group mb-15">

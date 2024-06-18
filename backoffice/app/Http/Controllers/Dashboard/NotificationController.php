@@ -31,6 +31,7 @@ class NotificationController extends Controller
 
     public function readNotification(Request $request)
     {
+        // dd($request);
         $client_id = Auth::guard('client')->user()->id;
         $this->service->readNotification($request->notification_id, $client_id);
     }

@@ -12,9 +12,9 @@ class TransferUserToUserModel extends Model
     protected $table = 'transfer_user_to_user';
 
     protected $fillable = [
-        'client_id',
-        'client_pay_id',
         'amount',
+        'movement_entry_id',
+        'movement_exit_id'
     ];
 
     public function user()

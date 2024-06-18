@@ -37,4 +37,14 @@ class TransactionRepository implements TransactionInterface
             ->get()
             ->toArray();
     }
+
+    // public function getLastValueReceived(int $userId): array
+    // {
+    //     return $this->model
+    //         ->where('client_id', $userId)
+    //         ->latest()
+    //         ->take(1)
+    //         ->get()
+    //         ->first();
+    // }
 }

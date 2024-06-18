@@ -23,8 +23,8 @@
                 @foreach ($notification as $item)
                     <div class="notification-item">
                         <div class="notification-card">
-                            <a id="readNotification" href="#" data-bs-toggle="modal"
-                                data-bs-target="#notificationModal">
+                            <a id="readNotification{{ $item['id'] }}" href="#" data-bs-toggle="modal"
+                                data-bs-target="#notificationModal{{ $item['id'] }}">
                                 <div class="notification-card-thumb">
                                     <i class="{{ $item['icon'] }}"></i>
                                 </div>
@@ -33,18 +33,19 @@
                                         <h7 class="text-success">Novo</h7>
                                     @endif
                                     <h3>{{ $item['title'] }}</h3>
-
                                     <p>{{ \Carbon\Carbon::today()->format('d/m/Y') }}</p>
                                 </div>
                             </a>
                         </div>
                     </div>
 
-                    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModal"
-                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal fade" id="notificationModal{{ $item['id'] }}" tabindex="-1"
+                        aria-labelledby="notificationModal{{ $item['id'] }}" aria-hidden="true" data-bs-backdrop="static"
+                        data-bs-keyboard="false">
                         <div class="modal-dialog modal-dialog-centered notification-modal-dialog">
                             <div class="modal-content">
-                                <form action="{{ route('notification.put') }}" id="readNotificationForm" method="post">
+                                <form action="{{ route('notification.put') }}" id="readNotificationForm{{ $item['id'] }}"
+                                    method="post">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="notification_id" value="{{ $item['id'] }}">
@@ -70,48 +71,45 @@
                                         </div>
                                     </div>
                                 </form>
-                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                                <script>
-                                    $(document).ready(function() {
-                                        $('.btn-close').on('click', function() {
-                                            location.reload();
-                                        });
-
-                                        $('#readNotification').on('click', function() {
-                                            var formData = new FormData($('#readNotificationForm')[0]);
-                                            var actionUrl = $('#readNotificationForm').attr('action');
-
-                                            $.ajax({
-                                                url: actionUrl,
-                                                type: 'POST',
-                                                data: formData,
-                                                processData: false,
-                                                contentType: false,
-                                                success: function(response) {
-                                                    // Lógica de sucesso, se necessário
-                                                },
-                                                error: function(xhr, status, error) {
-                                                    // Lógica de erro, se necessário
-                                                }
-                                            });
-                                        });
-                                    });
-                                </script>
-
-                                <div class="notification-delete">
-                                    <form action="{{ route('notification.delete') }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="hidden" name="notification_id" value="{{ $item['id'] }}">
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="flaticon-trash text-white"></i>
-                                        </button>
-                                    </form>
-                                </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
+
+                <!-- Incluir o script JavaScript fora do loop foreach -->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        $('.btn-close').on('click', function() {
+                            location.reload();
+                        });
+
+                        $('[id^=readNotification]').on('click', function(event) {
+                            event.preventDefault();
+
+                            var notificationId = $(this).attr('id').replace('readNotification', '');
+                            var actionUrl = $('#readNotificationForm' + notificationId).attr('action');
+                            var formData = new FormData($('#readNotificationForm' + notificationId)[0]);
+
+                            $.ajax({
+                                url: actionUrl,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function(response) {
+                                    console.log('Notificação marcada como lida');
+                                    $('#notificationModal' + notificationId).modal(
+                                        'hide');
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Erro ao marcar notificação como lida');
+                                }
+                            });
+                        });
+                    });
+                </script>
+
             </div>
         </div>
     </div>

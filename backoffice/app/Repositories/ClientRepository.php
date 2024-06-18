@@ -52,6 +52,16 @@ class ClientRepository implements ClientInterface
         return $this->model->find($id);
     }
 
+    public function findByEmail(string $email): ?ClientModel
+    {
+        return $this->model->where('email', $email)->first();
+    }
+
+    public function findByCode(string $code): ?ClientModel
+    {
+        return $this->model->where('uuid', $code)->first();
+    }
+
     /**
      * Create a new client.
      *

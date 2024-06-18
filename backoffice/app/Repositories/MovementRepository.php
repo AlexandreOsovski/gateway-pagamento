@@ -6,6 +6,7 @@ use App\Models\MovementModel;
 use App\Repositories\Interfaces\MovementsInterface;
 use Illuminate\Database\Eloquent\Model;
 
+
 class MovementRepository implements MovementsInterface
 {
     protected $model;
@@ -19,22 +20,55 @@ class MovementRepository implements MovementsInterface
         return $this->model->create($movement->toArray());
     }
 
-    public function getAll(int $userId): array
+    // public function getAllMovements(): array
+    // {
+    // }
+
+
+    public function getAmountSent(int $userId): ?array
     {
-        return $this->model
+        $result = $this->model
             ->where('client_id', $userId)
-            ->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+            ->where('type', '=', 'EXIT')
+            ->whereIn('type_movement', ['TRANSFER', 'DEPOSIT'])
+            ->latest('created_at')
+            ->first();
+
+        return $result ? $result->toArray() : [null];
     }
 
-    public function getLastFourMovements(int $userId): array
+    public function getLastValueReceived(int $userId): ?array
     {
-        return $this->model
+        $result = $this->model
             ->where('client_id', $userId)
-            ->latest()
+            ->where('type', '=', 'ENTRY')
+            ->latest('created_at')
+            ->first();
+
+        return $result ? $result->toArray() : [null];
+    }
+
+    public function getLastFourMovements(int $userId): ?array
+    {
+        $results = $this->model
+            ->where('client_id', $userId)
+            ->latest('created_at')
             ->take(4)
-            ->get()
-            ->toArray();
+            ->get();
+
+        return $results ? $results->toArray() : [null];
+    }
+    public function getLastDays(int $userId, int $days): array
+    {
+        $endDate = now();
+        $startDate = now()->subDays($days);
+
+        $results = $this->model
+            ->where('client_id', $userId)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->latest('created_at')
+            ->get();
+
+        return $results ? $results->toArray() : [null];
     }
 }

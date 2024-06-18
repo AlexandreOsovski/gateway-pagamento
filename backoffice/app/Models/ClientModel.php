@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use Illuminate\Support\Str;
+
 class ClientModel extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -48,4 +50,11 @@ class ClientModel extends Authenticatable
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($client) {
+            $client->uuid = Str::uuid();
+        });
+    }
 }

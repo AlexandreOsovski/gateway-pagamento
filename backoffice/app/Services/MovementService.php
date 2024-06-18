@@ -15,27 +15,53 @@ class MovementService
         $this->repository = $clientRepository;
     }
 
-    public function create(array $data): bool
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $userId
+     * @param string $type ('ENTRY' OR 'EXIT)
+     * @param string $type_movement ('DEPOSIT', 'WITHDRAWAL', 'TRANSFER')
+     * @param float $amount
+     * @param string $description
+     * @return boolean
+     */
+    public function create(int $userId, string $type, string $type_movement, float $amount, string $description): string
     {
         $movement = $this->repository->create(new MovementModel([
-            "client_id" => Auth::guard('client')->user()->id,
-            'type' => $data['type'],
-            'type_movement' => $data['type_movement'],
-            'amount' => $data['amount'],
-            'description' => $data['description'],
+            "client_id" => $userId,
+            'type' => $type,
+            'type_movement' => $type_movement,
+            'amount' => $amount,
+            'description' => $description,
         ]));
 
-        return $movement ? true : false;
+        return $movement->uuid;
     }
 
-    public function getAll(int $userId): array
+    // public function getAllMovements(): array
+    // {
+    //     return $this->repository->getAllMovements();
+    // }
+
+    public function getAmountSent(int $userId): array
     {
-        return $this->repository->getAll($userId);
+        return $this->repository->getAmountSent($userId);
+    }
+
+    public function getLastValueReceived(int $userId): array
+    {
+        return $this->repository->getLastValueReceived($userId);
     }
 
     public function getLastFourMovements(int $userId): array
     {
         $movement = $this->repository->getLastFourMovements($userId);
         return $movement;
+    }
+
+    public function getLastDays(int $userId, int $days): array
+    {
+        return $this->repository->getLastDays($userId, $days);
     }
 }

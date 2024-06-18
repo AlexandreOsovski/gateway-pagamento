@@ -140,7 +140,11 @@
                             </div>
                             <div class="feature-card-details">
                                 <p>Ultimo Valor Recebido</p>
-                                <h3>R$ 20,00</h3>
+                                @if ($last_value_received == [null])
+                                    <h3>R$ 0,00</h3>
+                                @else
+                                    <h3>R$ {{ number_format($last_value_received['amount'], 2, ',', '.') }}</h3>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -152,7 +156,11 @@
                             </div>
                             <div class="feature-card-details">
                                 <p>Ultimo valor enviado</p>
-                                <h3>R$ 0,00</h3>
+                                @if ($last_amount_sent == [null])
+                                    <h3>R$ 0,00</h3>
+                                @else
+                                    <h3>R$ {{ number_format($last_amount_sent['amount'], 2, ',', '.') }}</h3>
+                                @endif
                             </div>
                         </div>
                     </div>

@@ -19,6 +19,7 @@ class ClientService
         $this->repository = $clientRepository;
     }
 
+
     public function create(array $data): bool
     {
         $client = $this->repository->create(new ClientModel([
@@ -36,6 +37,16 @@ class ClientService
     public function find(string $id): ?ClientModel
     {
         return $this->repository->find($id);
+    }
+
+    public function findByEmail(string $email): ?ClientModel
+    {
+        return $this->repository->findByEmail($email);
+    }
+
+    public function findByCode(string $code): ?ClientModel
+    {
+        return $this->repository->findByCode($code);
     }
 
     public function update(array $client, int $userId): bool
@@ -66,6 +77,11 @@ class ClientService
         $clientUpdated = $this->repository->update($clientDataUpdate, $userId);
 
         return $clientUpdated ? true : false;
+    }
+
+    public function updateBalance(float $balance, int $userId): bool
+    {
+        return $this->repository->find($userId)->update(['balance' => $balance]);
     }
 
     public function saveAvatar($client, $user_avatar)
