@@ -41,7 +41,7 @@ class DashboardController extends Controller
                 "transactions" =>  $this->movementService->getLastDays($client_id, 4),
                 "last_value_received" => $this->movementService->getLastValueReceived($client_id),
                 "last_amount_sent" => $this->movementService->getAmountSent($client_id),
-
+                "see_transaction_key" => str_replace('base64:', '', env('APP_KEY'))
             ]
         );
     }

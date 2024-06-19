@@ -149,9 +149,10 @@
                 <div class="section-header">
                     <h2>7 dias</h2>
                 </div>
+
                 @foreach ($last_seven_days as $item)
                     <div class="transaction-card mb-15">
-                        <a href="{{ route('transaction.get', ['mLlOvf0wF8OnMe55BG46672efd85b8a7' => $item['uuid']]) }}">
+                        <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']]) }}">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
                                     <img src="assets/images/horiizom/userbase.svg" alt="user">
