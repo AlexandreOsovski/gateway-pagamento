@@ -5,6 +5,7 @@
             <div class="modal-header sidebar-modal-header">
                 <div class="sidebar-profile-info">
                     <div class="sidebar-profile-thumb">
+
                         @php
 
                             if (empty(Auth::guard('client')->user()->avatar)) {
@@ -13,11 +14,14 @@
                                 $avatar = Auth::guard('client')->user()->avatar;
                             }
                         @endphp
+
                         <img src="{{ $avatar }}" alt="profile">
                     </div>
                     <div class="sidebar-profile-text">
                         <h3>{{ Auth::guard('client')->user()->name }}</h3>
-                        <p>{{ Auth::guard('client')->user()->uuid }}</p>
+                        <p class="text-dark text-bold" style="font-size: 0.9em;">Codigo de usuario:
+                        </p>
+                        <p> {{ Auth::guard('client')->user()->uuid }}</p>
                     </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

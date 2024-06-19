@@ -38,11 +38,10 @@ class DashboardController extends Controller
             "dashboard/home",
             [
                 "keysApi" => $this->keysApiService->getLastFourKeysApi($client_id),
-                "transactions" =>  $transactions,
+                "transactions" =>  $this->movementService->getLastDays($client_id, 4),
                 "last_value_received" => $this->movementService->getLastValueReceived($client_id),
                 "last_amount_sent" => $this->movementService->getAmountSent($client_id),
-                "last_one_days" => $this->movementService->getLastDays($client_id, 7),
-                "last_seven_days" => $this->movementService->getLastDays($client_id, 7),
+
             ]
         );
     }

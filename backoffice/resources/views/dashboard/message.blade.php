@@ -35,7 +35,7 @@
     <div class="preloader">
         <div class="preloader-wrapper">
             <div class="preloader-content">
-                <img src="assets/images/preloader-logo.png" alt="logo">
+                <img src="assets/images/horiizom/logo.svg" alt="logo">
                 <h3>Online Banking</h3>
             </div>
         </div>

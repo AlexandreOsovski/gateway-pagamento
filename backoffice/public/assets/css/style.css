@@ -94,7 +94,7 @@ p {
 }
 
 a {
-    color #5930bc;
+    color: #5930bc;
     text-decoration: none;
     transition: all 0.3s linear;
 }
@@ -692,7 +692,7 @@ select.form-control:valid {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center bottom;
-    background-image: url(../images/header-bg.jpg);
+    background-image: url(../images/horiizom/imgbg.png);
 }
 
 .preloader:before {
@@ -702,7 +702,7 @@ select.form-control:valid {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(54, 70, 205, 0.9);
+    background-color: rgba(125, 78, 255, 0.9);
 }
 
 .preloader .preloader-wrapper {
@@ -897,6 +897,7 @@ select.form-control:valid {
     transition: all 0.3s linear;
 }
 
+
 .appbar-brand a .hover-logo {
     position: absolute;
     left: 0;
@@ -916,7 +917,7 @@ select.form-control:valid {
 
 .appbar-option-item a {
     color: #fff;
-    font-size: 16px;
+    font-size: 25px;
 }
 
 .appbar-option-item:last-child {
@@ -943,7 +944,7 @@ select.form-control:valid {
 
 .appbar-option-profile img {
     width: 100%;
-    height: 100%;
+    height: 170%;
 }
 
 .option-badge {
@@ -1851,7 +1852,7 @@ footer.footer-bg p a {
 }
 
 .navbar-content-item a.active i {
-    color: #3646cd;
+    color: #7d4eff;
 }
 
 @keyframes fullScale {

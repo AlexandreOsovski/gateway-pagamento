@@ -107,7 +107,7 @@
                 @endif --}}
                 @foreach ($last_one_days as $item)
                     <div class="transaction-card mb-15">
-                        <a href="transaction-details.html">
+                        <a href="{{ route('transaction.get', ['mLlOvf0wF8OnMe55BG46672efd85b8a7' => $item['uuid']]) }}">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
                                     <img src="assets/images/horiizom/userbase.svg" alt="user">
@@ -151,7 +151,7 @@
                 </div>
                 @foreach ($last_seven_days as $item)
                     <div class="transaction-card mb-15">
-                        <a href="transaction-details.html">
+                        <a href="{{ route('transaction.get', ['mLlOvf0wF8OnMe55BG46672efd85b8a7' => $item['uuid']]) }}">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
                                     <img src="assets/images/horiizom/userbase.svg" alt="user">

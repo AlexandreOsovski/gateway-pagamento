@@ -10,5 +10,6 @@ interface TransactionInterface
 
     public function getAll(int $userId): array;
 
+
     public function getLastFourTransactions(int $userId): array;
 }

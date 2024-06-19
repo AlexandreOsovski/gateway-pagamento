@@ -12,5 +12,6 @@ interface MovementsInterface
 
     public function getLastFourMovements(int $userId): ?array;
 
+
     public function getLastDays(int $userId, int $days): ?array;
 }

@@ -34,12 +34,22 @@
 </head>
 
 <body>
-    @if (Request::is('finance') || Request::is('profile') || Request::is('keys-api') || Request::is('notification'))
+    @include('livewire.components.pre-loader')
+
+    @if (Request::is('finance') ||
+            Request::is('profile') ||
+            Request::is('keys-api') ||
+            Request::is('notification') ||
+            Request::is('transaction-detail'))
         @include('livewire.components.header')
     @endif
+
     @include('livewire.components.sidebar')
+
     @yield('content')
+
     @include('livewire.components.footer')
+
     @livewireScripts
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>

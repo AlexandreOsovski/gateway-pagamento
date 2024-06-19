@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     Dashboard\KeysApiController,
     Dashboard\NotificationController,
     Dashboard\TransferUserToUser,
+    Dashboard\TransactionDetail,
 };
 
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::middleware(['auth.client'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.get');
     Route::get('/keys-api', [KeysApiController::class, 'index'])->name('keysapi.get');
     Route::get('/notification', [NotificationController::class, 'index'])->name('notification.get');
+    Route::get('/transaction-detail', [TransactionDetail::class, 'index'])->name('transaction.get');
 
     #POST
     Route::post('/keys-api-post', [KeysApiController::class, 'store'])->name('keysapi.post');

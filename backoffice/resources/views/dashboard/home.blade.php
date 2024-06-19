@@ -106,8 +106,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Option-section -->
-            <!-- Feature-section -->
             <div class="feature-section mb-15">
                 <div class="row gx-3">
                     <div class="col col-sm-6 pb-15">
@@ -116,7 +114,7 @@
                                 <i class="fas fa-coins"></i>
                             </div>
                             <div class="feature-card-details">
-                                <p>Saldo em Reais</p>
+                                <p>Saldo BRL</p>
                                 <h3>R$ {{ number_format(Auth::guard('client')->user()->balance, 2, ',', '.') }}</h3>
                             </div>
                         </div>
@@ -127,7 +125,7 @@
                                 <i class="fas fa-dollar-sign"></i>
                             </div>
                             <div class="feature-card-details">
-                                <p>Saldo em USDT</p>
+                                <p>Saldo USDT</p>
                                 <h3>$ {{ number_format(Auth::guard('client')->user()->balance_usdt, 2, ',', '.') }}</h3>
                             </div>
                         </div>
@@ -181,19 +179,37 @@
                 @endif
                 @foreach ($transactions as $item)
                     <div class="transaction-card mb-15">
-                        <a href="transaction-details.html">
+                        <a href="{{ route('transaction.get', ['mLlOvf0wF8OnMe55BG46672efd85b8a7' => $item['uuid']]) }}">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
                                     <img src="assets/images/horiizom/userbase.svg" alt="user">
                                 </div>
                                 <div class="transaction-info-text">
-                                    <h3>Usuario Master</h3>
-                                    <p>Transferência</p>
+                                    @switch($item['type_movement'])
+                                        @case('TRANSFER')
+                                            <h3>TRANSFERÊNCIA</h3>
+                                        @break
+
+                                        @case('DEPOSIT')
+                                            <h3>DEPÓSITO</h3>
+                                        @break
+
+                                        @case('WITHDRAWAL')
+                                            <h3>SAQUE</h3>
+                                        @break
+                                    @endswitch
+                                    <p>{!! $item['description'] !!}</p>
                                 </div>
                             </div>
-                            <div class="transaction-card-det negative-number">
-                                - R$185.00
-                            </div>
+                            @if ($item['type'] == 'ENTRY')
+                                <div class="transaction-card-det receive-money">
+                                    + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                </div>
+                            @else
+                                <div class="transaction-card-det text-danger">
+                                    - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                </div>
+                            @endif
                         </a>
                     </div>
                 @endforeach

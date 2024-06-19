@@ -12,5 +12,7 @@ interface TransferUserToUserInterface
 
     public function getAll(int $userId): array;
 
+    public function getTransfer(string $uuid): array;
+
     public function getLastFourTransactions(int $userId): array;
 }

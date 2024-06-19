@@ -36,6 +36,11 @@ class TransferUserToUserService
         return $this->repository->getAll($userId);
     }
 
+    public function getTransfer(string $uuid): array
+    {
+        return $this->repository->getTransfer($uuid);
+    }
+
     public function getLastFourTransactions(int $userId): array
     {
         return $this->repository->getLastFourTransactions($userId);

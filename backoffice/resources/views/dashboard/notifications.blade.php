@@ -71,6 +71,17 @@
                                         </div>
                                     </div>
                                 </form>
+                                <div class="notification-delete">
+                                    <form action="{{ route('notification.delete') }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="notification_id" value="{{ $item['id'] }}">
+                                        <button class="btn btn-danger">
+                                            <i class="flaticon-trash text-white"></i>
+                                        </button>
+                                    </form>
+
+                                </div>
                             </div>
                         </div>
                     </div>

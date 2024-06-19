@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id');
             $table->string('type');
             $table->string('type_movement')->nullable();
-            $table->string('amount');
+            $table->float('amount');
             $table->string('description');
             $table->timestamps();
 

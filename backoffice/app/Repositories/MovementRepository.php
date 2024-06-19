@@ -20,10 +20,6 @@ class MovementRepository implements MovementsInterface
         return $this->model->create($movement->toArray());
     }
 
-    // public function getAllMovements(): array
-    // {
-    // }
-
 
     public function getAmountSent(int $userId): ?array
     {
