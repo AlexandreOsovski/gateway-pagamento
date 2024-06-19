@@ -6,7 +6,6 @@
         </video>
     </div>
 
-    <!-- Appbar -->
     <div class="fixed-top">
         <div class="appbar-area sticky-black">
             <div class="container">
