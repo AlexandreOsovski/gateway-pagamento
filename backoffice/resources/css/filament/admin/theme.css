@@ -1,0 +1,159 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/* AUTH */
+
+.fi-logo {
+    @apply !h-20 py-2 mt-5;
+}
+
+.fi-simple-header .fi-logo {
+    @apply !h-20;
+}
+
+.fi-topbar nav {
+    @apply bg-transparent shadow-none
+}
+
+/* SIDEBAR */
+.fi-sidebar.fi-sidebar-open {
+    @apply lg:w-1/5 2xl:w-1/5 shadow-none;
+}
+
+.fi-sidebar-nav {
+    @apply shadow-none
+}
+
+.fi-sidebar-nav-groups {
+    @apply gap-y-4
+}
+
+.fi-sidebar-header {
+    @apply py-2 !ring-0 bg-transparent !shadow-none;
+}
+
+.fi-sidebar-group>.fi-sidebar-group-items {
+    @apply gap-y-2;
+}
+
+.fi-topbar nav {
+    @apply !ring-0 py-2 !border-none shadow-none;
+}
+
+/* SIDEBAR ITEM */
+.fi-sidebar-item a {
+    @apply px-4 py-2 rounded-xl text-gray-500;
+}
+
+.fi-sidebar-item a>span,
+.fi-sidebar-item a>svg {
+    @apply font-semibold dark:font-bold;
+    /* Mantém a fonte em negrito */
+}
+
+.fi-sidebar-item a:focus,
+.fi-sidebar-item a:hover,
+.fi-sidebar-item-active a {
+    @apply bg-custom-teal text-white shadow-lg transition-all ease-in-out duration-100;
+}
+
+.fi-sidebar-item a:hover svg,
+.fi-sidebar-item a:focus span,
+.fi-sidebar-item a:hover span,
+.fi-sidebar-item-active svg,
+.fi-sidebar-item-active span {
+    @apply text-white transition-all ease-in-out duration-100;
+}
+
+.fi-sidebar.fi-sidebar-open .fi-sidebar-item a:hover svg,
+.fi-sidebar.fi-sidebar-open .fi-sidebar-item a:focus svg,
+.fi-sidebar.fi-sidebar-open .fi-sidebar-item-active svg {
+    @apply !ml-1;
+}
+
+/* Content */
+.fi-main {
+    @apply lg:pl-12 !important;
+}
+
+.fi-ta-ctn {
+    @apply shadow-lg;
+}
+
+.fi-header-heading {
+    @apply !text-2xl text-primary-600 dark:text-primary-400;
+}
+
+.fi-header-subheading {
+    @apply !text-sm;
+}
+
+/* Filament Actions */
+.fi-dropdown-trigger button.fi-btn {
+    @apply !p-1;
+}
+
+.fi-wi-stats-overview-stat {
+    @apply shadow-lg
+}
+
+.fi-fo-tabs {
+    @apply shadow-lg
+}
+
+.fi-section {
+    @apply shadow-lg
+}
+
+.fi-tabs button {
+    @apply rounded-lg px-3 py-2 text-sm font-medium outline-none transition duration-75;
+}
+
+.fi-tabs button span {
+    @apply transition duration-75;
+}
+
+.fi-tabs button:not(.fi-active) {
+    @apply bg-white text-gray-500;
+}
+
+.fi-tabs button.fi-active {
+    @apply bg-custom-teal text-white;
+}
+
+.fi-tabs button.fi-active span {
+    @apply text-white;
+}
+
+.fi-input-wrp {
+    @apply shadow-lg
+}
+
+.fi-btn {
+    @apply shadow-lg
+}
+
+.fi-simple-main {
+    @apply bg-gray-50
+}
+
+.fi-simple-main span {
+    @apply text-black
+}
+
+.fi-simple-main .fi-input {
+    @apply bg-gray-50
+}
+
+.fi-simple-main .fi-btn-label {
+    @apply text-white
+}
+
+/* .fi-simple-main .fi-icon-btn {
+    @apply bg-gray-50
+} */
+
+/* .fil-simple-main .fi-input-wrp {
+    @apply bg-gray-50
+} */

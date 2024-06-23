@@ -11,6 +11,8 @@ class AdminModel extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *

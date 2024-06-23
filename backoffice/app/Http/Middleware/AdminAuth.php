@@ -17,7 +17,7 @@ class AdminAuth
             return $next($request);
         }
 
-        return redirect('/admin/login');
+        return redirect('admin-' . str_replace('base64:', '', env('APP_KEY')) . '/login');
 
     }
 }
