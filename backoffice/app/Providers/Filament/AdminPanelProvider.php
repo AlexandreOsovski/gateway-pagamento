@@ -10,7 +10,8 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
+//use Filament\Widgets;
+use App\Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -23,6 +24,7 @@ use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Swis\Filament\Backgrounds\ImageProviders\MyImages;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use App\Filament\Pages\Auth\Login;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -49,9 +51,10 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('/assets/images/horiizom/logo-hover.svg'))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                 Widgets\AccountWidget::class,
-                 Widgets\FilamentInfoWidget::class,
+                Widgets\MoneyTotalInPlatForm::class,
+                Widgets\QuantityIternalTransfer::class,
             ])->plugins([
+
                 FilamentBackgroundsPlugin::make()
                     ->imageProvider(
                         MyImages::make()

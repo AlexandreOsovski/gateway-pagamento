@@ -17,6 +17,16 @@ class TransferUserToUserModel extends Model
         'movement_exit_id'
     ];
 
+    public function movementEntry()
+    {
+        return $this->belongsTo(MovementModel::class, 'movement_entry_id');
+    }
+
+    public function movementExit()
+    {
+        return $this->belongsTo(MovementModel::class, 'movement_exit_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(ClientModel::class);

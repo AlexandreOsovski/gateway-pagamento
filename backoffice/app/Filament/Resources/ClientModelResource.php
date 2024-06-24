@@ -34,7 +34,7 @@ class ClientModelResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->searchable()->label('ID'),
+                TextColumn::make('id')->searchable()->label('ID')->sortable(),
                 TextColumn::make('name')->searchable()->label('Nome'),
                 TextColumn::make('email')->searchable()->label('E-mail'),
                 TextColumn::make('document_number')->searchable()->label('Documento'),

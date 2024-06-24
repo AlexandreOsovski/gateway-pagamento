@@ -38,12 +38,12 @@ class KeysApiModelResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->searchable()->label('ID'),
+                TextColumn::make('id')->searchable()->label('ID')->sortable(),
                 TextColumn::make('title')->searchable()->label('Nome'),
                 textColumn::make('client.name')->searchable()->label('Cliente'),
-                textColumn::make('appId')->searchable()->label('App ID'),
-                textColumn::make('appKey')->searchable()->label('App Key'),
-                textColumn::make('created_at')->searchable()->label('Criado'),
+                textColumn::make('appId')->searchable()->badge()->copyable()->copyMessage('Copiado para a área de transferência.')->label('App ID'),
+                textColumn::make('appKey')->searchable()->badge()->copyable()->copyMessage('Copiado para a área de transferência.')->label('App Key'),
+                textColumn::make('created_at')->searchable()->label('Criado')->dateTime(),
             ])
             ->filters([
                 //

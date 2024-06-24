@@ -44,7 +44,7 @@ class NotificationModelResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->searchable()->label('ID'),
+                TextColumn::make('id')->searchable()->label('ID')->sortable(),
                 TextColumn::make('client.name')->searchable()->label('Cliente'),
                 TextColumn::make('title')->searchable()->label('Titulo'),
                 SelectColumn::make('status')

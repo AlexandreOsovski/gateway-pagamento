@@ -23,7 +23,7 @@ class MovementModel extends Model
 
     public function client()
     {
-        return $this->belongsTo(ClientModel::class);
+        return $this->belongsTo(ClientModel::class, 'client_id');
     }
 
     protected static function booted()

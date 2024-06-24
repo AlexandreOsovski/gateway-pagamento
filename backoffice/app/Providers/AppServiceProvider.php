@@ -4,22 +4,20 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use App\Models\{
-    ClientModel,
+use App\Models\{ClientModel,
     KeysApiModel,
     MovementModel,
     NotificationModel,
+    SupportModel,
     TransactionModel,
-    TransferUserToUserModel,
-};
-use App\Repositories\{
-    ClientRepository,
+    TransferUserToUserModel};
+use App\Repositories\{ClientRepository,
     KeysApiRepository,
     MovementRepository,
+    SupportRepository,
     TransactionRepository,
     NotificationRepository,
-    TransferUserToUserRepository,
-};
+    TransferUserToUserRepository};
 
 
 class AppServiceProvider extends ServiceProvider
@@ -52,6 +50,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\TransferUserToUserRepository', function () {
             return new TransferUserToUserRepository(new TransferUserToUserModel());
         });
+
+         $this->app->bind('App\Repositories\SupportRepository', function () {
+             return new SupportRepository(new SupportModel());
+         });
 
         // $this->app->bind('App\Repositories\', function () {
         //     return new Repository(new Model());

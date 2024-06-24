@@ -6,9 +6,11 @@ use App\Filament\Resources\TransferUserToUserModelResource\Pages;
 use App\Filament\Resources\TransferUserToUserModelResource\RelationManagers;
 use App\Models\TransferUserToUserModel;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -25,7 +27,8 @@ class TransferUserToUserModelResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('movement_entry_id')->label('UUID de Entrada'),
+                TextInput::make('movement_exit_id')->label('UUID de Saida'),
             ]);
     }
 
@@ -33,13 +36,17 @@ class TransferUserToUserModelResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id')->label('ID')->searchable()->sortable(),
+                TextColumn::make('movement_entry_id')->searchable()->copyable()->copyMessage('Copiado para a área de transferência.')->color('success')->badge()->label('UUID de Entrada'),
+                TextColumn::make('movement_exit_id')->searchable()->copyable()->copyMessage('Copiado para a área de transferência.')->color('danger')->badge()->label('UUID de Saida'),
+                TextColumn::make('amount')->label('Valor Transacionado')->prefix('R$')->numeric(decimalPlaces: 2),
+                TextColumn::make('created_at')->searchable()->label('Criado')->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -59,8 +66,8 @@ class TransferUserToUserModelResource extends Resource
     {
         return [
             'index' => Pages\ListTransferUserToUserModels::route('/'),
-            'create' => Pages\CreateTransferUserToUserModel::route('/create'),
-            'edit' => Pages\EditTransferUserToUserModel::route('/{record}/edit'),
+//            'create' => Pages\CreateTransferUserToUserModel::route('/create'),
+//            'edit' => Pages\EditTransferUserToUserModel::route('/{record}/edit'),
         ];
     }
 }

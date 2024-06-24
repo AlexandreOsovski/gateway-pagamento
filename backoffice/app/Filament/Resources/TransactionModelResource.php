@@ -59,8 +59,8 @@ class TransactionModelResource extends Resource
     {
         return [
             'index' => Pages\ListTransactionModels::route('/'),
-            'create' => Pages\CreateTransactionModel::route('/create'),
-            'edit' => Pages\EditTransactionModel::route('/{record}/edit'),
+//            'create' => Pages\CreateTransactionModel::route('/create'),
+//            'edit' => Pages\EditTransactionModel::route('/{record}/edit'),
         ];
     }
 }

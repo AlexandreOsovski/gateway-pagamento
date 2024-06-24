@@ -40,7 +40,10 @@
             Request::is('profile') ||
             Request::is('keys-api') ||
             Request::is('notification') ||
-            Request::is('transaction-detail'))
+            Request::is('transaction-detail') ||
+            Request::is('support'))
+            )
+
         @include('livewire.components.header')
     @endif
 
