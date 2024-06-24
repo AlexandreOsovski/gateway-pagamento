@@ -10,10 +10,12 @@ class ListClientModels extends ListRecords
 {
     protected static string $resource = ClientModelResource::class;
 
+    protected static ?string $label = 'Novo Cliente';
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Cadastrar'),
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MovementsModelResource\Pages;
 use App\Filament\Resources\MovementsModelResource\RelationManagers;
-use App\Models\MovementsModel;
+use App\Models\MovementModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MovementsModelResource extends Resource
 {
-    protected static ?string $model = MovementsModel::class;
+    protected static ?string $model = MovementModel::class;
     protected static ?string $label = 'Movementos';
+    protected static ?string $slug = 'movements';
     protected static ?string $navigationIcon = 'fas-money-bill-transfer';
     protected static ?string $navigationGroup = 'Financeiro';
 

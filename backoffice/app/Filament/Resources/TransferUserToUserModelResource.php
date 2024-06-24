@@ -17,6 +17,7 @@ class TransferUserToUserModelResource extends Resource
 {
     protected static ?string $model = TransferUserToUserModel::class;
     protected static ?string $label = 'Transferências internas';
+    protected static ?string $slug = 'transfer-user-to-user';
     protected static ?string $navigationIcon = 'uni-user-arrows';
     protected static ?string $navigationGroup = 'Financeiro';
 

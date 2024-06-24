@@ -17,6 +17,7 @@ class TransactionModelResource extends Resource
 {
     protected static ?string $model = TransactionModel::class;
     protected static ?string $label = 'Transações';
+    protected static ?string $slug = 'transactions';
     protected static ?string $navigationIcon = 'tabler-transaction-dollar';
     protected static ?string $navigationGroup = 'Financeiro';
 

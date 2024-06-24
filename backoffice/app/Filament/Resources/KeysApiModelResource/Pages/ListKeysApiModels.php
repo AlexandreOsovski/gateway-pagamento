@@ -10,10 +10,10 @@ class ListKeysApiModels extends ListRecords
 {
     protected static string $resource = KeysApiModelResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+//    protected function getHeaderActions(): array
+//    {
+//        return [
+//            Actions\CreateAction::make(),
+//        ];
+//    }
 }

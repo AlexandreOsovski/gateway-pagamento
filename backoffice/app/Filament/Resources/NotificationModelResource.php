@@ -4,26 +4,39 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NotificationModelResource\Pages;
 use App\Filament\Resources\NotificationModelResource\RelationManagers;
+use App\Models\ClientModel;
 use App\Models\NotificationModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+use Filament\Tables\Columns\SelectColumn;
+use function Laravel\Prompts\select;
 
 class NotificationModelResource extends Resource
 {
     protected static ?string $model = NotificationModel::class;
     protected static ?string $label = 'Notificações';
+    protected static ?string $slug = 'notifications';
     protected static ?string $navigationIcon = 'fas-bell';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+
+                Forms\Components\Select::make('client_id')
+                    ->options(ClientModel::all()->pluck('name', 'id'))
+                    ->label('Cliente (apenas se for notificação destinada a um cliente específico)'),
+
+                Forms\Components\TextInput::make('title')->label('Titulo')->required(),
+                Forms\Components\TextInput::make('body')->label('Mensagem')->required(),
+
             ]);
     }
 
@@ -31,13 +44,22 @@ class NotificationModelResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id')->searchable()->label('ID'),
+                TextColumn::make('client.name')->searchable()->label('Cliente'),
+                TextColumn::make('title')->searchable()->label('Titulo'),
+                SelectColumn::make('status')
+                    ->options([
+                        '1' => 'Visualizado',
+                        '0' => 'Enviado',
+                    ]),
+                TextColumn::make('created_at')->searchable()->label('Criado'),
+                TextColumn::make('updated_at')->searchable()->label('Alterado'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -57,8 +79,8 @@ class NotificationModelResource extends Resource
     {
         return [
             'index' => Pages\ListNotificationModels::route('/'),
-            'create' => Pages\CreateNotificationModel::route('/create'),
-            'edit' => Pages\EditNotificationModel::route('/{record}/edit'),
+//            'create' => Pages\CreateNotificationModel::route('/create'),
+//            'edit' => Pages\EditNotificationModel::route('/{record}/edit'),
         ];
     }
 }
