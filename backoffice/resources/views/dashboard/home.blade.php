@@ -179,38 +179,64 @@
 
                 @foreach ($transactions as $item)
                     <div class="transaction-card mb-15">
-                        <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']]) }}">
-                            <div class="transaction-card-info">
-                                <div class="transaction-info-thumb">
-                                    <img src="assets/images/horiizom/userbase.svg" alt="user">
+                        @if($item['type_movement'] == 'CONVERSION')
+                            <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']])}}">
+                                <div class="transaction-card-info">
+                                    <div class="transaction-info-thumb">
+                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
+                                    </div>
+                                    <div class="transaction-info-text">
+                                        <h3>CONVERSÃO</h3>
+                                        <p>{!! $item['description'] !!}</p>
+                                    </div>
                                 </div>
-                                <div class="transaction-info-text">
-                                    @switch($item['type_movement'])
-                                        @case('TRANSFER')
-                                            <h3>TRANSFERÊNCIA</h3>
-                                        @break
+                                @if ($item['type'] == 'ENTRY')
+                                    <div class="transaction-card-det receive-money">
+                                        + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @else
+                                    <div class="transaction-card-det text-danger">
+                                        - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @endif
+                            </a>
+                        @else
+                            <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']])}}">
+                                <div class="transaction-card-info">
+                                    <div class="transaction-info-thumb">
+                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
+                                    </div>
+                                    <div class="transaction-info-text">
+                                        @switch($item['type_movement'])
+                                            @case('TRANSFER')
+                                                <h3>TRANSFERÊNCIA</h3>
+                                                @break
 
-                                        @case('DEPOSIT')
-                                            <h3>DEPÓSITO</h3>
-                                        @break
+                                            @case('DEPOSIT')
+                                                <h3>DEPÓSITO</h3>
+                                                @break
 
-                                        @case('WITHDRAWAL')
-                                            <h3>SAQUE</h3>
-                                        @break
-                                    @endswitch
-                                    <p>{!! $item['description'] !!}</p>
+                                            @case('WITHDRAWAL')
+                                                <h3>SAQUE</h3>
+                                                @break
+                                            @case('CONVERSION')
+                                                <h3>CONVERSÃO</h3>
+                                                @break
+                                        @endswitch
+                                        <p>{!! $item['description'] !!}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            @if ($item['type'] == 'ENTRY')
-                                <div class="transaction-card-det receive-money">
-                                    + R$ {{ number_format($item['amount'], '2', ',', '.') }}
-                                </div>
-                            @else
-                                <div class="transaction-card-det text-danger">
-                                    - R$ {{ number_format($item['amount'], '2', ',', '.') }}
-                                </div>
-                            @endif
-                        </a>
+                                @if ($item['type'] == 'ENTRY')
+                                    <div class="transaction-card-det receive-money">
+                                        + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @else
+                                    <div class="transaction-card-det text-danger">
+                                        - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @endif
+                            </a>
+                        @endif
                     </div>
                 @endforeach
             </div>

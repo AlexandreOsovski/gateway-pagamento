@@ -26,7 +26,6 @@ class FogotPasswordControlller extends Controller
 
     public function index(Request $request)
     {
-//        dd('aquiii', $request->query('token'));
         if($request->query('token')){
             return view('authentication.recoveryPassword', ['eyJzdWIiOiIxM' => $request->query('token')]);
         }else{

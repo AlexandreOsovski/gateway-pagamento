@@ -60,15 +60,15 @@ class Exchange extends Component
 
         MovementModel::create([
             'client_id' => $user->id,
-            'type' => 'CONVERSION',
-            'type_movement' => 'TRANSFER',
+            'type' => 'ENTRY',
+            'type_movement' => 'CONVERSION',
             'amount' => $this->valueUSD,
             'description' => 'Conversão de BRL para USDT'
         ]);
 
         NotificationModel::create([
             'client_id' => $user->id,
-            'title' => "USDT",
+            'title' => "CONVERSÃO CRIPTO",
             'body' => 'Conversão de BRL para USDT realizada com sucesso',
             'icon' => 'fa-solid fa-hand-holding-dollar'
         ]);
