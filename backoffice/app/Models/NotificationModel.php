@@ -35,9 +35,7 @@ class NotificationModel extends Model
                 }
                 return false;
             } else {
-                if ($notification->icon == ''){
-                    $notification->icon = 'fa-solid fa-user-tie';
-                }
+                $notification->icon = 'fa-solid fa-user-tie';
             }
         });
     }

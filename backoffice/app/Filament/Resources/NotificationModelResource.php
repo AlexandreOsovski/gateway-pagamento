@@ -7,6 +7,7 @@ use App\Filament\Resources\NotificationModelResource\RelationManagers;
 use App\Models\ClientModel;
 use App\Models\NotificationModel;
 use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,7 +36,23 @@ class NotificationModelResource extends Resource
                     ->label('Cliente (apenas se for notificação destinada a um cliente específico)'),
 
                 Forms\Components\TextInput::make('title')->label('Titulo')->required(),
-                Forms\Components\TextInput::make('body')->label('Mensagem')->required(),
+                RichEditor::make('body')
+                    ->toolbarButtons([
+                        'attachFiles',
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'codeBlock',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'underline',
+                        'undo',
+                    ])->label('Mensagem')->required(),
 
             ]);
     }
@@ -59,7 +76,7 @@ class NotificationModelResource extends Resource
                 //
             ])
             ->actions([
-//                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->label('Ver'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
