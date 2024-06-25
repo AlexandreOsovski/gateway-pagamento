@@ -4,6 +4,9 @@ namespace App\Livewire\Components\Modals;
 
 use App\Http\Controllers\Services\PolygonService;
 use App\Models\ClientModel;
+use App\Models\MovementModel;
+use App\Models\NotificationModel;
+use App\Models\TransactionModel;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -54,6 +57,21 @@ class Exchange extends Component
         $user->balance_usdt += $this->valueUSD;
         $user->balance -= $this->valueBRL;
         $user->save();
+
+        MovementModel::create([
+            'client_id' => $user->id,
+            'type' => 'CONVERSION',
+            'type_movement' => 'TRANSFER',
+            'amount' => $this->valueUSD,
+            'description' => 'Conversão de BRL para USDT'
+        ]);
+
+        NotificationModel::create([
+            'client_id' => $user->id,
+            'title' => "USDT",
+            'body' => 'Conversão de BRL para USDT realizada com sucesso',
+            'icon' => 'fa-solid fa-hand-holding-dollar'
+        ]);
 
         toastr('Operação realizada com sucesso', 'success');
         return redirect()->route('dashboard.get');

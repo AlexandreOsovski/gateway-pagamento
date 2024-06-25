@@ -17,9 +17,7 @@
                         </div>
                         <div class="form-group mb-15">
                             <label for="input10" class="form-label">Valor em USDT</label>
-
-                            <input readonly class="form-control" style="font-size: 16px;" value="{{ $valueUSD }}" wire:loading.remove wire:target="valueBRL"/>
-{{--                            <span wire:loading wire:target="valueBRL" style="display:none;">Efetuando conversão...</span>--}}
+                            <input readonly class="form-control" placeholder="Valor a receber em USDT" style="font-size: 16px;" value="{{ $valueUSD }}" wire:loading.remove wire:target="valueBRL"/>
                         </div>
                         <div class="form-group mb-15">
                             <label for="input4" class="form-label">Codigo 2FA</label>
@@ -27,15 +25,11 @@
                                 placeholder="Digite o codigo enviado ao seu email.">
                         </div>
 
-                        <button type="button" class="btn btn-send main-btn main-btn-lg full-width" id="botaoComprar" wire:loading.remove
-                                wire:target="valueBRL" wire:click="convertBalance">
-                    <span id="spinner" class="spinner-border spinner-border-sm me-2" wire:loading
-                          wire:target="convertBalance"></span>
-                            <span class="button-text" id="btn-comprar" wire:loading.remove="opacity-50"
-                                  wire:target="convertBalance">Converter</span>
+                        <button type="button" class="btn btn-send main-btn main-btn-lg full-width" id="botaoComprar" wire:loading.remove wire:target="valueBRL" wire:click="convertBalance">
+                            <span id="spinner" class="spinner-border spinner-border-sm me-2" wire:loading wire:target="convertBalance"></span>
+                            <span class="button-text" id="btn-comprar" wire:loading.remove="opacity-50" wire:target="convertBalance">Converter</span>
                         </button>
-                        <button type="button" class="btn btn-send main-btn main-btn-lg full-width" style="display:none;"
-                                id="botaoCarregando" wire:loading wire:target="valueBRL">
+                        <button type="button" class="btn btn-send main-btn main-btn-lg full-width" style="display:none;" id="botaoCarregando" wire:loading wire:target="valueBRL">
                             <span id="spinner" class="spinner-border spinner-border-sm me-2" wire:loading></span>
                             Carregando...
                         </button>

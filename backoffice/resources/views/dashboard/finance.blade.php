@@ -67,47 +67,11 @@
                     <h2>Hoje</h2>
                 </div>
 
-                {{-- @if ($last_value_received != [null])
-                    @foreach ($last_value_received as $itemReceived)
-                        <div class="transaction-card mb-15">
-                            <a href="transaction-details.html">
-                                <div class="transaction-card-info">
-                                    <div class="transaction-info-thumb">
-                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
-                                    </div>
-                                    <div class="transaction-info-text">
-                                        @switch($itemReceived['type_movement'])
-                                            @case('TRANSFER')
-                                                <h3>TRANSFERÊNCIA</h3>
-                                            @break
-
-                                            @case('DEPOSIT')
-                                                <h3>DEPÓSITO</h3>
-                                            @break
-
-                                            @case('WITHDRAWAL')
-                                                <h3>SAQUE</h3>
-                                            @break
-                                        @endswitch
-                                        <p>{!! $itemReceived['description'] !!}</p>
-                                    </div>
-                                </div>
-                                @if ($itemReceived['type'] == 'ENTRY')
-                                    <div class="transaction-card-det receive-money">
-                                        + R$ {{ number_format($itemReceived['amount'], '2', ',', '.') }}
-                                    </div>
-                                @else
-                                    <div class="transaction-card-det text-danger">
-                                        - R$ {{ number_format($itemReceived['amount'], '2', ',', '.') }}
-                                    </div>
-                                @endif
-                            </a>
-                        </div>
-                    @endforeach
-                @endif --}}
                 @foreach ($last_one_days as $item)
+
                     <div class="transaction-card mb-15">
-                        <a href="{{ route('transaction.get', ['mLlOvf0wF8OnMe55BG46672efd85b8a7' => $item['uuid']]) }}">
+                        @if($item['type'] == 'CONVERSION')
+                            <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']])}}">
                             <div class="transaction-card-info">
                                 <div class="transaction-info-thumb">
                                     <img src="assets/images/horiizom/userbase.svg" alt="user">
@@ -116,15 +80,18 @@
                                     @switch($item['type_movement'])
                                         @case('TRANSFER')
                                             <h3>TRANSFERÊNCIA</h3>
-                                        @break
+                                            @break
 
                                         @case('DEPOSIT')
                                             <h3>DEPÓSITO</h3>
-                                        @break
+                                            @break
 
                                         @case('WITHDRAWAL')
                                             <h3>SAQUE</h3>
-                                        @break
+                                            @break
+                                        @case('CONVERSION')
+                                            <h3>CONVERSÃO</h3>
+                                            @break
                                     @endswitch
                                     <p>{!! $item['description'] !!}</p>
                                 </div>
@@ -139,6 +106,43 @@
                                 </div>
                             @endif
                         </a>
+                        @else
+                            <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']])}}">
+                                <div class="transaction-card-info">
+                                    <div class="transaction-info-thumb">
+                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
+                                    </div>
+                                    <div class="transaction-info-text">
+                                        @switch($item['type_movement'])
+                                            @case('TRANSFER')
+                                                <h3>TRANSFERÊNCIA</h3>
+                                                @break
+
+                                            @case('DEPOSIT')
+                                                <h3>DEPÓSITO</h3>
+                                                @break
+
+                                            @case('WITHDRAWAL')
+                                                <h3>SAQUE</h3>
+                                                @break
+                                            @case('CONVERSION')
+                                                <h3>CONVERSÃO</h3>
+                                                @break
+                                        @endswitch
+                                        <p>{!! $item['description'] !!}</p>
+                                    </div>
+                                </div>
+                                @if ($item['type'] == 'ENTRY')
+                                    <div class="transaction-card-det receive-money">
+                                        + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @else
+                                    <div class="transaction-card-det text-danger">
+                                        - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @endif
+                            </a>
+                        @endif
                     </div>
                 @endforeach
             </div>

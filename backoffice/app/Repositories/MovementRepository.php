@@ -20,6 +20,11 @@ class MovementRepository implements MovementsInterface
         return $this->model->create($movement->toArray());
     }
 
+    public function findByUuid(string $uuid): array
+    {
+        return $this->model->where('uuid', $uuid)->first()->toArray();
+    }
+
 
     public function getAmountSent(int $userId): ?array
     {

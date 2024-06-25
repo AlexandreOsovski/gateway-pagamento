@@ -39,6 +39,11 @@ class MovementService
         return $movement->uuid;
     }
 
+    public function findByUuid(string $uuid):array
+    {
+        return $this->repository->findByUuid($uuid);
+    }
+
     public function getAmountSent(int $userId): array
     {
         return $this->repository->getAmountSent($userId);

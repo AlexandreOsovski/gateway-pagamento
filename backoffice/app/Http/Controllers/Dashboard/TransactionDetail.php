@@ -19,7 +19,12 @@ class TransactionDetail extends Controller
 
     public function index(Request $request)
     {
-        $uuid = $request->query(str_replace('base64:8', '', env('APP_KEY')));
-        return view("dashboard.transaction-details", ['transaction_detail' => $this->transferUserToUserService->getTransfer($uuid)]);
+        $uuid = $request->query(str_replace('base64:', '', env('APP_KEY')));
+        return view("dashboard.transaction-details", [
+                'transaction_detail' => $this->transferUserToUserService->getTransfer($uuid),
+                "see_transaction_key" => str_replace('base64:', '', env('APP_KEY'))
+            ]
+
+        );
     }
 }

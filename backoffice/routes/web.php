@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     Dashboard\TransferUserToUser,
     Dashboard\TransactionDetail,
     Dashboard\SupportController,
+    Dashboard\MovementDetail,
 };
 
 #SITE
@@ -35,6 +36,7 @@ Route::middleware(['auth.client'])->group(function () {
     Route::get('/keys-api', [KeysApiController::class, 'index'])->name('keysapi.get');
     Route::get('/notification', [NotificationController::class, 'index'])->name('notification.get');
     Route::get('/transaction-detail', [TransactionDetail::class, 'index'])->name('transaction.get');
+    Route::get('/movement-detail', [MovementDetail::class, 'index'])->name('movement.get');
     Route::get('/support', [SupportController::class, 'index'])->name('support.get');
     #POST
     Route::post('/keys-api-post', [KeysApiController::class, 'store'])->name('keysapi.post');
