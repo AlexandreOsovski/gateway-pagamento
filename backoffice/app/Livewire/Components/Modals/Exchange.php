@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Livewire\Components\Modals;
+
+use App\Http\Controllers\Services\PolygonService;
+use App\Models\ClientModel;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+
+class Exchange extends Component
+{
+    public string $valueBRL;
+    public string $valueUSD;
+
+    public function __construct()
+    {
+        $this->valueBRL = '';
+        $this->valueUSD = '';
+    }
+
+    public function render()
+    {
+        return view('livewire.components.modals.exchange');
+    }
+
+    public function convertSold()
+    {
+        $polygon = new PolygonService();
+        $this->valueUSD = $polygon->fetchPrice('BRL', 'USD', $this->valueBRL);
+    }
+
+    public function maxSold()
+    {
+        $this->valueBRL = Auth::guard('client')->user()->balance;
+        $this->convertSold();
+    }
+
+    public function updated($property, $value)
+    {
+        if ($property == 'valueBRL') {
+            $this->convertSold();
+        }
+    }
+
+    public function convertBalance()
+    {
+        $user = ClientModel::find(Auth::guard('client')->user()->id);
+
+        if ($user->balance < $this->valueBRL) {
+            toastr('Saldo insuficiente', "error");
+            return;
+        }
+
+        $user->balance_usdt += $this->valueUSD;
+        $user->balance -= $this->valueBRL;
+        $user->save();
+
+        toastr('Operação realizada com sucesso', 'success');
+        return redirect()->route('dashboard.get');
+    }
+}

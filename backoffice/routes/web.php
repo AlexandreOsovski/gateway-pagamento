@@ -1,8 +1,10 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
     Authentication\LoginController,
     Authentication\RegisterController,
+    Authentication\FogotPasswordControlller,
 
     Dashboard\DashboardController,
     Dashboard\FinanceController,
@@ -14,16 +16,16 @@ use App\Http\Controllers\{
     Dashboard\SupportController,
 };
 
-use Illuminate\Support\Facades\Route;
-
-
 #SITE
 Route::get('/', [LoginController::class, 'index'])->name('login.get');
 Route::get('/register', [RegisterController::class, 'index'])->name('register.get');
+Route::get('/recovery-password', [FogotPasswordControlller::class, 'index'])->name('forgot-password.get');
 
 
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+Route::post('/send-code', [FogotPasswordControlller::class, 'sendCodeToRecoveryPassword'])->name('send-code.post');
+Route::post('/recovery-password-post', [FogotPasswordControlller::class, 'recoveryPassword'])->name('recovery-password.post');
 
 Route::middleware(['auth.client'])->group(function () {
     #GET

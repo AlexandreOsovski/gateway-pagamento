@@ -333,5 +333,7 @@
     @include('livewire.components.modals.addBalance')
     @include('livewire.components.modals.withdraws')
     @include('livewire.components.modals.sendMoney')
-    @include('livewire.components.modals.exchange')
+    <livewire:components.modals.exchange />
+
+
 @endsection
