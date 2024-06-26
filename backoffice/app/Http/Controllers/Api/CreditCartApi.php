@@ -509,13 +509,6 @@ class CreditCartApi extends Controller
         return $cardDecrypted;
     }
 
-
-    private function webhook()
-    {
-        dd("teste");
-    }
-
-
     /**
      * Gets the card brand based on the numbers provided.
      *

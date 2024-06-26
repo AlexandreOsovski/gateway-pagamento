@@ -31,6 +31,7 @@
         "pxlrbt/filament-excel": "^2.3",
         "realrashid/sweet-alert": "^7.1",
         "ryangjchandler/blade-tabler-icons": "^2.3",
+        "stechstudio/filament-impersonate": "^3.9",
         "swisnl/filament-backgrounds": "^1.1",
         "troccoli/blade-health-icons": "^3.0"
     },

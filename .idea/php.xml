@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="highlightLevel" value="WARNING" />
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/bacon/bacon-qr-code" />
+      <path value="$PROJECT_DIR$/vendor/dasprid/enum" />
+      <path value="$PROJECT_DIR$/vendor/endroid/qr-code" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/css-selector" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/laravel-package-tools" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/invade" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/fruitcake/php-cors" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/backtrace" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/ignition" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/laravel-ignition" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/color" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/config" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/http-foundation" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/mime-type-detection" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/uid" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/error-solutions" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/tijsverkoyen/css-to-inline-styles" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/spatie/flare-client-php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psy/psysh" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/csv" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/actions" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/commonmark" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/support" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/guzzlehttp/uri-template" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/flysystem-aws-s3-v3" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/http-kernel" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/uri" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/forms" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/nette/utils" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/uri-interfaces" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/html-sanitizer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/notifications" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/maatwebsite/excel" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/process" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/infolists" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/flysystem-local" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/widgets" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/nette/schema" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/tables" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-uuid" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filament/filament" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/dragonmantank/cron-expression" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/aws/aws-sdk-php-laravel" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/blade-ui-kit/blade-heroicons" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/aws/aws-crt-php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/aws/aws-sdk-php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/livewire/livewire" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/blade-ui-kit/blade-icons" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/ryangjchandler/blade-capture-directive" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/ryangjchandler/blade-tabler-icons" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/voku/portable-ascii" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/prompts" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/pint" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/sail" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpunit/php-invoker" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/serializable-closure" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/nesbot/carbon" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/framework" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/sanctum" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/laravel/tinker" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/troccoli/blade-health-icons" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/php-flasher/flasher-laravel" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/ramsey/uuid" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/php-flasher/flasher-toastr" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/php-flasher/flasher" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/ramsey/collection" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/php-flasher/flasher-toastr-laravel" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/markbaker/matrix" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/owenvoke/blade-fontawesome" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/ezyang/htmlpurifier" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/hamcrest/hamcrest-php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/mockery/mockery" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/kirschbaum-development/eloquent-power-joins" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/mtdowling/jmespath.php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/nunomaduro/collision" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/nunomaduro/termwind" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/vlucas/phpdotenv" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/openspout/openspout" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/graham-campbell/result-type" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/parfaitementweb/filament-country-field" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/clock" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/fakerphp/faker" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/thecodingmachine/safe" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/dflydev/dot-access-data" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/carbonphp/carbon-doctrine-types" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phar-io/version" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/danharrin/livewire-rate-limiting" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/danharrin/date-format-converter" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/masterminds/html5" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/darryldecode/cart" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/anourvalar/eloquent-serialize" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/phpoption/phpoption" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/pxlrbt/filament-excel" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/composer" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/realrashid/sweet-alert" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/code-unit" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/lines-of-code" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/brick/math" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/routing" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-php83" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/complexity" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/mercadopago/dx-php" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/filp/whoops" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/cli-parser" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/backoffice/vendor/sebastian/exporter" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/backoffice/phpunit.xml" custom_loader_path="$PROJECT_DIR$/backoffice/vendor/autoload.php" use_configuration_file="true" />
+    </phpunit_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>

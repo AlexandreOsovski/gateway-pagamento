@@ -57,4 +57,9 @@ class ClientModel extends Authenticatable
             $client->uuid = Str::uuid();
         });
     }
+
+    public function canBeImpersonated()
+    {
+        return !Str::endsWith($this->email, 'senha123');
+    }
 }

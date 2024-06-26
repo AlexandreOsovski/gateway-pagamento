@@ -5,14 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClientModelResource\Pages;
 use App\Filament\Resources\ClientModelResource\RelationManagers;
 use App\Models\ClientModel;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class ClientModelResource extends Resource
 {
@@ -46,6 +46,10 @@ class ClientModelResource extends Resource
                 //
             ])
             ->actions([
+                Impersonate::make('impersonate')
+                    ->guard('client')
+                    ->label('Acessar usuario')
+                    ->redirectTo(route('dashboard.get')),
                 Tables\Actions\EditAction::make()->label('Editar'),
                 Tables\Actions\DeleteAction::make()->label('Excluir'),
             ])

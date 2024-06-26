@@ -36,7 +36,7 @@ class PixCreateJob implements ShouldQueue
                 'client_secret' => $this->tokenModel,
                 'order_id' => $this->data['txId'],
                 'token' => $this->tokenModel,
-                'appId' => $this->data['appId'],
+                'appId' => $this->data['appId'] ?? '0',
                 'external_reference' => $this->data['orderId'],
                 'amount' => $this->data['value'],
                 'qrcode' => $this->data['pixQrCode']

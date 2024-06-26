@@ -31,9 +31,6 @@ class DashboardController extends Controller
     {
         $client_id = Auth::guard("client")->user()->id;
 
-        $transactions = $this->transactionService->getLastFourTransactions($client_id);
-
-
         return view(
             "dashboard/home",
             [

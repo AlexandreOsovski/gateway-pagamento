@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->float('balance')->nullable()->after('id');
-            $table->float('balance_usdt')->nullable()->after('balance');
+        Schema::create('token', function (Blueprint $table) {
+            $table->id();
+            $table->string('token');
+            $table->string('appId');
+            $table->string('appKey');
+            $table->string('ip_address');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('token');
     }
 };

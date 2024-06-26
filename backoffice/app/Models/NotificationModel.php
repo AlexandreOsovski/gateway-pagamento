@@ -21,21 +21,19 @@ class NotificationModel extends Model
     protected static function booted()
     {
         static::creating(function ($notification) {
-            if (empty($notification->client_id)) {
+            if (empty($notification->client_id) || $notification->client_id == null) {
                 $clients = ClientModel::all();
 
                 foreach ($clients as $client) {
                     $newNotification = new static([
                         'title' => $notification->title,
                         'body' => $notification->body,
-                        'icon' => 'fa-solid fa-building-columns',
+                        'icon' => 'fa-solid fa-user-tie',
                         'client_id' => $client->id,
                     ]);
                     $newNotification->save();
                 }
                 return false;
-            } else {
-                $notification->icon = 'fa-solid fa-user-tie';
             }
         });
     }

@@ -10,10 +10,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="{{route('pix.post')}}" method="POST">
+                        @csrf
+                        @method('POST')
                         <div class="form-group mb-15">
                             <label for="input1" class="form-label">Total a Depositar</label>
-                            <input type="number" class="form-control" id="input1"
+                            <input type="number" name="value" class="form-control" id="input1"
                                 placeholder="Digite a quantidade a Depositar">
                         </div>
                         <button id="btn-text" type="submit" class="btn-send btn main-btn main-btn-lg full-width">Gerar
