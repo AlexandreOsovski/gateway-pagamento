@@ -151,7 +151,7 @@ class Pix extends Controller
 
             PixCreateJob::dispatch($data, $request->appId)->delay(now()->addSeconds(5))->onQueue('pix-insert');
 
-            return $data;
+            return view('dashboard.checkout', ['data' => $data]);
         } else {
             return response()->json($response, 400);
         }
