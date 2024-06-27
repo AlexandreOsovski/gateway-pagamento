@@ -15,7 +15,7 @@ class WebhookNotificationModel extends Model
      *
      * @var string
      */
-    protected $table = "webhook_notifications";
+    protected $table = "webhook";
 
     /**
      * The attributes that are mass assignable.

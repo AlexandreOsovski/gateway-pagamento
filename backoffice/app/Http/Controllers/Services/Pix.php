@@ -428,14 +428,14 @@ class Pix extends Controller
     {
         $data = $request->all();
 
-        $webhookNotification = new WebhookNotification();
+        $webhookNotification = new WebhookNotificationModel();
         $webhookNotification->data = json_encode($data);
         $webhookNotification->save();
 
         $orderId = null;
 
         if (isset($data['data']) && isset($data['data']['id']) && $data['data']['paymentMethod'] == 'credit_card') {
-            $order = OrderCredit::where('external_reference', $data['data']['id'])->first();
+            $order = OrderCreditModel::where('external_reference', $data['data']['id'])->first();
 
             if ($order) {
                 $order->status = $data['data']['status'];
@@ -445,13 +445,13 @@ class Pix extends Controller
                     $order->is_approved = 1;
                     $order->save();
 
-                    $admin = Admin::find(1);
+                    $admin = AdminModel::find(1);
                     $adminBalance = ($order->amount * 18) / 100;
                     $admin->balance += $adminBalance;
                     $admin->save();
 
                     $orderId = $order->order_id;
-                    $client = Client::where('id', $order->client_id)->first();
+                    $client = ClientModel::where('id', $order->client_id)->first();
 
                     $userBalance = ($order->amount * 80) / 100;
                     $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
