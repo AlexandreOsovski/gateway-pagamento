@@ -429,6 +429,7 @@ class Pix extends Controller
         $data = $request->all();
 
         $webhookNotification = new WebhookNotificationModel();
+        $webhookNotification->event = 'update_payment';
         $webhookNotification->data = json_encode($data);
         $webhookNotification->save();
 
