@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Services;
 
 use App\Http\Controllers\Controller;
+use App\Models\NotificationModel;
 use Flasher\Toastr\Laravel\Facade\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -440,29 +441,26 @@ class Pix extends Controller
             if ($order) {
                 if ($data['data']['status'] === 'paid') {
                     $order->status = 'approved';
-                    $order->is_approved = 1;
                     $order->save();
-
                     $orderId = $order->external_reference;
-
-                    $client = ClientModel::where('uuid', $orderId)->first();
 
                     $admin = AdminModel::find(1);
                     $adminBalance = ($order->amount * 20) / 100;
                     $admin->balance += $adminBalance;
                     $admin->save();
 
+                    $client = ClientModel::where('uuid', $orderId)->first();
                     $userBalance = ($order->amount * 80) / 100;
+                    $client->balance += $userBalance;
+                    $client->save();
 
-                    $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                    $this->payComission($admin->id, $client->id, $adminBalance);
-                    }
+                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
+                    $this->makeNotification($client->id, $userBalance);
+                    return response()->json(['message' => 'Webhook received'], 200);
+                }
             }
-            return response()->json(['message' => 'Webhook received'], 200);
         }
     }
-
-
 
 
     /**
@@ -475,7 +473,7 @@ class Pix extends Controller
      * @param string $description A description of the financial movement.
      * @return null
      */
-    public function entryValues($client_id, $type, $type_movements, $amount, $description)
+    public function makeMovement($client_id, $type, $type_movements, $amount, $description)
     {
         $movement = new MovementModel();
         $movement->client_id = $client_id;
@@ -494,14 +492,14 @@ class Pix extends Controller
      * @param float $amount The transfer amount.
      * @return void
      */
-
-    public function payComission($client_id, $client_pay_id, $amount)
+    public function makeNotification($client_id, $amount)
     {
-        $transfer = new TransferUser();
-        $transfer->client_id = $client_id;
-        $transfer->client_pay_id = $client_pay_id;
-        $transfer->amount = $amount;
-        $transfer->save();
+        $notification = new NotificationModel();
+        $notification->icon = 'fa-solid fa-money-bill';
+        $notification->client_id = $client_id;
+        $notification->title = 'Deposito PIX';
+        $notification->body = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
+        $notification->save();
     }
 
 }

@@ -50,7 +50,7 @@ class VerifyPixDepositWebhook extends Command
 
         foreach ($webhooks as $webhook) {
             $jsonData = json_decode($webhook->data, true);
-
+            dd($jsonData);
             if (isset($jsonData['Status']) && $jsonData['Status'] === 'received') {
                 $orderId = $jsonData['order_id'] ?? null;
 

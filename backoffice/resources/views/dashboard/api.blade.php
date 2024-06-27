@@ -9,7 +9,7 @@
 
                 <div>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#withdraw">
-                        <p">Adicionar API</p>
+                        <p>Adicionar API</p>
                     </a>
                 </div>
             </div>

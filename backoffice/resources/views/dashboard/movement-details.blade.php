@@ -27,14 +27,20 @@
 
                 <div class="payment-list-details">
                     <div class="payment-list-item payment-list-title">Categoria da Transação</div>
-                    <div class="payment-list-item payment-list-info">Conversão de BRL para USDT</div>
+                    <div class="payment-list-item payment-list-info">{{$movement_detail['description']}}</div>
 
                 </div>
 
                 <div class="payment-list-details">
                     <div class="payment-list-item payment-list-title">Valor da Transação</div>
                     <div class="payment-list-item payment-list-info">
-                        USDT {{ number_format($movement_detail['amount'], 2, '.', ',') }}
+                        @if($movement_detail['type_movement'] == 'CONVERSION')
+                            USDT {{ number_format($movement_detail['amount'], 2, '.', ',') }}
+                        @else
+                            R$ {{ number_format($movement_detail['amount'], 2, '.', ',') }} <br>
+                            (Valor total retirando TODAS as taxas)
+                        @endif
+
                     </div>
                 </div>
             </div>

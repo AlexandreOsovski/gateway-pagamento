@@ -34,15 +34,20 @@
 </head>
 
 <body>
-    @include('livewire.components.pre-loader')
+    @if(!Request::is('keys-api'))
+        @include('livewire.components.pre-loader')
+    @endif
 
-    @if (Request::is('finance') ||
+    @if (
+            Request::is('finance') ||
             Request::is('profile') ||
             Request::is('keys-api') ||
             Request::is('notification') ||
             Request::is('transaction-detail') ||
-            Request::is('support') || Request::is('movement-detail') || Request::is('make-deposit')))
-            )
+            Request::is('support') ||
+            Request::is('movement-detail') ||
+            Request::is('make-deposit')
+        )
 
         @include('livewire.components.header')
     @endif
