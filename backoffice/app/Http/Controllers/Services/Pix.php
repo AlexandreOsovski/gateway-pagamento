@@ -73,15 +73,6 @@ class Pix extends Controller
      */
     public function createTransactionPix(Request $request): mixed
     {
-//        $tokenExists = KeysApiModel::where('appKey', $request->appKey)->exists();
-//
-//        if (!$tokenExists) {
-//            Toastr::success('Por favor, para fazer um depósito, é necessário cadastrar uma chave de API.');
-//            return redirect()->back();
-//        }
-//
-//        if ($request)
-
 
         $rules = [
             'value' => 'required|numeric',
@@ -93,11 +84,10 @@ class Pix extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-//        dd(Auth::guard('client')->user());
 
         $validatedData = $validator->validated();
 
-        $documentNumber = Auth::guard('client')->user()->document_number;
+        $documentNumber = '520.918.390-43';
         $documentNumber = preg_replace('/\D/', '', $documentNumber);
 
         $amountInCents = intval($validatedData['value'] * 100);
@@ -105,7 +95,7 @@ class Pix extends Controller
         $transactionData = [
             'amount' => $amountInCents,
             'paymentMethod' => 'pix',
-            'externalRef' => Auth::guard('client')->user()->document_number,
+            'externalRef' => Auth::guard('client')->user()->uuid,
             'pix' => [
                 'expiresInDays' => 1
             ],
@@ -124,7 +114,8 @@ class Pix extends Controller
                     'quantity' => 1,
                     'tangible' => true
                 ]
-            ]
+            ],
+            'postbackUrl' => "http://34.224.87.193/api/webhook-pix"
         ];
 
         $response = Http::withHeaders([
@@ -137,19 +128,24 @@ class Pix extends Controller
             $pixCopyPaste = $this->generateQrCode($response['pix']['qrcode']);
             $data = [
                 "pixCopy" => $response['pix']['qrcode'],
-                "pixQrCode" => $pixCopyPaste,
                 "payerName" => $response['customer']['name'],
                 "payerDocument" => $response['customer']['document']['number'],
-                "value" => $validatedData['value'],
+
+                "client_uuid" => Auth::guard('client')->user()->uuid,
                 "txId" => $response['id'],
-                "orderId" => uniqid(),
+                "order_id" => uniqid(),
+                'appId' => $request->appId == '' ? '0' : $request->appId,
+                'token' => Auth::guard('client')->user()->uuid,
+                "amount" => $validatedData['value'],
+                "external_reference" => Auth::guard('client')->user()->uuid,
+                "status" => 'pending',
+                "qrcode" => $pixCopyPaste,
+
                 "expirationDate" => $response['pix']['expirationDate'],
                 "created_at" => $response['createdAt'],
-                "status" => 'pending',
-                'appId' => $request->appId,
             ];
 
-            PixCreateJob::dispatch($data, $request->appId)->delay(now()->addSeconds(5))->onQueue('pix-insert');
+            PixCreateJob::dispatch($data, Auth::guard('client')->user()->uuid)->delay(now()->addSeconds(5))->onQueue('pix-insert');
 
             return view('dashboard.checkout', ['data' => $data]);
         } else {
@@ -449,128 +445,99 @@ class Pix extends Controller
                     $order->is_approved = 1;
                     $order->save();
 
-                    $orderId = $order->order_id;
+                    $admin = Admin::find(1);
+                    $adminBalance = ($order->amount * 18) / 100;
+                    $admin->balance += $adminBalance;
+                    $admin->save();
 
+                    $orderId = $order->order_id;
                     $client = Client::where('id', $order->client_id)->first();
 
-                    if (strtolower($client->email) != 'recebimemtosblack@gmail.com') {
-                        if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                            $admin = Admin::find(1);
-                            $adminBalance = ($order->amount * 18) / 100;
-                            $admin->balance += $adminBalance;
-                            $admin->save();
-                        } else {
-                            $admin = Admin::find(1);
-                            $adminBalance = ($order->amount * 20) / 100;
-                            $admin->balance += $adminBalance;
-                            $admin->save();
-                        }
-                    } else {
-                        $admin = Admin::find(1);
-                        $adminBalance = ($order->amount * 16) / 100;
-                        $admin->balance += $adminBalance;
-                        $admin->save();
+                    $userBalance = ($order->amount * 80) / 100;
+                    $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
+                    $this->payComission($admin->id, $client->id, $adminBalance);
+
+                    $data['data']['Txid'] = $data['data']['id'];
+                    $data['data']['OrderId'] = $orderId;
+
+                    try {
+                        Http::post($this->webHookVega, $data['data']);
+                        Log::channel('webhook')->info('Webhook sent successfully');
+                    } catch (\Exception $e) {
+                        Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
                     }
-
-                    if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                        $affiliate = Client::where('id', $order->client->indicator_id)->first();
-                        $affiliateBalance = (($order->amount - $adminBalance) * 2) / 100;
-                        $affiliate->balance += $affiliateBalance;
-                        $affiliate->save();
-
-                        $userBalance = ($order->amount * 80) / 100;
-
-                        $this->entryValues($affiliate->id, 'PIX', 'entry', $affiliateBalance, 'Comissão de Indicação');
-                        $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                        $this->payComission($affiliate->id, $order->client_id, $userBalance);
-                    } else {
-                        $userBalance = ($order->amount * 80) / 100;
-
-                        $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                        $this->payComission($admin->id, $client->id, $adminBalance);
-                    }
-                }
-
-                $data['data']['Txid'] = $data['data']['id'];
-                $data['data']['OrderId'] = $orderId;
-
-                try {
-                    Http::post($this->webHookVega, $data['data']);
-                    Log::channel('webhook')->info('Webhook sent successfully');
-                } catch (\Exception $e) {
-                    Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
                 }
             }
-        }
 
-        if (isset($data['data']) && isset($data['data']['id']) && $data['data']['paymentMethod'] == 'pix') {
-            $order = PixApi::where('order_id', $data['data']['id'])->first();
+            if (isset($data['data']) && isset($data['data']['id']) && $data['data']['paymentMethod'] == 'pix') {
+                $order = PixApi::where('order_id', $data['data']['id'])->first();
 
-            if ($order) {
-                if ($data['data']['status'] === 'paid') {
-                    $order->status = 'approved';
-                    $order->is_approved = 1;
-                    $order->save();
+                if ($order) {
+                    if ($data['data']['status'] === 'paid') {
+                        $order->status = 'approved';
+                        $order->is_approved = 1;
+                        $order->save();
 
-                    $orderId = $order->external_reference;
+                        $orderId = $order->external_reference;
 
-                    $keysApi = KeysApi::where('appId', $order->appId)->first();
-                    if ($keysApi) {
+                        $keysApi = KeysApi::where('appId', $order->appId)->first();
+                        if ($keysApi) {
 
-                        $client = Client::where('id', $keysApi->client_id)->first();
+                            $client = Client::where('id', $keysApi->client_id)->first();
 
-                        if (strtolower($client->email) != 'recebimemtosblack@gmail.com') {
-                            if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                                $admin = Admin::find(1);
-                                $adminBalance = ($order->amount * 18) / 100;
-                                $admin->balance += $adminBalance;
-                                $admin->save();
+                            if (strtolower($client->email) != 'recebimemtosblack@gmail.com') {
+                                if (!empty($client->indicator_id) || $client->indicator_id != null) {
+                                    $admin = Admin::find(1);
+                                    $adminBalance = ($order->amount * 18) / 100;
+                                    $admin->balance += $adminBalance;
+                                    $admin->save();
+                                } else {
+                                    $admin = Admin::find(1);
+                                    $adminBalance = ($order->amount * 20) / 100;
+                                    $admin->balance += $adminBalance;
+                                    $admin->save();
+                                }
                             } else {
                                 $admin = Admin::find(1);
-                                $adminBalance = ($order->amount * 20) / 100;
+                                $adminBalance = ($order->amount * 16) / 100;
                                 $admin->balance += $adminBalance;
                                 $admin->save();
                             }
-                        } else {
-                            $admin = Admin::find(1);
-                            $adminBalance = ($order->amount * 16) / 100;
-                            $admin->balance += $adminBalance;
-                            $admin->save();
-                        }
 
-                        if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                            $affiliate = Client::where('id', $order->client->indicator_id)->first();
-                            $affiliateBalance = (($order->amount - $adminBalance) * 2) / 100;
-                            $affiliate->balance += $affiliateBalance;
-                            $affiliate->save();
+                            if (!empty($client->indicator_id) || $client->indicator_id != null) {
+                                $affiliate = Client::where('id', $order->client->indicator_id)->first();
+                                $affiliateBalance = (($order->amount - $adminBalance) * 2) / 100;
+                                $affiliate->balance += $affiliateBalance;
+                                $affiliate->save();
 
-                            $userBalance = ($order->amount * 80) / 100;
+                                $userBalance = ($order->amount * 80) / 100;
 
-                            $this->entryValues($affiliate->id, 'PIX', 'entry', $affiliateBalance, 'Comissão de Indicação');
-                            $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                            $this->payComission($affiliate->id, $order->client_id, $userBalance);
-                        } else {
-                            $userBalance = ($order->amount * 80) / 100;
+                                $this->entryValues($affiliate->id, 'PIX', 'entry', $affiliateBalance, 'Comissão de Indicação');
+                                $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
+                                $this->payComission($affiliate->id, $order->client_id, $userBalance);
+                            } else {
+                                $userBalance = ($order->amount * 80) / 100;
 
-                            $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                            $this->payComission($admin->id, $client->id, $adminBalance);
+                                $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
+                                $this->payComission($admin->id, $client->id, $adminBalance);
+                            }
                         }
                     }
-                }
 
-                $data['data']['Txid'] = $data['data']['id'];
-                $data['data']['OrderId'] = $orderId;
+                    $data['data']['Txid'] = $data['data']['id'];
+                    $data['data']['OrderId'] = $orderId;
 
-                try {
-                    Http::post($this->webHookVega, $data['data']);
-                    Log::channel('webhook')->info('Webhook sent successfully');
-                } catch (\Exception $e) {
-                    Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
+                    try {
+                        Http::post($this->webHookVega, $data['data']);
+                        Log::channel('webhook')->info('Webhook sent successfully');
+                    } catch (\Exception $e) {
+                        Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
+                    }
                 }
             }
-        }
 
-        return response()->json(['message' => 'Webhook received'], 200);
+            return response()->json(['message' => 'Webhook received'], 200);
+        }
     }
 
 

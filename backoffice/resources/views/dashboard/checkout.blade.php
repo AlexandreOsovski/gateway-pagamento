@@ -13,14 +13,14 @@
             <div class="authentication-form margin-top-pix pb-15">
 
                 <div class="pixqrcode">
-                    <img class="qrcode" src="data:image/png;base64, {{$data['pixQrCode']}}"alt="">
+                    <img class="qrcode" src="data:image/png;base64, {{$data['qrcode']}}"alt="">
                 </div>
                 <div class="boxpix ">
-                    <h4 class="valuepix text-center mt-4">Valor do PIX a pagar: <span class="stylevaluepix">R${{number_format(($data['value']), 2, ',', '.' )}}</span></h4>
-                    <h6 class="colorp text-center">Chave</h6>
+                    <h4 class="valuepix text-center mt-4">Valor do PIX a pagar: <span class="stylevaluepix">R${{number_format(($data['amount']), 2, ',', '.' )}}</span></h4>
                     <div style="display: flex;flex-direction: column;">
-                        <input class="pixcopiaecola form-input" id="pixInput" type="text" value="{{$data['pixCopy']}}" readonly>
-                        <button onclick="copyToClipboard()" type="submit" class="btn main-btn mt-3 main-btn-lg buttonpix">Copiar</button>
+                        <h6 class="colorp text-center mt-3">Chave Copia e Cola</h6>
+                        <input class="pixcopiaecola form-control" id="pixInput" type="text" value="{{$data['pixCopy']}}" readonly>
+                        <button onclick="copyToClipboard()" type="submit" style="font-size: 14px" class="btn main-btn mt-3 main-btn-lg buttonpix">Copiar</button>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,8 @@
         </div>
     </div>
 
-    <script>function copyToClipboard() {
+    <script>
+        function copyToClipboard() {
             var copyText = document.getElementById("pixInput");
             copyText.select();
             copyText.setSelectionRange(0, 99999);
@@ -36,5 +37,6 @@
             document.execCommand("copy");
 
             alert("Chave copiada: " + copyText.value);
-        }</script>
+        }
+    </script>
 @endsection

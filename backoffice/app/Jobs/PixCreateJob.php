@@ -33,15 +33,18 @@ class PixCreateJob implements ShouldQueue
     {
         try {
             PixApiModel::create([
-                'client_secret' => $this->tokenModel,
-                'order_id' => $this->data['txId'],
-                'token' => $this->tokenModel,
-                'appId' => $this->data['appId'] ?? '0',
-                'external_reference' => $this->data['orderId'],
-                'amount' => $this->data['value'],
-                'qrcode' => $this->data['pixQrCode']
+                'client_uuid' => $this->data['client_uuid'],
+                'txId' => $this->data['txId'],
+                'order_id' => $this->data['order_id'],
+                'token' => $this->data['token'],
+                'appId' => $this->data['appId'],
+                'external_reference' => $this->data['external_reference'],
+                'amount' => $this->data['amount'],
+                'status' => $this->data['status'],
+                'qrcode' => $this->data['qrcode']
             ]);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             Log::channel('pix_create')->error('Failed to create PIX: ' . $e->getMessage() . ' - ' . $this->tokenModel);
         }
     }

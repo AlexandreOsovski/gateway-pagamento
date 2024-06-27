@@ -41,7 +41,7 @@
             Request::is('keys-api') ||
             Request::is('notification') ||
             Request::is('transaction-detail') ||
-            Request::is('support') || Request::is('movement-detail') || Request::is('pix')))
+            Request::is('support') || Request::is('movement-detail') || Request::is('make-deposit')))
             )
 
         @include('livewire.components.header')

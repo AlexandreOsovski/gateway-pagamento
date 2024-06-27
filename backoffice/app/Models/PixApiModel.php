@@ -13,12 +13,13 @@ class PixApiModel extends Model
     protected $table = 'pix_api';
 
     protected $fillable = [
-        'client_secret',
+        'client_uuid',
+        'txId',
         'order_id',
-        'token',
         'appId',
-        'external_reference',
+        'token',
         'amount',
+        'external_reference',
         'status',
         'qrcode'
     ];

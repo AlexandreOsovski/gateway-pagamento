@@ -42,7 +42,7 @@ Route::middleware(['auth.client'])->group(function () {
     Route::post('/keys-api-post', [KeysApiController::class, 'store'])->name('keysapi.post');
     Route::post('/transfer-user-to-user', [TransferUserToUser::class, 'transfer'])->name('transferUserToUser.post');
     Route::post('/support-post', [SupportController::class, 'store'])->name('support.post');
-    Route::post('/pix', [Pix::class, 'createTransactionPix'])->name('pix.post');
+    Route::post('/make-deposit', [Pix::class, 'createTransactionPix'])->name('pix.post');
     #PUT
     Route::put('/alter-data', [ProfileController::class, 'update'])->name('alterdata.put');
     Route::put('/read-notification', [NotificationController::class, 'readNotification'])->name('notification.put');

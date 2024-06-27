@@ -16,13 +16,13 @@ class WebHookJob implements ShouldQueue
 
     private $data;
     private $url;
-    private $urlBotft;
+//    private $urlBotft;
 
-    public function __construct($data, $url, $urlBotft)
+    public function __construct($data, $url)
     {
         $this->data = $data;
         $this->url = $url;
-        $this->urlBotft = $urlBotft;
+//        $this->urlBotft = $urlBotft;
     }
 
     /**
@@ -37,11 +37,11 @@ class WebHookJob implements ShouldQueue
             Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
         }
 
-        try {
-            Http::post($this->urlBotft, $this->data);
-            Log::channel('webhook')->info('Webhook sent successfully');
-        } catch (\Exception $e) {
-            Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
-        }
+//        try {
+//            Http::post($this->urlBotft, $this->data);
+//            Log::channel('webhook')->info('Webhook sent successfully');
+//        } catch (\Exception $e) {
+//            Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
+//        }
     }
 }
