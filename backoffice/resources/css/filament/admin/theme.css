@@ -66,6 +66,18 @@
     @apply text-white transition-all ease-in-out duration-100;
 }
 
+.fi-sidebar-item:hover span .grid .truncate {
+    @apply text-black;
+}
+
+.fi-sidebar-item-active span .grid .truncate {
+    @apply text-black;
+}
+
+.fi-badge span .grid {
+    @apply text-black bg-amber-300;
+}
+
 .fi-sidebar.fi-sidebar-open .fi-sidebar-item a:hover svg,
 .fi-sidebar.fi-sidebar-open .fi-sidebar-item a:focus svg,
 .fi-sidebar.fi-sidebar-open .fi-sidebar-item-active svg {

@@ -8,9 +8,6 @@
                     <h3>Detalhes da Transferência</h3>
                 </div>
             </div>
-            {{-- @php
-                dd($transaction_detail);
-            @endphp --}}
 
             <div class="payment-list pb-15">
                 <div class="payment-list-details">

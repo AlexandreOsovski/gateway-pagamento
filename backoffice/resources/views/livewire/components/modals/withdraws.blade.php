@@ -5,30 +5,34 @@
             <div class="container">
                 <div class="modal-header">
                     <div class="modal-header-title">
-                        <h5 class="modal-title"> Transferir</h5>
+                        <h5 class="modal-title">Transferir</h5>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="{{route('make.pix.post')}}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="form-group mb-15">
+                            <label for="input3" class="form-label">Selecione o tipo da chave pix</label>
+                            <select class="form-select" name="type_key" aria-label="Selecione o tipo da chave pix">
+                                <option selected value="email">E-mail</option>
+                                <option value="cpf">CPF</option>
+                            </select>
+                        </div>
                         <div class="form-group mb-15">
                             <label for="input3" class="form-label">Chave Pix</label>
-                            <input type="email" class="form-control" id="input3" placeholder="Digite a chave PIX">
+                            <input type="text" name="address" class="form-control" id="input3" placeholder="Digite a chave PIX">
                         </div>
                         <div class="form-group mb-15">
                             <label for="input5" class="form-label">Valor a Transferir</label>
-                            <input type="email" class="form-control" id="input5"
+                            <input type="number" name="amount" class="form-control" id="input5"
                                 placeholder="Digite o valor a ser enviado.">
                         </div>
-                        <div class="form-group mb-15">
-                            <label for="input4" class="form-label">Codigo 2FA</label>
-                            <input type="email" class="form-control" id="input4"
-                                placeholder="Digite o codigo enviado ao seu email.">
-                        </div>
-                        <button type="submit" id="btn-text"
-                            class="btn-send btn main-btn main-btn-lg full-width">Transferir</button>
+                        <button type="submit" id="btn-text-withdraws"
+                            class="btn-send-withdraws btn main-btn main-btn-lg full-width">Transferir</button>
 
-                        <div id="spinner" class="btn color-white main-btn main-btn-lg btn-send full-width mb-10">
+                        <div id="spinner-withdraws" class="btn color-white main-btn main-btn-lg btn-send full-width mb-10">
                             <span style="font-size: 15px;">
                                 <svg style="width: 22px" version="1.1" id="L7"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -60,4 +64,14 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('#spinner-withdraws').hide();
+    $(document).ready(function() {
+        $('.btn-send-withdraws').click(function() {
+            $('#spinner-withdraws').prop('disabled', true).show();
+            $('#btn-text-withdraws').hide();
+        });
+    });
+</script>
 <!-- Withdraw-modal -->

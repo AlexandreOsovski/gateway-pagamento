@@ -28,6 +28,11 @@ class SupportModelResource extends Resource
     protected static ?string $navigationGroup = 'Suporte';
     protected static ?string $navigationIcon = 'eos-support-agent';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return SupportModel::where('status', 'novo')->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

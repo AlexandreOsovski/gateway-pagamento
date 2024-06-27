@@ -44,7 +44,6 @@ class PixCreateJob implements ShouldQueue
                 'qrcode' => $this->data['qrcode']
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
             Log::channel('pix_create')->error('Failed to create PIX: ' . $e->getMessage() . ' - ' . $this->tokenModel);
         }
     }

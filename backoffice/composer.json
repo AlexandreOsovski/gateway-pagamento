@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "aws/aws-sdk-php-laravel": "^3.8",
+        "codeat3/blade-carbon-icons": "^2.27",
         "codeat3/blade-eos-icons": "^1.14",
         "codeat3/blade-unicons": "^1.8",
         "darryldecode/cart": "^4.2",

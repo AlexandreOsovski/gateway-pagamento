@@ -3,27 +3,39 @@
 namespace App\Http\Controllers\Services;
 
 use App\Http\Controllers\Controller;
-use App\Models\NotificationModel;
 use Flasher\Toastr\Laravel\Facade\Toastr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
-use App\Models\TokenModel;
-use App\Models\OrderCreditModel;
-use App\Models\AdminModel;
-use App\Models\ClientModel;
-use App\Models\MovementModel;
-use App\Models\TransferUserToUserModel;
-use App\Models\KeysApiModel;
-use App\Models\PixApiModel;
-use App\Models\WebhookNotificationModel;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\Writer\PngWriter;
+
+use Illuminate\{
+    Http\Request,
+    Support\Facades\Auth,
+    Support\Facades\Http,
+    Support\Facades\Validator
+};
+
+use App\Models\{
+    TokenModel,
+    OrderCreditModel,
+    AdminModel,
+    ClientModel,
+    MovementModel,
+    TransferUserToUserModel,
+    KeysApiModel,
+    PixApiModel,
+    WebhookNotificationModel,
+    NotificationModel,
+    TransactionModel
+};
+
+use Endroid\QrCode\{
+    QrCode,
+    Encoding\Encoding,
+    ErrorCorrectionLevel,
+    Writer\PngWriter,
+
+};
 use App\Jobs\PixCreateJob;
 use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class Pix extends Controller
 {
@@ -35,7 +47,7 @@ class Pix extends Controller
     /**
      * @var string
      */
-    private string $path;
+    private string $integrationApiUrl;
 
     /**
      * @var string
@@ -57,12 +69,22 @@ class Pix extends Controller
      */
     private string $webHookVega;
 
+
+    public string $urlPostBack;
+
     public function __construct()
     {
-        $this->secretKey = "sk_live_LTWpzZcO0T8mkgmVh7JDSYn7nE5BhVAp4JT3UmdVZF";
-        $this->path = "https://api.spacefybrasil.com.br";
+        $this->secretKey = env('SPACEFY_SECRET_KEY');
+        $this->integrationApiUrl = "https://api.spacefybrasil.com.br";
         $this->version = 'v1/';
-        $this->url = "{$this->path}/{$this->version}";
+        $this->url = "{$this->integrationApiUrl}/{$this->version}";
+
+        if (env('APP_ENV') == "production") {
+            $this->urlPostBack = env('APP_URL') . "/api/webhook-pix";
+        }else{
+            $this->urlPostBack = "http://34.224.87.193/api/webhook-pix";
+        }
+
     }
 
     /**
@@ -116,7 +138,7 @@ class Pix extends Controller
                     'tangible' => true
                 ]
             ],
-            'postbackUrl' => "http://34.224.87.193/api/webhook-pix"
+            'postbackUrl' => $this->urlPostBack,
         ];
 
         $response = Http::withHeaders([
@@ -154,6 +176,26 @@ class Pix extends Controller
         }
     }
 
+    public function createIntentionPix(Request $request): mixed
+    {
+        try {
+            $transaction = new TransactionModel();
+            $transaction->client_id = Auth::guard('client')->user()->id;
+            $transaction->method_payment = 'PIX';
+            $transaction->type_key = $request->type_key;
+            $transaction->amount = $request->amount;
+            $transaction->address = $request->address;
+            $transaction->status = 'waiting_approval';
+            $transaction->save();
+
+            Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.' );
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Alert::error('Erro ao criar transação PIX!', $e->getMessage());
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
     /**
      * Create a transfer PIX.
      *
@@ -163,7 +205,14 @@ class Pix extends Controller
      */
     public function createTransferPix(Request $request): mixed
     {
+
+        if($request->header('authorizationAdmin') != env('KEY_TRANSFER_PIX')){
+            return response()->json('unauthorized', 401);
+        }
+
         $rules = [
+            'id' => 'required',
+            'client_id' => 'required',
             'amount' => 'required|numeric',
             'pixKey' => 'required|string',
             'externalRef' => 'required|string'
@@ -185,12 +234,50 @@ class Pix extends Controller
             'externalRef' => $validatedData['externalRef']
         ];
 
-        $response = $this->post('/transfers', $transferData);
+        $client = ClientModel::where('id', $validatedData['client_id'])->first();
+
+        if($client->balance < $validatedData['amount'])
+        {
+            return response()->json('unauthorized', 401);
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic ' . base64_encode("{$this->secretKey}:x"),
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+        ])->post($this->url . 'transfers', $transferData);
 
         if ($response['status'] === 'pending' || $response['status'] === 'success') {
+
+            $client->balance -= $validatedData['amount'];
+            $client->save();
+
+            $notification = new NotificationModel();
+            $notification->client_id = $validatedData['client_id'];
+            $notification->title = 'Transferencia de PIX';
+            $notification->body = "Transferencia PIX no valor de R$ $validatedData[amount] realizada com sucesso";
+            $notification->icon = 'fa-solid fa-money-bill';
+            $notification->save();
+
+
+            $movement = new MovementModel();
+            $movement->client_id = $validatedData['client_id'];
+            $movement->type = 'EXIT';
+            $movement->type_movement = 'WITHDRAW';
+            $movement->amount = $validatedData['amount'];
+            $movement->description = "Transferencia de PIX para outra instituicao";
+            $movement->save();
+
             return response()->json($response, 200);
         } else {
-            return response()->json($response, 400);
+            $notification = new NotificationModel();
+            $notification->client_id = $validatedData['client_id'];
+            $notification->title = 'Erro Transferencia de PIX';
+            $notification->body = "Ocorreu um erro na transferencia PIX no valor de R$ " . number_format($validatedData["amount"], 2, ',', '.');
+            $notification->icon = 'fa-solid fa-money-bill';
+            $notification->save();
+
+            return response()->json($response->body(), 400);
         }
     }
 
