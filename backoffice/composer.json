@@ -17,6 +17,7 @@
         "endroid/qr-code": "^5.0",
         "filament/filament": "^3.2",
         "firebase/php-jwt": "^6.10",
+        "geekcom/validator-docs": "^3.10",
         "guzzlehttp/guzzle": "^7.2",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^10.10",

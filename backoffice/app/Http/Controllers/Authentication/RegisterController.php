@@ -58,7 +58,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|unique:client,email',
             'password' => 'required|string',
             'document_type' => 'required|string',
-            'document_number' => 'required|string|unique:client,document_number',
+            'document_number' => 'required|cpf_cnpj|string|unique:client,document_number',
         ], [
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser uma string.',
