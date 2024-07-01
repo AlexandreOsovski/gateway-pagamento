@@ -895,6 +895,7 @@ select.form-control:valid {
 .appbar-brand a img {
     vertical-align: middle;
     transition: all 0.3s linear;
+    max-width: 70% !important;
 }
 
 
