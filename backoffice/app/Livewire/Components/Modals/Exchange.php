@@ -69,7 +69,7 @@ class Exchange extends Component
         NotificationModel::create([
             'client_id' => $user->id,
             'title' => "CONVERSÃO CRIPTO",
-            'body' => 'Conversão de BRL para USDT realizada com sucesso',
+            'body' => 'Conversão de BRL para USDT realizada com sucesso +USDT ' . $this->valueUSD . ', -BRL' . $this->valueBRL,
             'icon' => 'fa-solid fa-hand-holding-dollar'
         ]);
 
