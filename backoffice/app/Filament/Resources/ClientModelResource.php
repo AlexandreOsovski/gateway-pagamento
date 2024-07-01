@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClientModelResource\Pages;
 use App\Filament\Resources\ClientModelResource\RelationManagers;
 use App\Models\ClientModel;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,7 +28,21 @@ class ClientModelResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('uuid')->label('UUID'),
+                TextInput::make('name')->label('Nome'),
+                TextInput::make('email')->label('E-mail'),
+                Select::make('document_type')->options([
+                    'CPF' => 'CPF',
+                    'RG' => 'RG',
+                    'CNH' => 'CNH',
+                ]),
+                TextInput::make('document_number')->label('Numero do documento'),
+                Select::make('status')->options([
+                    '1' => 'Ativo',
+                    '0' => 'Inativo',
+                ]),
+                TextInput::make('created_at')->label('Criado')->mask('9999/99/99 99:99:99')->readOnly()->disabled(),
+                TextInput::make('updated_at')->label('Alterado')->mask('9999/99/99 99:99:99')->disabled(),
             ]);
     }
 
@@ -71,8 +87,8 @@ class ClientModelResource extends Resource
     {
         return [
             'index' => Pages\ListClientModels::route('/'),
-//            'create' => Pages\CreateClientModel::route('/create'),
-//            'edit' => Pages\EditClientModel::route('/{record}/edit'),
+            //            'create' => Pages\CreateClientModel::route('/create'),
+            //            'edit' => Pages\EditClientModel::route('/{record}/edit'),
         ];
     }
 }
