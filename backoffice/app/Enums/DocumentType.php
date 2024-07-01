@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum Status: string implements HasColor, HasIcon, HasLabel
+enum DocumentType: string implements HasColor, HasIcon, HasLabel
 {
     case CPF = 'CPF';
 

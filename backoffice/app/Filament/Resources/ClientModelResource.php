@@ -13,8 +13,10 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
+use App\Enums\DocumentType;
+use App\Enums\UserStatus;
 use STS\FilamentImpersonate\Tables\Actions\Impersonate;
+use Filament\Forms\Components\ToggleButtons;
 
 class ClientModelResource extends Resource
 {
@@ -31,16 +33,9 @@ class ClientModelResource extends Resource
                 TextInput::make('uuid')->label('UUID'),
                 TextInput::make('name')->label('Nome'),
                 TextInput::make('email')->label('E-mail'),
-                Select::make('document_type')->options([
-                    'CPF' => 'CPF',
-                    'RG' => 'RG',
-                    'CNH' => 'CNH',
-                ]),
+                ToggleButtons::make('document_type')->options(DocumentType::class),
                 TextInput::make('document_number')->label('Numero do documento'),
-                Select::make('status')->options([
-                    '1' => 'Ativo',
-                    '0' => 'Inativo',
-                ]),
+                // ToggleButtons::make('status')->options(UserStatus::class),
                 TextInput::make('created_at')->label('Criado')->mask('9999/99/99 99:99:99')->readOnly()->disabled(),
                 TextInput::make('updated_at')->label('Alterado')->mask('9999/99/99 99:99:99')->disabled(),
             ]);
