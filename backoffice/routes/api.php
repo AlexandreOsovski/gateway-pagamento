@@ -11,7 +11,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/notification', [CartController::class, 'notification'])->name('notification');
 
 Route::post('/pix', [Pix::class, 'createTransactionPix']);
 Route::post('/webhook-pix', [Pix::class, 'webHook']);

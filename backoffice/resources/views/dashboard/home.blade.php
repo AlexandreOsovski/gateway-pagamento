@@ -179,8 +179,8 @@
 
                 @foreach ($transactions as $item)
                     <div class="transaction-card mb-15">
-                        @if($item['type_movement'] == 'CONVERSION')
-                            <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']])}}">
+                        @if ($item['type_movement'] == 'CONVERSION')
+                            <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']]) }}">
                                 <div class="transaction-card-info">
                                     <div class="transaction-info-thumb">
                                         <img src="assets/images/horiizom/userbase.svg" alt="user">
@@ -201,7 +201,7 @@
                                 @endif
                             </a>
                         @else
-                            <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']])}}">
+                            <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']]) }}">
                                 <div class="transaction-card-info">
                                     <div class="transaction-info-thumb">
                                         <img src="assets/images/horiizom/userbase.svg" alt="user">
@@ -210,18 +210,19 @@
                                         @switch($item['type_movement'])
                                             @case('TRANSFER')
                                                 <h3>TRANSFERÊNCIA</h3>
-                                                @break
+                                            @break
 
                                             @case('DEPOSIT')
                                                 <h3>DEPÓSITO</h3>
-                                                @break
+                                            @break
 
                                             @case('WITHDRAWAL')
                                                 <h3>SAQUE</h3>
-                                                @break
+                                            @break
+
                                             @case('CONVERSION')
                                                 <h3>CONVERSÃO</h3>
-                                                @break
+                                            @break
                                         @endswitch
                                         <p>{!! $item['description'] !!}</p>
                                     </div>
@@ -360,6 +361,4 @@
     @include('livewire.components.modals.withdraws')
     @include('livewire.components.modals.sendMoney')
     <livewire:components.modals.exchange />
-
-
 @endsection

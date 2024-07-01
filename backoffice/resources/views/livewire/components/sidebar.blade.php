@@ -37,14 +37,14 @@
                     <div class="sidebar-nav-item">
                         <h3>Menu</h3>
                         <ul class="sidebar-nav-list">
-                            <li><a href="{{ route('dashboard.get') }}" class="active"><i class="fas fa-home"></i>
+                            <li><a href="{{ route('dashboard.get') }}"><i class="fas fa-home"></i>
                                     Home</a></li>
                             <li><a href="{{ route('finance.get') }}"><i class="fas fa-file-invoice-dollar"></i>
                                     Financeiro</a></li>
                             {{-- <li><a href="#"><i class="fas fa-link"></i> Criar Link</a></li> --}}
                             {{-- <li><a href="perfil.html"><i class="fas fa-exchange-alt"></i> Converter</a></li> --}}
                             <li><a href="{{ route('profile.get') }}"><i class="fas fa-user-cog"></i> Meus Dados</a></li>
-                            <li><a href="{{route('support.get')}}"><i class="fas fa-headset"></i> Suporte</a></li>
+                            <li><a href="{{ route('support.get') }}"><i class="fas fa-headset"></i> Suporte</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="post">
                                     @csrf
