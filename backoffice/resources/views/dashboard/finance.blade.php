@@ -6,7 +6,7 @@
         <div class="feature-section mb-15">
             <div class="p-3">
                 <div class="row">
-                    <div class="col col-sm-6">
+                    <div class="col col-sm-6 pb-15">
                         <div class="feature-card feature-card-red">
                             <div class="feature-card-thumb">
                                 <i class="fas fa-coins"></i>
@@ -17,7 +17,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-6">
+                    <div class="col col-sm-6 pb-15">
                         <div class="feature-card feature-card-blue">
                             <div class="feature-card-thumb">
                                 <i class="fas fa-dollar-sign"></i>
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-6">
+                    <div class="col col-sm-6 pb-15">
                         <div class="feature-card feature-card-violet">
                             <div class="feature-card-thumb">
                                 <i class="fas fa-receipt"></i>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-6">
+                    <div class="col col-sm-6 pb-15">
                         <div class="feature-card feature-card-green">
                             <div class="feature-card-thumb">
                                 <i class="fas fa-paper-plane"></i>
@@ -158,7 +158,7 @@
                             <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']]) }}">
                                 <div class="transaction-card-info">
                                     <div class="transaction-info-thumb">
-                                        <img src="assets/images/sys-soocien/pessoa.svg" alt="user">
+                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
                                     </div>
                                     <div class="transaction-info-text">
                                         @switch($item['type_movement'])
@@ -190,7 +190,7 @@
                             <a href="{{ route('transaction.get', ["$see_transaction_key" => $item['uuid']]) }}">
                                 <div class="transaction-card-info">
                                     <div class="transaction-info-thumb">
-                                        <img src="assets/images/sys-soocien/pessoa.svg" alt="user">
+                                        <img src="assets/images/horiizom/userbase.svg" alt="user">
                                     </div>
                                     <div class="transaction-info-text">
                                         @switch($item['type_movement'])
