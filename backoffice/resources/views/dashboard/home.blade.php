@@ -192,11 +192,11 @@
                                 </div>
                                 @if ($item['type'] == 'ENTRY')
                                     <div class="transaction-card-det receive-money">
-                                        + R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                        + USDT {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
                                 @else
                                     <div class="transaction-card-det text-danger">
-                                        - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                        - USDT {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
                                 @endif
                             </a>

@@ -92,13 +92,21 @@
                                             <p>{!! $item['description'] !!}</p>
                                         </div>
                                     </div>
-                                    @if ($item['type'] == 'ENTRY')
+                                    @if ($item['type'] == 'ENTRY' && $item['type_movement'] == 'DEPOSIT')
                                         <div class="transaction-card-det receive-money">
                                             + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
-                                    @else
+                                    @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT')
                                         <div class="transaction-card-det text-danger">
                                             - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                        </div>
+                                    @elseif($item['type'] == 'ENTRY' && $item['type_movement'] == 'CONVERSION')
+                                        <div class="transaction-card-det receive-money">
+                                            + USDT {{ number_format($item['amount'], '2', ',', '.') }}
+                                        </div>
+                                    @else
+                                        <div class="transaction-card-det text-danger">
+                                            - USDT {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
                                     @endif
                                 </a>
@@ -174,13 +182,21 @@
                                         <p>{!! $item['description'] !!}</p>
                                     </div>
                                 </div>
-                                @if ($item['type'] == 'ENTRY')
+                                @if ($item['type'] == 'ENTRY' && $item['type_movement'] == 'DEPOSIT')
                                     <div class="transaction-card-det receive-money">
                                         + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
-                                @else
+                                @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT')
                                     <div class="transaction-card-det text-danger">
                                         - R$ {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @elseif($item['type'] == 'ENTRY' && $item['type_movement'] == 'CONVERSION')
+                                    <div class="transaction-card-det receive-money">
+                                        + USDT {{ number_format($item['amount'], '2', ',', '.') }}
+                                    </div>
+                                @else
+                                    <div class="transaction-card-det text-danger">
+                                        - USDT {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
                                 @endif
                             </a>
