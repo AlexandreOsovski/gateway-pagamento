@@ -79,11 +79,11 @@ class Pix extends Controller
         $this->version = 'v2';
         $this->url = "{$this->integrationApiUrl}/{$this->version}/";
 
-        if (env('APP_ENV') == "production") {
-            $this->urlPostBack = env('APP_URL') . "/api/webhook-pix";
-        }else{
+//        if (env('APP_ENV') == "production") {
+//            $this->urlPostBack = env('APP_URL') . "/api/webhook-pix";
+//        }else{
             $this->urlPostBack = "http://34.224.87.193/api/webhook-pix";
-        }
+//        }
 
     }
 
@@ -145,7 +145,7 @@ class Pix extends Controller
             "BankAccount" => "883770778",
             "BankAccountDigit" => "8",
             "BankBranch" => "0001",
-            "PrincipalValue" => $amountInCents,
+            "PrincipalValue" => 0.01,
             "webhook_url" => $this->urlPostBack
 
         ];
