@@ -74,10 +74,10 @@ class Pix extends Controller
 
     public function __construct()
     {
-        $this->secretKey = env('SPACEFY_SECRET_KEY');
-        $this->integrationApiUrl = "https://api.spacefybrasil.com.br";
-        $this->version = 'v1/';
-        $this->url = "{$this->integrationApiUrl}/{$this->version}";
+        $this->secretKey = '1e9fee004b24cad7a7fea4cb9bd36d0c4f1e972ex';
+        $this->integrationApiUrl = "https://api-br.x-pay.app";
+        $this->version = 'v2';
+        $this->url = "{$this->integrationApiUrl}/{$this->version}/";
 
         if (env('APP_ENV') == "production") {
             $this->urlPostBack = env('APP_URL') . "/api/webhook-pix";
@@ -85,6 +85,28 @@ class Pix extends Controller
             $this->urlPostBack = "http://34.224.87.193/api/webhook-pix";
         }
 
+    }
+
+    private function prepareAuthorizationData(): array
+    {
+        return [
+            'clientId' => '2ae8fb7e-8b6d-4c21-b400-e63373fbcc3c',
+            'clientSecret' => 'D392B342-39CF-4EA7-9346-7056886F8F77',
+            'webhook_url' => $this->urlPostBack,
+        ];
+    }
+
+    private function authorization(): array
+    {
+        $data = $this->prepareAuthorizationData();
+
+
+        $response = Http::withHeaders([
+            'authorizationToken' => '1e9fee004b24cad7a7fea4cb9bd36d0c4f1e972ex',
+            'Content-Type' => 'application/json',
+        ])->post($this->url . 'token', $data);
+
+        return json_decode($response->body(), true);
     }
 
     /**
@@ -113,59 +135,45 @@ class Pix extends Controller
         $documentNumber = '520.918.390-43';
         $documentNumber = preg_replace('/\D/', '', $documentNumber);
 
-        $amountInCents = intval($validatedData['value'] * 100);
+        $amountInCents = (float)$validatedData['value'];
+        $accessToken = $this->authorization()['access_token'];
 
         $transactionData = [
-            'amount' => $amountInCents,
-            'paymentMethod' => 'pix',
-            'externalRef' => Auth::guard('client')->user()->uuid,
-            'pix' => [
-                'expiresInDays' => 1
-            ],
-            'customer' => [
-                'name' => Auth::guard('client')->user()->name,
-                'email' => Auth::guard('client')->user()->email,
-                'document' => [
-                    'number' => $documentNumber,
-                    'type' => strtolower(Auth::guard('client')->user()->document_type),
-                ],
-            ],
-            'items' => [
-                [
-                    'title' => 'Deposito PIX',
-                    'unitPrice' => $amountInCents,
-                    'quantity' => 1,
-                    'tangible' => true
-                ]
-            ],
-            'postbackUrl' => $this->urlPostBack,
+            "PixKey" => "financeiro@2mpayments.com.br",
+            "TaxNumber" => "44456489000186",
+            "Bank" => "450",
+            "BankAccount" => "883770778",
+            "BankAccountDigit" => "8",
+            "BankBranch" => "0001",
+            "PrincipalValue" => $amountInCents,
+            "webhook_url" => $this->urlPostBack
+
         ];
 
         $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode("{$this->secretKey}:x"),
+            'authorizationToken' => '1e9fee004b24cad7a7fea4cb9bd36d0c4f1e972ex',
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->post('https://api.spacefybrasil.com.br/v1/transactions', $transactionData);
+        ])->post($this->url . 'pix/create', $transactionData);
 
-        if ($response['status'] === 'waiting_payment') {
-            $pixCopyPaste = $this->generateQrCode($response['pix']['qrcode']);
+        if ($response->status() == 201) {
             $data = [
-                "pixCopy" => $response['pix']['qrcode'],
-                "payerName" => $response['customer']['name'],
-                "payerDocument" => $response['customer']['document']['number'],
+                "pixCopy" => $response['qrCodeData']['QRCodeCopiaeCola'],
+                "payerName" => Auth::guard('client')->user()->name,
+                "payerDocument" => Auth::guard('client')->user()->document_number,
 
                 "client_uuid" => Auth::guard('client')->user()->uuid,
-                "txId" => $response['id'],
-                "order_id" => uniqid(),
+                "txId" => $response['qrCodeData']['Identifier'],
+                "order_id" => $response['qrCodeData']['Identifier'],
                 'appId' => $request->appId == '' ? '0' : $request->appId,
                 'token' => Auth::guard('client')->user()->uuid,
                 "amount" => $validatedData['value'],
-                "external_reference" => Auth::guard('client')->user()->uuid,
+                "external_reference" =>  $response['qrCodeData']['Identifier'],
                 "status" => 'pending',
-                "qrcode" => $pixCopyPaste,
+                "qrcode" => $response['qrCodeData']['QRCodeBase64'],
 
-                "expirationDate" => $response['pix']['expirationDate'],
-                "created_at" => $response['createdAt'],
+                "expirationDate" => 1,
+                "created_at" => now(),
             ];
 
             PixCreateJob::dispatch($data, Auth::guard('client')->user()->uuid)->delay(now()->addSeconds(5))->onQueue('pix-insert');
@@ -522,21 +530,21 @@ class Pix extends Controller
         $webhookNotification->save();
 
         $orderId = null;
-        if (isset($data['data']) && isset($data['data']['id']) && $data['data']['paymentMethod'] == 'pix') {
-            $order = PixApiModel::where('txId', $data['data']['id'])->first();
+        if (isset($data['data']) && isset($data['data']['id']) && $data['data']['Method'] == 'PixIn') {
+            $order = PixApiModel::where('order_id', $data['data']['Identifier'])->first();
 
             if ($order) {
-                if ($data['data']['status'] === 'paid') {
+                if ($data['data']['Status'] === 'Paid') {
                     $order->status = 'approved';
                     $order->save();
-                    $orderId = $order->external_reference;
+                    $client_uuid = $order->client_uuid;
 
                     $admin = AdminModel::find(1);
                     $adminBalance = ($order->amount * 20) / 100;
                     $admin->balance += $adminBalance;
                     $admin->save();
 
-                    $client = ClientModel::where('uuid', $orderId)->first();
+                    $client = ClientModel::where('uuid', $client_uuid)->first();
                     $userBalance = ($order->amount * 80) / 100;
                     $client->balance += $userBalance;
                     $client->save();

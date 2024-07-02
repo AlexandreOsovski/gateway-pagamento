@@ -57,11 +57,10 @@ class Spacefy extends Controller
     public function __construct()
     {
         $this->secretKey = "sk_live_LTWpzZcO0T8mkgmVh7JDSYn7nE5BhVAp4JT3UmdVZF";
-        $this->path = "https://api.spacefybrasil.com.br";
-        $this->version = "v1";
+        $this->path = "https://api-br.x-pay.app";
+        $this->version = "v1/";
         $this->url = "{$this->path}/{$this->version}";
         $this->apiSecret = env('API_SECRET_KEY');
-//        $this->webHookVega = "https://pay.vegacheckout.com.br/api/postback/horiizom";
     }
 
     /**
