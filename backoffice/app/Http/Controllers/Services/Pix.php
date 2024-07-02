@@ -82,7 +82,7 @@ class Pix extends Controller
 //        if (env('APP_ENV') == "production") {
 //            $this->urlPostBack = env('APP_URL') . "/api/webhook-pix";
 //        }else{
-            $this->urlPostBack = "https://pay.horiizom.com/api/webhook-pix";
+        $this->urlPostBack = "https://pay.horiizom.com/api/webhook-pix";
 //        }
 
     }
@@ -168,7 +168,7 @@ class Pix extends Controller
                 'appId' => $request->appId == '' ? '0' : $request->appId,
                 'token' => Auth::guard('client')->user()->uuid,
                 "amount" => $validatedData['value'],
-                "external_reference" =>  $response['qrCodeData']['Identifier'],
+                "external_reference" => $response['qrCodeData']['Identifier'],
                 "status" => 'pending',
                 "qrcode" => $response['qrCodeData']['QRCodeBase64'],
 
@@ -196,7 +196,7 @@ class Pix extends Controller
             $transaction->status = 'waiting_approval';
             $transaction->save();
 
-            Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.' );
+            Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.');
             return redirect()->back();
         } catch (\Exception $e) {
             Alert::error('Erro ao criar transação PIX!', $e->getMessage());
@@ -214,7 +214,7 @@ class Pix extends Controller
     public function createTransferPix(Request $request): mixed
     {
 
-        if($request->header('authorizationAdmin') != env('KEY_TRANSFER_PIX')){
+        if ($request->header('authorizationAdmin') != env('KEY_TRANSFER_PIX')) {
             return response()->json('unauthorized', 401);
         }
 
@@ -244,8 +244,7 @@ class Pix extends Controller
 
         $client = ClientModel::where('id', $validatedData['client_id'])->first();
 
-        if($client->balance < $validatedData['amount'])
-        {
+        if ($client->balance < $validatedData['amount']) {
             return response()->json('unauthorized', 401);
         }
 
@@ -520,39 +519,38 @@ class Pix extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function webHook(Request $request)
-    {
-        $data = $request->all();
+{
+    $data = $request->all();
 
-        $webhookNotification = new WebhookNotificationModel();
-        $webhookNotification->event = 'update_payment';
-        $webhookNotification->data = json_encode($data);
-        $webhookNotification->save();
+    $webhookNotification = new WebhookNotificationModel();
+    $webhookNotification->event = 'update_payment';
+    $webhookNotification->data = json_encode($data);
+    $webhookNotification->save();
 
-        $orderId = null;
-        if (isset($data['data']) && isset($data['data']['id']) && $data['data']['Method'] == 'PixIn') {
-            $order = PixApiModel::where('order_id', $data['data']['Identifier'])->first();
+    $orderId = null;
+    if ($data['data']['Method'] == 'PixIn' && $data['data']['Status'] == 'Paid') {
+        $order = PixApiModel::where('order_id', $data['data']['QRCodeInfos']['Identifier'])->first();
 
-            if ($order) {
-                if ($data['data']['Status'] === 'Paid') {
-                    $order->status = 'approved';
-                    $order->save();
-                    $client_uuid = $order->client_uuid;
+        if ($order) {
+                $order->status = 'approved';
+                $order->save();
+                $client_uuid = $order->client_uuid;
 
-                    $admin = AdminModel::find(1);
-                    $adminBalance = ($order->amount * 20) / 100;
-                    $admin->balance += $adminBalance;
-                    $admin->save();
+                $admin = AdminModel::find(1);
+                $adminBalance = ($data['data']['Value'] * 20) / 100;
+                $admin->balance += $adminBalance;
+                $admin->save();
 
-                    $client = ClientModel::where('uuid', $client_uuid)->first();
-                    $userBalance = ($order->amount * 80) / 100;
-                    $client->balance += $userBalance;
-                    $client->save();
+                $client = ClientModel::where('uuid', $client_uuid)->first();
+                $userBalance = ($data['data']['Value'] * 80) / 100;
+                $client->balance += $userBalance;
+                $client->save();
 
-                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
-                    $this->makeNotification($client->id, $userBalance);
-                    return response()->json(['message' => 'Webhook received'], 200);
-                }
+                $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
+                $this->makeNotification($client->id, $userBalance);
+                return response()->json(['message' => 'Webhook received'], 200);
             }
         }
     }
@@ -569,15 +567,15 @@ class Pix extends Controller
      * @return null
      */
     public function makeMovement($client_id, $type, $type_movements, $amount, $description)
-    {
-        $movement = new MovementModel();
-        $movement->client_id = $client_id;
-        $movement->type = $type;
-        $movement->type_movement = $type_movements;
-        $movement->amount = $amount;
-        $movement->description = $description;
-        $movement->save();
-    }
+{
+    $movement = new MovementModel();
+    $movement->client_id = $client_id;
+    $movement->type = $type;
+    $movement->type_movement = $type_movements;
+    $movement->amount = $amount;
+    $movement->description = $description;
+    $movement->save();
+}
 
     /**
      * Records a transfer of value from one user to another.
@@ -588,13 +586,13 @@ class Pix extends Controller
      * @return void
      */
     public function makeNotification($client_id, $amount)
-    {
-        $notification = new NotificationModel();
-        $notification->icon = 'fa-solid fa-money-bill';
-        $notification->client_id = $client_id;
-        $notification->title = 'Deposito PIX';
-        $notification->body = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
-        $notification->save();
-    }
+{
+    $notification = new NotificationModel();
+    $notification->icon = 'fa-solid fa-money-bill';
+    $notification->client_id = $client_id;
+    $notification->title = 'Deposito PIX';
+    $notification->body = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
+    $notification->save();
+}
 
 }
