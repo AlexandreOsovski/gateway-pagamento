@@ -82,7 +82,7 @@ class Pix extends Controller
 //        if (env('APP_ENV') == "production") {
 //            $this->urlPostBack = env('APP_URL') . "/api/webhook-pix";
 //        }else{
-            $this->urlPostBack = "http://34.224.87.193/api/webhook-pix";
+            $this->urlPostBack = "https://pay.horiizom.com/api/webhook-pix";
 //        }
 
     }
