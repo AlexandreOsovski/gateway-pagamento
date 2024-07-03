@@ -215,6 +215,10 @@ class Pix extends Controller
         $webhookNotification->data = json_encode($data);
         $webhookNotification->save();
 
+        if (empty($data)) {
+            return response()->json('need webhook data', '500');
+        }
+
         $orderId = null;
         if ($data['data']['Method'] == 'PixIn' && $data['data']['Status'] == 'Paid') {
             $order = PixApiModel::where('order_id', $data['data']['QRCodeInfos']['Identifier'])->first();
