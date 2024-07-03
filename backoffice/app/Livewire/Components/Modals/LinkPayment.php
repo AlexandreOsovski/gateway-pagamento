@@ -36,7 +36,7 @@ class LinkPayment extends Component
             "BankAccountDigit" => "8",
             "BankBranch" => "0001",
             "PrincipalValue" => (float)$this->value,
-            "webhook_url" => 'https://34.224.87.193/api/webhook-pix',
+            "webhook_url" => 'http://34.224.87.193/api/webhook-pix',
         ];
 
         $response = Http::withHeaders([
