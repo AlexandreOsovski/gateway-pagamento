@@ -66,6 +66,14 @@ class Exchange extends Component
             'description' => 'Conversão de BRL para USDT'
         ]);
 
+        MovementModel::create([
+            'client_id' => $user->id,
+            'type' => 'EXIT',
+            'type_movement' => 'CONVERSION',
+            'amount' => $this->valueBRL,
+            'description' => 'Conversão de BRL para USDT'
+        ]);
+
         NotificationModel::create([
             'client_id' => $user->id,
             'title' => "CONVERSÃO CRIPTO",
