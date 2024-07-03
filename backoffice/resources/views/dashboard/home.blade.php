@@ -214,7 +214,7 @@
                                         </div>
                                     @else
                                         <div class="transaction-card-det text-danger">
-                                            - USDT {{ number_format($item['amount'], '2', ',', '.') }}
+                                            - R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
                                     @endif
                                 </a>
