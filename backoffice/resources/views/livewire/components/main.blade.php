@@ -51,12 +51,15 @@
 
         @include('livewire.components.header')
     @endif
-
-    @include('livewire.components.sidebar')
+    @if (!Request::is('make-payment'))
+        @include('livewire.components.sidebar')
+    @endif
 
     @yield('content')
 
-    @include('livewire.components.footer')
+    @if (!Request::is('make-payment'))
+        @include('livewire.components.footer')
+    @endif
 
     @livewireScripts
     <script src="assets/js/jquery.min.js"></script>

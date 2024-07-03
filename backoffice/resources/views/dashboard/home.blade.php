@@ -85,7 +85,7 @@
                     </div>
                     <div class="col pb-15">
                         <div class="option-card option-card-violet">
-                            <a href="#">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#makeLink">
                                 <div class="option-card-icon">
                                     <i class="flaticon-credit-card"></i>
                                 </div>
@@ -360,5 +360,6 @@
     @include('livewire.components.modals.addBalance')
     @include('livewire.components.modals.withdraws')
     @include('livewire.components.modals.sendMoney')
+    <livewire:components.modals.link-payment />
     <livewire:components.modals.exchange />
 @endsection
