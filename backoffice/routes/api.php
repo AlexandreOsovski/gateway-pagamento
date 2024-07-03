@@ -15,4 +15,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/pix', [Pix::class, 'createTransactionPix']);
 Route::post('/webhook-pix', [Pix::class, 'webHook']);
 Route::post('/pay-pix-in-admin', [Pix::class, 'createTransferPix']);
-Route::post('/webhook-external-reference', [Pix::class, 'webhookExternalPayment']);

@@ -233,15 +233,42 @@ class Pix extends Controller
                 $client->save();
 
                 $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
-                $this->makeNotification($client->id, $userBalance);
+
+                $description = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
+                $this->makeNotification($client->id, $userBalance, 'Deposito PIX', $description);
+
                 return response()->json(['message' => 'Webhook received'], 200);
+            } else {
+
+                $externalPayment = ExternalPaymentPixModel::where('external_reference', $data['data']['QRCodeInfos']['Identifier'])->first();
+                if ($externalPayment) {
+                    $externalPayment->status = 'paid';
+                    $externalPayment->save();
+
+                    $client_uuid = $externalPayment->client_uuid;
+
+                    $admin = AdminModel::find(1);
+                    $adminBalance = ($data['data']['Value'] * 20) / 100;
+                    $admin->balance += $adminBalance;
+                    $admin->save();
+
+                    $client = ClientModel::where('uuid', $client_uuid)->first();
+                    $userBalance = ($data['data']['Value'] * 80) / 100;
+                    $client->balance += $userBalance;
+                    $client->save();
+
+                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Pagamento externo realizado por: ' . );
+
+                    $description = 'Pagamento externo realizado com sucesso por: ' . $data['data']['FromName'] . ' No valor de: R$' . number_format($data['data']['value'], 2, ',', '.');
+                    $this->makeNotification($client->id, $userBalance, 'Pagamento Externo', $description);
+
+                    return response()->json(['message' => 'Webhook received'], 200);
+                }
             }
         }
     }
 
-    public function webhookExternalPayment(Request $request)
-    {
-    }
+
 
 
     /**
@@ -273,13 +300,13 @@ class Pix extends Controller
      * @param float $amount The transfer amount.
      * @return void
      */
-    public function makeNotification($client_id, $amount)
+    public function makeNotification($client_id, $amount, $title,$description)
     {
         $notification = new NotificationModel();
         $notification->icon = 'fa-solid fa-money-bill';
         $notification->client_id = $client_id;
-        $notification->title = 'Deposito PIX';
-        $notification->body = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
+        $notification->title = $title;
+        $notification->body = $description;
         $notification->save();
     }
 }
