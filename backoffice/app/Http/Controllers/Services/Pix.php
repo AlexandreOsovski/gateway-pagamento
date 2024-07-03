@@ -72,7 +72,7 @@ class Pix extends Controller
         $this->integrationApiUrl = "https://api-br.x-pay.app";
         $this->version = 'v2';
         $this->url = "{$this->integrationApiUrl}/{$this->version}/";
-        $this->urlPostBack = "https://pay.horiizom.com/api/webhook-pix";
+        $this->urlPostBack = "https://34.224.87.193/api/webhook-pix";
     }
 
     /**
@@ -85,11 +85,13 @@ class Pix extends Controller
     public function createTransactionPix(Request $request): mixed
     {
 
+
         $rules = [
             'value' => 'required|numeric',
         ];
 
         $validator = Validator::make($request->all(), $rules);
+
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -104,7 +106,7 @@ class Pix extends Controller
             "BankAccount" => "883770778",
             "BankAccountDigit" => "8",
             "BankBranch" => "0001",
-            "PrincipalValue" => $validator['value'],
+            "PrincipalValue" => (float)$validatedData['value'],
             "webhook_url" => $this->urlPostBack
 
         ];
@@ -234,7 +236,7 @@ class Pix extends Controller
 
                 $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
 
-                $description = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
+                $description = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($data['data']['Value'], 2, ',', '.') . ' (Valor total retirando as taxas)';
                 $this->makeNotification($client->id, $userBalance, 'Deposito PIX', $description);
 
                 return response()->json(['message' => 'Webhook received'], 200);
@@ -257,7 +259,7 @@ class Pix extends Controller
                     $client->balance += $userBalance;
                     $client->save();
 
-                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Pagamento externo realizado por: ' . );
+                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Pagamento externo realizado por: ' . $data['data']['FromName']);
 
                     $description = 'Pagamento externo realizado com sucesso por: ' . $data['data']['FromName'] . ' No valor de: R$' . number_format($data['data']['value'], 2, ',', '.');
                     $this->makeNotification($client->id, $userBalance, 'Pagamento Externo', $description);
@@ -300,7 +302,7 @@ class Pix extends Controller
      * @param float $amount The transfer amount.
      * @return void
      */
-    public function makeNotification($client_id, $amount, $title,$description)
+    public function makeNotification($client_id, $amount, $title, $description)
     {
         $notification = new NotificationModel();
         $notification->icon = 'fa-solid fa-money-bill';
