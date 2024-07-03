@@ -13,7 +13,8 @@ use Illuminate\{
     Support\Facades\Validator
 };
 
-use App\Models\{ExternalPaymentPixModel,
+use App\Models\{
+    ExternalPaymentPixModel,
     TokenModel,
     OrderCreditModel,
     AdminModel,
@@ -24,14 +25,14 @@ use App\Models\{ExternalPaymentPixModel,
     PixApiModel,
     WebhookNotificationModel,
     NotificationModel,
-    TransactionModel};
+    TransactionModel
+};
 
 use Endroid\QrCode\{
     QrCode,
     Encoding\Encoding,
     ErrorCorrectionLevel,
     Writer\PngWriter,
-
 };
 use App\Jobs\PixCreateJob;
 use Illuminate\Support\Facades\Log;
@@ -72,7 +73,6 @@ class Pix extends Controller
         $this->version = 'v2';
         $this->url = "{$this->integrationApiUrl}/{$this->version}/";
         $this->urlPostBack = "https://pay.horiizom.com/api/webhook-pix";
-
     }
 
     /**
@@ -178,7 +178,7 @@ class Pix extends Controller
             'content-type' => 'application/json',
         ])->post($this->url . 'pix/create', $transactionData);
 
-        if($response->status() == 201){
+        if ($response->status() == 201) {
             $data = [
                 'client_uuid' => Auth::guard('client')->user()->uuid,
                 'external_reference' => $response['qrCodeData']['Identifier'],
@@ -215,9 +215,9 @@ class Pix extends Controller
 
         $orderId = null;
         if ($data['data']['Method'] == 'PixIn' && $data['data']['Status'] == 'Paid') {
-        $order = PixApiModel::where('order_id', $data['data']['QRCodeInfos']['Identifier'])->first();
+            $order = PixApiModel::where('order_id', $data['data']['QRCodeInfos']['Identifier'])->first();
 
-        if ($order) {
+            if ($order) {
                 $order->status = 'approved';
                 $order->save();
                 $client_uuid = $order->client_uuid;
@@ -239,6 +239,10 @@ class Pix extends Controller
         }
     }
 
+    public function webhookExternalPayment(Request $request)
+    {
+    }
+
 
     /**
      * Register a financial movement.
@@ -251,15 +255,15 @@ class Pix extends Controller
      * @return null
      */
     public function makeMovement($client_id, $type, $type_movements, $amount, $description)
-{
-    $movement = new MovementModel();
-    $movement->client_id = $client_id;
-    $movement->type = $type;
-    $movement->type_movement = $type_movements;
-    $movement->amount = $amount;
-    $movement->description = $description;
-    $movement->save();
-}
+    {
+        $movement = new MovementModel();
+        $movement->client_id = $client_id;
+        $movement->type = $type;
+        $movement->type_movement = $type_movements;
+        $movement->amount = $amount;
+        $movement->description = $description;
+        $movement->save();
+    }
 
     /**
      * Records a transfer of value from one user to another.
@@ -270,13 +274,12 @@ class Pix extends Controller
      * @return void
      */
     public function makeNotification($client_id, $amount)
-{
-    $notification = new NotificationModel();
-    $notification->icon = 'fa-solid fa-money-bill';
-    $notification->client_id = $client_id;
-    $notification->title = 'Deposito PIX';
-    $notification->body = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
-    $notification->save();
-}
-
+    {
+        $notification = new NotificationModel();
+        $notification->icon = 'fa-solid fa-money-bill';
+        $notification->client_id = $client_id;
+        $notification->title = 'Deposito PIX';
+        $notification->body = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($amount, 2, ',', '.') . ' (Valor total retirando as taxas)';
+        $notification->save();
+    }
 }

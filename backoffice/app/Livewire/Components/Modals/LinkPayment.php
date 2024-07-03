@@ -51,7 +51,7 @@ class LinkPayment extends Component
                 'external_reference' => $response['qrCodeData']['Identifier'],
                 'description' => $this->description,
                 'value' => $this->value,
-                'qrcode' =>$response['qrCodeData']['QRCodeBase64'],
+                'qrcode' => $response['qrCodeData']['QRCodeBase64'],
                 'copy_past' => $response['qrCodeData']['QRCodeCopiaeCola'],
                 'status' => 'pending',
                 "expirationDate" => 1,
@@ -65,8 +65,7 @@ class LinkPayment extends Component
                 'client_uuid' => $externalData->client_uuid,
             ];
 
-            $this->hash = 'https://pay.horiizom.com/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=' . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
-
+            $this->hash = env('APP_URL') . '/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=' . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
         }
     }
 }
