@@ -63,6 +63,7 @@ class LinkPayment extends Component
                 'id' => $externalData->id,
                 'external_reference' => $externalData->external_reference,
                 'client_uuid' => $externalData->client_uuid,
+                'description' => $data['description'],
             ];
 
             $this->hash = env('APP_URL') . '/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=' . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
