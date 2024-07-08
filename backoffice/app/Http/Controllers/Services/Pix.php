@@ -83,10 +83,10 @@ class Pix extends Controller
      */
     public function createTransactionPix(Request $request): mixed
     {
-        // if ($request->input('value') < 1) {
-        //     toastr('O valor minimo de deposito e R$1,00', 'error');
-        //     return redirect()->back();
-        // }
+        if ($request->input('value') < 1) {
+            toastr('O valor minimo de deposito e R$1,00', 'error');
+            return redirect()->back();
+        }
 
         $rules = [
             'value' => 'required|numeric',
@@ -109,7 +109,7 @@ class Pix extends Controller
             "BankAccount" => "883770778",
             "BankAccountDigit" => "8",
             "BankBranch" => "0001",
-            "PrincipalValue" => 0.01,
+            "PrincipalValue" => (float)$validatedData['value'],
             "webhook_url" => $this->urlPostBack
 
         ];
