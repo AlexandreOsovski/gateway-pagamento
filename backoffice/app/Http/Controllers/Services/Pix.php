@@ -60,7 +60,6 @@ class Pix extends Controller
      */
     private string $url;
 
-
     /**
      * @var string
      */
@@ -84,10 +83,10 @@ class Pix extends Controller
      */
     public function createTransactionPix(Request $request): mixed
     {
-        if ($request->input('value') < 1) {
-            toastr('O valor minimo de deposito e R$1,00', 'error');
-            return redirect()->back();
-        }
+        // if ($request->input('value') < 1) {
+        //     toastr('O valor minimo de deposito e R$1,00', 'error');
+        //     return redirect()->back();
+        // }
 
         $rules = [
             'value' => 'required|numeric',
@@ -110,7 +109,7 @@ class Pix extends Controller
             "BankAccount" => "883770778",
             "BankAccountDigit" => "8",
             "BankBranch" => "0001",
-            "PrincipalValue" => (float)$validatedData['value'],
+            "PrincipalValue" => 0.01,
             "webhook_url" => $this->urlPostBack
 
         ];
@@ -283,9 +282,6 @@ class Pix extends Controller
             }
         }
     }
-
-
-
 
     /**
      * Register a financial movement.
