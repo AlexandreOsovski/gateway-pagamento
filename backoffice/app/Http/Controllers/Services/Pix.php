@@ -84,7 +84,10 @@ class Pix extends Controller
      */
     public function createTransactionPix(Request $request): mixed
     {
-
+        if ($request->input('value') < 1) {
+            toastr('O valor minimo de deposito e R$1,00', 'error');
+            return redirect()->back();
+        }
 
         $rules = [
             'value' => 'required|numeric',
@@ -94,7 +97,8 @@ class Pix extends Controller
 
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            toastr($validator->errors()->messages()['value'][0], 'error');
+            return redirect()->back();
         }
 
         $validatedData = $validator->validated();
@@ -148,6 +152,11 @@ class Pix extends Controller
 
     public function makeLinkPaymentPix(Request $request): mixed
     {
+        if ($request->input('value') < 1) {
+            toastr('O valor minimo de deposito e R$1,00', 'error');
+            return redirect()->back();
+        }
+
 
         $rules = [
             'value' => 'required|numeric',
@@ -157,7 +166,8 @@ class Pix extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            toastr($validator->errors()->messages()['value'][0], 'error');
+            return redirect()->back();
         }
 
         $validatedData = $validator->validated();

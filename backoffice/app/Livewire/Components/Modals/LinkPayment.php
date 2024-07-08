@@ -27,7 +27,6 @@ class LinkPayment extends Component
 
     public function makeLinkPaymentPix()
     {
-
         $transactionData = [
             "PixKey" => "financeiro@2mpayments.com.br",
             "TaxNumber" => "44456489000186",

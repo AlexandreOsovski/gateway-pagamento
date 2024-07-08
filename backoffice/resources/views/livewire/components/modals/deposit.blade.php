@@ -28,7 +28,6 @@
                         <button type="button" class="btn btn-send main-btn main-btn-lg full-width"
                             style="display:none;" id="botaoCarregando" wire:loading wire:target="valueBRL">
                             <span id="spinner" class="spinner-border spinner-border-sm me-2" wire:loading></span>
-                            Carregando...
                         </button>
                     </form>
                 </div>
