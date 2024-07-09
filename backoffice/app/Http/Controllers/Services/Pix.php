@@ -213,21 +213,35 @@ class Pix extends Controller
 
     public function createIntentionPix(Request $request): mixed
     {
-        try {
-            $transaction = new TransactionModel();
-            $transaction->client_id = Auth::guard('client')->user()->id;
-            $transaction->method_payment = 'PIX';
-            $transaction->type_key = $request->type_key;
-            $transaction->amount = $request->amount;
-            $transaction->address = $request->address;
-            $transaction->status = 'waiting_approval';
-            $transaction->save();
 
-            Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.' );
+        if ((float)$request->amount > Auth::guard('client')->user()->balance) {
+            Toastr('Saldo insuficiente', 'error');
             return redirect()->back();
-        } catch (\Exception $e) {
-            Alert::error('Erro ao criar transação PIX!', $e->getMessage());
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        } else {
+            try {
+                $transaction = new TransactionModel();
+                $transaction->client_id = Auth::guard('client')->user()->id;
+                $transaction->method_payment = 'PIX';
+                $transaction->type_key = $request->type_key;
+                $transaction->amount = $request->amount;
+                $transaction->address = $request->address;
+                $transaction->status = 'waiting_approval';
+                $transaction->save();
+
+                MovementModel::create([
+                    'client_id' => $transaction->client_id,
+                    'type' => 'EXIT',
+                    'type_movement' => 'TRANSFER',
+                    'amount' => (float)$request->amount,
+                    'description' => 'Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.',
+                ]);
+
+                Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.');
+                return redirect()->back();
+            } catch (\Exception $e) {
+                Alert::error('Erro ao criar transação PIX!', $e->getMessage());
+                return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
         }
     }
 
