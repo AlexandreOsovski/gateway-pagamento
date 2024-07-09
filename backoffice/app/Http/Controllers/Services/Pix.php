@@ -211,6 +211,26 @@ class Pix extends Controller
         return false;
     }
 
+    public function createIntentionPix(Request $request): mixed
+    {
+        try {
+            $transaction = new TransactionModel();
+            $transaction->client_id = Auth::guard('client')->user()->id;
+            $transaction->method_payment = 'PIX';
+            $transaction->type_key = $request->type_key;
+            $transaction->amount = $request->amount;
+            $transaction->address = $request->address;
+            $transaction->status = 'waiting_approval';
+            $transaction->save();
+
+            Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.' );
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Alert::error('Erro ao criar transação PIX!', $e->getMessage());
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
     /**
      * Webhook
      *
