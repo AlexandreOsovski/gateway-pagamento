@@ -63,6 +63,8 @@ class Pix extends Controller
     /**
      * @var string
      */
+
+    private string $pix_key;
     public string $urlPostBack;
 
     public function __construct()
@@ -72,6 +74,7 @@ class Pix extends Controller
         $this->version = 'v2';
         $this->url = "{$this->integrationApiUrl}/{$this->version}/";
         $this->urlPostBack = 'https://pay.horiizom.com/api/webhook-pix';
+        $this->pix_key = '69655432-eafe-44b0-934c-3ebd6d6be06c';
     }
 
     /**
@@ -103,7 +106,7 @@ class Pix extends Controller
         $validatedData = $validator->validated();
 
         $transactionData = [
-            "PixKey" => "financeiro@2mpayments.com.br",
+            "PixKey" => $this->pix_key,
             "TaxNumber" => "44456489000186",
             "Bank" => "450",
             "BankAccount" => "883770778",
@@ -172,7 +175,7 @@ class Pix extends Controller
         $validatedData = $validator->validated();
 
         $transactionData = [
-            "PixKey" => "financeiro@2mpayments.com.br",
+            "PixKey" => $this->pix_key,
             "TaxNumber" => "44456489000186",
             "Bank" => "450",
             "BankAccount" => "883770778",
