@@ -33,7 +33,8 @@
                                             <h7 class="text-success">Novo</h7>
                                         @endif
                                         <h3>{{ $item['title'] }}</h3>
-                                        <p>{{ \Carbon\Carbon::today()->format('d/m/Y') }}</p>
+                                            <p>{{ \Carbon\Carbon::parse($item['created_at'])->format('d/m/Y H:i:s') }}</p>
+                                            {{--                                        <p>{{ \Carbon\Carbon::today()->format('d/m/Y') }}</p>--}}
                                     </div>
                                 </a>
                             </div>

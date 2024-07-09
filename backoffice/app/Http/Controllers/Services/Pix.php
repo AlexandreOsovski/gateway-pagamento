@@ -86,7 +86,7 @@ class Pix extends Controller
             "BankAccount" => "4992752153",
             "BankAccountDigit" => "0",
             "BankBranch" => "0001",
-            "PrincipalValue" => (float)$value,
+            "PrincipalValue" => $value,
             "webhook_url" => $this->urlPostBack
 
         ];

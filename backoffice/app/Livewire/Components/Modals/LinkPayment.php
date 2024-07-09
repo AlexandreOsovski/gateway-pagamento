@@ -28,11 +28,11 @@ class LinkPayment extends Component
     public function makeLinkPaymentPix()
     {
         $transactionData = [
-            "PixKey" => "financeiro@2mpayments.com.br",
-            "TaxNumber" => "44456489000186",
+            "PixKey" => "69655432-eafe-44b0-934c-3ebd6d6be06c",
+            "TaxNumber" => "33482384000185",
             "Bank" => "450",
-            "BankAccount" => "883770778",
-            "BankAccountDigit" => "8",
+            "BankAccount" => "4992752153",
+            "BankAccountDigit" => "0",
             "BankBranch" => "0001",
             "PrincipalValue" => (float)$this->value,
             "webhook_url" => 'https://pay.horiizom.com/api/webhook-pix',
