@@ -377,9 +377,7 @@
 
 
     @include('livewire.components.modals.addBalance')
-    @include('livewire.components.modals.withdraws')
     @include('livewire.components.modals.sendMoney')
-
     <livewire:components.modals.link-payment />
     <livewire:components.modals.exchange />
 @endsection

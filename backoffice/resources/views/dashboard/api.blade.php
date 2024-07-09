@@ -8,7 +8,7 @@
             <div class="page-header">
 
                 <div>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#withdraw">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#make-api-key">
                         <button style="background-color: #7d4eff" class="btn text-white">Adicionar API</button>
                     </a>
                 </div>
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="withdraw" tabindex="-1" aria-labelledby="withdraw" aria-hidden="true">
+    <div class="modal fade" id="make-api-key" tabindex="-1" aria-labelledby="make-api-key" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="container">

@@ -1,4 +1,4 @@
-<!-- Withdraw-modal -->
+<!-- Withdraw-modal -->withdraws
 <div class="modal fade" id="withdraw" tabindex="-1" aria-labelledby="withdraw" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
