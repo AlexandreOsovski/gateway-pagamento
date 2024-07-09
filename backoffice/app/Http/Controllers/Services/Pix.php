@@ -77,6 +77,22 @@ class Pix extends Controller
         $this->pix_key = '69655432-eafe-44b0-934c-3ebd6d6be06c';
     }
 
+    private function dataToPix(float $value):array
+    {
+        return [
+            "PixKey" => $this->pix_key,
+            "TaxNumber" => "33482384000185",
+            "Bank" => "450",
+            "BankAccount" => "4992752153",
+            "BankAccountDigit" => "0",
+            "BankBranch" => "0001",
+            "PrincipalValue" => (float)$value,
+            "webhook_url" => $this->urlPostBack
+
+        ];
+
+    }
+
     /**
      * Create a transaction pix.
      *
@@ -105,23 +121,14 @@ class Pix extends Controller
 
         $validatedData = $validator->validated();
 
-        $transactionData = [
-            "PixKey" => $this->pix_key,
-            "TaxNumber" => "44456489000186",
-            "Bank" => "450",
-            "BankAccount" => "883770778",
-            "BankAccountDigit" => "8",
-            "BankBranch" => "0001",
-            "PrincipalValue" => (float)$validatedData['value'],
-            "webhook_url" => $this->urlPostBack
 
-        ];
 
         $response = Http::withHeaders([
             'authorizationToken' => $this->key_api,
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->post($this->url . 'pix/create', $transactionData);
+        ])->post($this->url . 'pix/create', $this->dataToPix($validatedData['value']));
+
 
         if ($response->status() == 201) {
             $data = [
@@ -151,7 +158,6 @@ class Pix extends Controller
         }
     }
 
-
     public function makeLinkPaymentPix(Request $request): mixed
     {
         if ($request->input('value') < 1) {
@@ -174,23 +180,11 @@ class Pix extends Controller
 
         $validatedData = $validator->validated();
 
-        $transactionData = [
-            "PixKey" => $this->pix_key,
-            "TaxNumber" => "44456489000186",
-            "Bank" => "450",
-            "BankAccount" => "883770778",
-            "BankAccountDigit" => "8",
-            "BankBranch" => "0001",
-            "PrincipalValue" => $validator['value'],
-            "webhook_url" => $this->urlPostBack
-
-        ];
-
         $response = Http::withHeaders([
             'authorizationToken' => $this->key_api,
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->post($this->url . 'pix/create', $transactionData);
+        ])->post($this->url . 'pix/create', $this->dataToPix($validatedData['value']));
 
         if ($response->status() == 201) {
             $data = [
