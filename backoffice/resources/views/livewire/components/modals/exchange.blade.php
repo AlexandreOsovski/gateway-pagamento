@@ -23,11 +23,6 @@
                                 style="font-size: 16px;" value="{{ $valueUSD }}" wire:loading.remove
                                 wire:target="valueBRL" />
                         </div>
-                        <div class="form-group mb-15">
-                            <label for="input4" class="form-label">Codigo 2FA</label>
-                            <input type="email" class="form-control" id="input4"
-                                placeholder="Digite o codigo enviado ao seu email.">
-                        </div>
 
                         <button type="button" class="btn btn-send main-btn main-btn-lg full-width" id="botaoComprar"
                             wire:loading.remove wire:target="valueBRL" wire:click="convertBalance">
