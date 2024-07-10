@@ -53,4 +53,6 @@ interface KeysApiInterface
      * @return KeysApiModel|null The found key API or null if not found.
      */
     public function find(string $id): ?KeysApiModel;
+
+    public function getByAppIdAndAppKey(string $appId, string $appKey): array;
 }

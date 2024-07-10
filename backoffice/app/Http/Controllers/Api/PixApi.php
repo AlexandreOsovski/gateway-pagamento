@@ -1,38 +1,43 @@
 <?php
 
-namespace App\Http\Controllers\Services;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
-use App\Models\TokenModel;
-use App\Models\OrderCreditModel;
-use App\Models\AdminModel;
-use App\Models\ClientModel;
-use App\Models\MovementModel;
-use App\Models\TransferUserToUserModel;
-use App\Models\KeysApiModel;
-use App\Models\PixApiModel;
-use App\Models\WebhookNotificationModel;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\Writer\PngWriter;
-use App\Jobs\PixCreateJob;
-use Illuminate\Support\Facades\Log;
 
-class Spacefy extends Controller
+use App\Jobs\PixCreateJob;
+use Illuminate\{
+    Http\Request,
+    Support\Facades\Http,
+    Support\Facades\Validator
+};
+
+use App\Models\{
+    TokenModel,
+    AdminModel,
+    ClientModel,
+    MovementModel,
+    PixApiModel,
+    WebhookNotificationModel,
+    NotificationModel,
+};
+
+use App\Services\{
+    ClientService,
+    KeysApiService
+};
+
+
+class XpayPixApi extends Controller
 {
     /**
      * @var string
      */
-    private string $secretKey;
+    private string $key_api;
 
     /**
      * @var string
      */
-    private string $path;
+    private string $integrationApiUrl;
 
     /**
      * @var string
@@ -47,192 +52,46 @@ class Spacefy extends Controller
     /**
      * @var string
      */
-    private string $apiSecret;
 
-    /**
-     * @var string
-     */
-//    private string $webHookVega;
+    private string $pix_key;
+    public string $urlPostBack;
 
-    public function __construct()
+    public string $apiSecret;
+
+    public TokenModel $token;
+
+    public $keysApiService;
+    public $clientService;
+
+    public function __construct(KeysApiService $keysApiService, ClientService $clientService)
     {
-        $this->secretKey = "sk_live_LTWpzZcO0T8mkgmVh7JDSYn7nE5BhVAp4JT3UmdVZF";
-        $this->path = "https://api-br.x-pay.app";
-        $this->version = "v1/";
-        $this->url = "{$this->path}/{$this->version}";
+        $this->key_api = env('AUTHORIZATION_TOKEN');
+
+        $this->integrationApiUrl = "https://api-br.x-pay.app";
+        $this->version = 'v2';
+        $this->url = "{$this->integrationApiUrl}/{$this->version}/";
+        $this->urlPostBack = 'https://pay.horiizom.com/api/v1/pix/webhook';
+        $this->pix_key = '69655432-eafe-44b0-934c-3ebd6d6be06c';
+
         $this->apiSecret = env('API_SECRET_KEY');
+        $this->token = new TokenModel();
+        $this->keysApiService = $keysApiService;
+        $this->clientService = $clientService;
     }
 
-    /**
-     * Create a transaction credit.
-     *
-     * @param Request $request
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function createTransactionCredit(Request $request): mixed
+    private function dataToPix(float $value): array
     {
-        if ($request->header('X-API-SECRET') !== $this->apiSecret) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        return [
+            "PixKey" => $this->pix_key,
+            "TaxNumber" => "33482384000185",
+            "Bank" => "450",
+            "BankAccount" => "4992752153",
+            "BankAccountDigit" => "0",
+            "BankBranch" => "0001",
+            "PrincipalValue" => $value,
+            "webhook_url" => $this->urlPostBack
 
-        $authorizationHeader = $request->header('Authorization');
-        if (!$authorizationHeader) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $token = str_replace('Bearer ', '', $authorizationHeader);
-        $tokenExists = TokenModel::where('token', $token)->exists();
-
-        if (!$tokenExists) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $tokenModel = TokenModel::where('token', $token)->first();
-
-        $keysApi = KeysApiModel::where('appKey', $tokenModel->appKey)->first();
-
-        $rules = [
-            'value' => 'required|numeric',
-            'orderId' => 'required|string',
-            'card' => 'required|array',
-            'card.number' => 'required|string',
-            'card.name' => 'required|string',
-            'card.expirationMonth' => 'required|numeric',
-            'card.expirationYear' => 'required|numeric',
-            'card.cvv' => 'required|string',
-            'installments' => 'required|numeric',
-            'payerName' => 'required|string',
-            'payerEmail' => 'required|string',
-            'payerDocument' => 'required|string',
-            'payerDocumentType' => 'required|in:cpf,cnpj',
-            'items' => 'required|array',
-            'items.*.title' => 'required|string',
-            'items.*.unitPrice' => 'required|numeric',
-            'items.*.quantity' => 'required|numeric',
-            'items.*.tangible' => 'required|boolean'
         ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $validatedData = $validator->validated();
-
-        $documentNumber = $validatedData['payerDocument'];
-        $documentNumber = preg_replace('/\D/', '', $documentNumber);
-
-        $amountInCents = intval($validatedData['value'] * 100);
-
-        $transactionData = [
-            'amount' => $amountInCents,
-            'paymentMethod' => 'credit_card',
-            'installments' => $validatedData['installments'],
-            'externalRef' => $tokenModel->appKey,
-            'card' => [
-                'number' => $validatedData['card']['number'],
-                'holderName' => $validatedData['card']['name'],
-                'expirationMonth' => $validatedData['card']['expirationMonth'],
-                'expirationYear' => $validatedData['card']['expirationYear'],
-                'cvv' => $validatedData['card']['cvv']
-            ],
-            'customer' => [
-                'name' => $validatedData['payerName'],
-                'email' => $validatedData['payerEmail'],
-                'document' => [
-                    'number' => $documentNumber,
-                    'type' => $validatedData['payerDocumentType']
-                ],
-            ],
-            'items' => []
-        ];
-
-        foreach ($validatedData['items'] as $item) {
-            $unitPriceInCents = intval($item['unitPrice'] * 100);
-            $transactionData['items'][] = [
-                'title' => $item['title'],
-                'unitPrice' => $unitPriceInCents,
-                'quantity' => $item['quantity'],
-                'tangible' => $item['tangible'],
-            ];
-        }
-
-        $response = $this->post('/transactions', $transactionData);
-
-        if (
-            $response['status'] === 'paid' ||
-            $response['status'] === 'processing' ||
-            $response['status'] === 'authorized'
-        ) {
-            $data = [
-                "card" => [
-                    'firstDigits' => $response['card']['firstDigits'],
-                    'lastDigits' => $response['card']['lastDigits'],
-                    'brand' => $response['card']['brand'],
-                    'holderName' => $response['card']['holderName'],
-                    'expirationMonth' => $response['card']['expirationMonth'],
-                    'expirationYear' => $response['card']['expirationYear'],
-                ],
-                "payerName" => $response['customer']['name'],
-                "payerDocument" => $response['customer']['document']['number'],
-                "value" => $validatedData['value'],
-                "txId" => $response['id'],
-                "orderId" => $validatedData['orderId'],
-                "created_at" => $response['createdAt'],
-                "status" => $response['status'],
-                'appId' => $tokenModel->appId,
-            ];
-
-            OrderCreditModel::create([
-                'client_id' => $keysApi->client->id,
-                'external_reference' => $response['id'],
-                'order_id' => $validatedData['orderId'],
-                'amount' => $validatedData['value'],
-                'purchase_info' => json_encode($validatedData['items']),
-                'response' => json_encode($response),
-                'status' => $response['status'],
-                'is_approved' => 1,
-            ]);
-
-            return response()->json($data, 200);
-        } else {
-            $data = [
-                "card" => [
-                    'firstDigits' => $response['card']['firstDigits'],
-                    'lastDigits' => $response['card']['lastDigits'],
-                    'brand' => $response['card']['brand'],
-                    'holderName' => $response['card']['holderName'],
-                    'expirationMonth' => $response['card']['expirationMonth'],
-                    'expirationYear' => $response['card']['expirationYear'],
-                ],
-                "payerName" => $response['customer']['name'],
-                "payerDocument" => $response['customer']['document']['number'],
-                "value" => $validatedData['value'],
-                "description" => $response['refusedReason']['description'],
-                "txId" => $response['id'],
-                "orderId" => $validatedData['orderId'],
-                "created_at" => $response['createdAt'],
-                "status" => $response['status'],
-                'appId' => $tokenModel->appId,
-            ];
-
-            if (asset($response['id'])) {
-                OrderCreditModel::create([
-                    'client_id' => $keysApi->client->id,
-                    'external_reference' => $response['id'],
-                    'order_id' => $validatedData['orderId'],
-                    'amount' => $validatedData['value'],
-                    'purchase_info' => json_encode($validatedData['items']),
-                    'response' => json_encode($response),
-                    'status' => $response['status'],
-                    'is_approved' => 1,
-                ]);
-            }
-
-            return response()->json($data, 400);
-        }
     }
 
     /**
@@ -249,365 +108,83 @@ class Spacefy extends Controller
         }
 
         $authorizationHeader = $request->header('Authorization');
-        if (!$authorizationHeader) {
+        if (empty($authorizationHeader)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
 
         $token = str_replace('Bearer ', '', $authorizationHeader);
-        $tokenExists = TokenModel::where('token', $token)->exists();
+        $tokenExists = $this->token::where('token', $token)->exists();
 
-        if (!$tokenExists) {
+        if (empty($tokenExists)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $tokenModel = TokenModel::where('token', $token)->first();
 
-        $keysApi = KeysApiModel::where('appKey', $tokenModel->appKey)->first();
+        $tokenModel = $this->token::where('token', $token)->first();
+        $keysApi = $this->keysApiService->getByAppIdAndAppKey($tokenModel->appId, $tokenModel->appKey);
+
+        if (empty($keysApi)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+
+        if ($request->input('value') < 1) {
+            return response()->json(['error' => 'O valor mínimo é de R$1,00.'], 422);
+        }
+
 
         $rules = [
             'value' => 'required|numeric',
-            'orderId' => 'required|string',
-            'payerName' => 'required|string',
-            'payerEmail' => 'required|string',
-            'payerDocument' => 'required|string',
-            'payerDocumentType' => 'required|string|in:cpf,cnpj',
-            'items' => 'required|array',
-            'items.*.title' => 'required|string',
-            'items.*.unitPrice' => 'required|numeric',
-            'items.*.quantity' => 'required|numeric',
-            'items.*.tangible' => 'required|boolean'
+            'url_webhook' => 'required|string'
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
+
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
         $validatedData = $validator->validated();
 
-        $documentNumber = $validatedData['payerDocument'];
-        $documentNumber = preg_replace('/\D/', '', $documentNumber);
+        $response = Http::withHeaders([
+            'authorizationToken' => $this->key_api,
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+        ])->post($this->url . 'pix/create', $this->dataToPix($validatedData['value']));
 
-        $amountInCents = intval($validatedData['value'] * 100);
+        $client  = $this->clientService->find($keysApi['client_id']);
 
-        $transactionData = [
-            'amount' => $amountInCents,
-            'paymentMethod' => 'pix',
-            'externalRef' => $tokenModel->appKey,
-            'pix' => [
-                'expiresInDays' => 1
-            ],
-            'customer' => [
-                'name' => $validatedData['payerName'],
-                'email' => $validatedData['payerEmail'],
-                'document' => [
-                    'number' => $documentNumber,
-                    'type' => $validatedData['payerDocumentType']
-                ],
-            ],
-            'items' => []
-        ];
-
-        foreach ($validatedData['items'] as $item) {
-            $transactionData['items'][] = [
-                'title' => $item['title'],
-                'unitPrice' => $item['unitPrice'],
-                'quantity' => $item['quantity'],
-                'tangible' => $item['tangible'],
-            ];
-        }
-
-        $response = $this->post('/transactions', $transactionData);
-
-        if ($response['status'] === 'waiting_payment') {
-            $pixCopyPaste = $this->generateQrCode($response['pix']['qrcode']);
+        if ($response->status() == 201) {
             $data = [
-                "pixCopy" => $response['pix']['qrcode'],
-                "pixQrCode" => $pixCopyPaste,
-                "payerName" => $response['customer']['name'],
-                "payerDocument" => $response['customer']['document']['number'],
-                "value" => $validatedData['value'],
-                "txId" => $response['id'],
-                "orderId" => $validatedData['orderId'],
-                "expirationDate" => $response['pix']['expirationDate'],
-                "created_at" => $response['createdAt'],
+                "pixCopy" => $response['qrCodeData']['QRCodeCopiaeCola'],
+                "payerName" => $client->name,
+                "payerDocument" => $client->document_number,
+
+                "client_uuid" => $client->uuid,
+                "txId" => $response['qrCodeData']['Identifier'],
+                "order_id" => $response['qrCodeData']['Identifier'],
+                'appId' => $request->appId == '' ? '0' : $request->appId,
+                'token' => $token,
+                "amount" => $validatedData['value'],
+                "external_reference" => $response['qrCodeData']['Identifier'],
                 "status" => 'pending',
-                'appId' => $tokenModel->appId,
+                "url_webhook" => $validatedData['url_webhook'],
+                "qrcode" => $response['qrCodeData']['QRCodeBase64'],
+
+                "expirationDate" => 1,
+                "created_at" => now(),
             ];
 
-            PixCreateJob::dispatch($data, $tokenModel->token)->delay(now()->addSeconds(5))->onQueue('pix-insert');
+            PixCreateJob::dispatch($data, $token)->delay(now()->addSeconds(5))->onQueue('pix-insert');
 
-            return response()->json($data, 200);
+            return response()->json(json_decode($response->body(), true), 200);
         } else {
             return response()->json($response, 400);
         }
     }
 
-    /**
-     * Create a transfer PIX.
-     *
-     * @param Request $request
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function createTransferPix(Request $request): mixed
-    {
-        $rules = [
-            'amount' => 'required|numeric',
-            'pixKey' => 'required|string',
-            'externalRef' => 'required|string'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $validatedData = $validator->validated();
-
-        $amountInCents = intval($validatedData['amount'] * 100);
-
-        $transferData = [
-            'amount' => $amountInCents,
-            'pixKey' => $validatedData['pixKey'],
-            'externalRef' => $validatedData['externalRef']
-        ];
-
-        $response = $this->post('/transfers', $transferData);
-
-        if ($response['status'] === 'pending' || $response['status'] === 'success') {
-            return response()->json($response, 200);
-        } else {
-            return response()->json($response, 400);
-        }
-    }
-
-    /**
-     * Create a transfer Bank Account.
-     *
-     * @param Request $request
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function createTransferBank(Request $request): mixed
-    {
-        $rules = [
-            'amount' => 'required|numeric',
-            'bankAccount' => 'required|array',
-            'bankAccount.bankCode' => 'required|string',
-            'bankAccount.agencyNumber' => 'required|string',
-            'bankAccount.accountNumber' => 'required|string',
-            'bankAccount.accountDigit' => 'required|string',
-            'bankAccount.type' => 'required|string',
-            'bankAccount.legalName' => 'required|string',
-            'bankAccount.documentNumber' => 'required|string',
-            'bankAccount.documentType' => 'required|string|in:cpf,cnpj',
-            'externalRef' => 'required|string'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $validatedData = $validator->validated();
-
-        $amountInCents = intval($validatedData['amount'] * 100);
-
-        $transferData = [
-            'amount' => $amountInCents,
-            'bankAccount' => [
-                'bankCode' => $validatedData['bankAccount']['bankCode'],
-                'agencyNumber' => $validatedData['bankAccount']['agencyNumber'],
-                'accountNumber' => $validatedData['bankAccount']['accountNumber'],
-                'accountDigit' => $validatedData['bankAccount']['accountDigit'],
-                'type' => $validatedData['bankAccount']['type'],
-                'legalName' => $validatedData['bankAccount']['legalName'],
-                'document' => [
-                    'number' => $validatedData['bankAccount']['documentNumber'],
-                    'type' => $validatedData['bankAccount']['documentType']
-                ],
-            ],
-            'externalRef' => $validatedData['externalRef']
-        ];
-
-        $response = $this->post('/transfers', $transferData);
-
-        if ($response['status'] === 'pending' || $response['status'] === 'success') {
-            return response()->json($response, 200);
-        } else {
-            return response()->json($response, 400);
-        }
-    }
-
-    /**
-     * Create a customer.
-     *
-     * @param Request $request
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function createCustomer(Request $request): mixed
-    {
-        if ($request->header('X-API-SECRET') !== $this->apiSecret) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $authorizationHeader = $request->header('Authorization');
-        if (!$authorizationHeader) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $token = str_replace('Bearer ', '', $authorizationHeader);
-        $tokenExists = TokenModel::where('token', $token)->exists();
-
-        if (!$tokenExists) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $tokenModel = TokenModel::where('token', $token)->first();
-
-        $rules = [
-            'payerName' => 'required|string',
-            'payerEmail' => 'required|string',
-            'payerDocument' => 'required|string',
-            'payerDocumentType' => 'required|string|in:cpf,cnpj',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $validatedData = $validator->validated();
-
-        $documentNumber = $validatedData['payerDocument'];
-        $documentNumber = preg_replace('/\D/', '', $documentNumber);
-
-        $data = [
-            'name' => $validatedData['payerName'],
-            'email' => $validatedData['payerEmail'],
-            'document' => [
-                'number' => $documentNumber,
-                'type' => $validatedData['payerDocumentType'],
-            ]
-        ];
-
-        $response = $this->post('/customers', $data);
-
-        if (isset($response['id'])) {
-            return response()->json($response, 200);
-        } else {
-            return response()->json($response, $response['status']);
-        }
-    }
-
-    /**
-     * Get transanction by Id
-     * @param Request $request
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function getTransaction(Request $request): mixed
-    {
-        if ($request->header('X-API-SECRET') !== $this->apiSecret) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $authorizationHeader = $request->header('Authorization');
-        if (!$authorizationHeader) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $token = str_replace('Bearer ', '', $authorizationHeader);
-        $tokenExists = TokenModel::where('token', $token)->exists();
-
-        if (!$tokenExists) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $rules = [
-            'id' => 'required|numeric'
-        ];
-
-        $validator = Validator::make($request->all, $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
-
-        $validatedData = $validator->validated();
-
-        return $this->get('transactions/' . $validatedData['id']);
-    }
-
-    /**
-     * Reverse as Transaction
-     * @param Request $request
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function reverseTransaction(Request $request): mixed
-    {
-        if ($request->header('X-API-SECRET') !== $this->apiSecret) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $authorizationHeader = $request->header('Authorization');
-        if (!$authorizationHeader) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $token = str_replace('Bearer ', '', $authorizationHeader);
-        $tokenExists = TokenModel::where('token', $token)->exists();
-
-        if (!$tokenExists) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $rules = [
-            'id' => 'required|numeric',
-            'amount' => 'required|numeric'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
-
-        $validatedData = $validator->validated();
-
-        return $this->post('transactions/' . $validatedData['id'] . '/refund', $validatedData);
-    }
-
-    /**
-     * Generate a QR Code
-     *
-     * @param string $pixCopyPaste
-     * @return string
-     */
-    public function generateQrCode($pixCopyPaste)
-    {
-        $qrCode = new QrCode($pixCopyPaste);
-        $qrCode->setEncoding(new Encoding('UTF-8'))
-            ->setErrorCorrectionLevel(ErrorCorrectionLevel::Low)
-            ->setSize(300)
-            ->setMargin(10);
-
-        $writer = new PngWriter();
-
-        $qrCodeOutput = $writer->write($qrCode);
-        $qrCodeDataUri = $qrCodeOutput->getDataUri();
-
-        $base64 = substr($qrCodeDataUri, strpos($qrCodeDataUri, ",") + 1);
-
-        return $base64;
-    }
 
     /**
      * Webhook
@@ -615,151 +192,50 @@ class Spacefy extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function webHook(Request $request)
     {
         $data = $request->all();
 
+        if (empty($data)) {
+            return response()->json('need webhook data', '500');
+        }
+
         $webhookNotification = new WebhookNotificationModel();
+        $webhookNotification->event = 'update_payment';
         $webhookNotification->data = json_encode($data);
         $webhookNotification->save();
 
-        $orderId = null;
+        if ($data['data']['Method'] == 'PixIn' && $data['data']['Status'] == 'Paid') {
 
-        if (isset($data['data']) && isset($data['data']['id']) && $data['data']['paymentMethod'] == 'credit_card') {
-            $order = OrderCreditModel::where('external_reference', $data['data']['id'])->first();
+            $order = PixApiModel::where('order_id', $data['data']['QRCodeInfos']['Identifier'])->first();
 
             if ($order) {
-                $order->status = $data['data']['status'];
+                $order->status = 'approved';
                 $order->save();
+                $client_uuid = $order->client_uuid;
 
-                if ($data['data']['status'] === 'paid') {
-                    $order->is_approved = 1;
-                    $order->save();
+                $admin = AdminModel::find(1);
+                $adminBalance = ($data['data']['Value'] * 20) / 100;
+                $admin->balance += $adminBalance;
+                $admin->save();
 
-                    $orderId = $order->order_id;
+                $client = ClientModel::where('uuid', $client_uuid)->first();
+                $userBalance = ($data['data']['Value'] * 80) / 100;
+                $client->balance += $userBalance;
+                $client->save();
 
-                    $client = ClientModel::where('id', $order->client_id)->first();
+                $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
 
-                    if (strtolower($client->email) != 'recebimemtosblack@gmail.com') {
-                        if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                            $admin = AdminModel::find(1);
-                            $adminBalance = ($order->amount * 18) / 100;
-                            $admin->balance += $adminBalance;
-                            $admin->save();
-                        } else {
-                            $admin = AdminModel::find(1);
-                            $adminBalance = ($order->amount * 20) / 100;
-                            $admin->balance += $adminBalance;
-                            $admin->save();
-                        }
-                    } else {
-                        $admin = AdminModel::find(1);
-                        $adminBalance = ($order->amount * 16) / 100;
-                        $admin->balance += $adminBalance;
-                        $admin->save();
-                    }
+                $description = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($data['data']['Value'], 2, ',', '.') . ' (Valor total retirando as taxas)';
+                $this->makeNotification($client->id, $userBalance, 'Deposito PIX', $description);
 
-                    if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                        $affiliate = ClientModel::where('id', $order->client->indicator_id)->first();
-                        $affiliateBalance = (($order->amount - $adminBalance) * 2) / 100;
-                        $affiliate->balance += $affiliateBalance;
-                        $affiliate->save();
+                Http::post($order->url_webhook, $data);
 
-                        $userBalance = ($order->amount * 80) / 100;
-
-                        $this->entryValues($affiliate->id, 'PIX', 'entry', $affiliateBalance, 'Comissão de Indicação');
-                        $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                        $this->payComission($affiliate->id, $order->client_id, $userBalance);
-                    } else {
-                        $userBalance = ($order->amount * 80) / 100;
-
-                        $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                        $this->payComission($admin->id, $client->id, $adminBalance);
-                    }
-                }
-
-                $data['data']['Txid'] = $data['data']['id'];
-                $data['data']['OrderId'] = $orderId;
-
-                try {
-//                    Http::post($this->webHookVega, $data['data']);
-                    Log::channel('webhook')->info('Webhook sent successfully');
-                } catch (\Exception $e) {
-                    Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
-                }
+                return response()->json(['message' => 'Webhook received'], 200);
             }
         }
-
-        if (isset($data['data']) && isset($data['data']['id']) && $data['data']['paymentMethod'] == 'pix') {
-            $order = PixApiModel::where('order_id', $data['data']['id'])->first();
-
-            if ($order) {
-                if ($data['data']['status'] === 'paid') {
-                    $order->status = 'approved';
-                    $order->is_approved = 1;
-                    $order->save();
-
-                    $orderId = $order->external_reference;
-
-                    $keysApi = KeysApiModel::where('appId', $order->appId)->first();
-                    if ($keysApi) {
-
-                        $client = ClientModel::where('id', $keysApi->client_id)->first();
-
-                        if (strtolower($client->email) != 'recebimemtosblack@gmail.com') {
-                            if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                                $admin = AdminModel::find(1);
-                                $adminBalance = ($order->amount * 18) / 100;
-                                $admin->balance += $adminBalance;
-                                $admin->save();
-                            } else {
-                                $admin = AdminModel::find(1);
-                                $adminBalance = ($order->amount * 20) / 100;
-                                $admin->balance += $adminBalance;
-                                $admin->save();
-                            }
-                        } else {
-                            $admin = AdminModel::find(1);
-                            $adminBalance = ($order->amount * 16) / 100;
-                            $admin->balance += $adminBalance;
-                            $admin->save();
-                        }
-
-                        if (!empty($client->indicator_id) || $client->indicator_id != null) {
-                            $affiliate = ClientModel::where('id', $order->client->indicator_id)->first();
-                            $affiliateBalance = (($order->amount - $adminBalance) * 2) / 100;
-                            $affiliate->balance += $affiliateBalance;
-                            $affiliate->save();
-
-                            $userBalance = ($order->amount * 80) / 100;
-
-                            $this->entryValues($affiliate->id, 'PIX', 'entry', $affiliateBalance, 'Comissão de Indicação');
-                            $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                            $this->payComission($affiliate->id, $order->client_id, $userBalance);
-                        } else {
-                            $userBalance = ($order->amount * 80) / 100;
-
-                            $this->entryValues($order->client_id, 'PIX', 'entry', $userBalance, 'Venda Cartao de Crédito');
-                            $this->payComission($admin->id, $client->id, $adminBalance);
-                        }
-                    }
-                }
-
-                $data['data']['Txid'] = $data['data']['id'];
-                $data['data']['OrderId'] = $orderId;
-
-                try {
-//                    Http::post($this->webHookVega, $data['data']);
-                    Log::channel('webhook')->info('Webhook sent successfully');
-                } catch (\Exception $e) {
-                    Log::channel('webhook')->error('Failed to send webhook: ' . $e->getMessage());
-                }
-            }
-        }
-
-        return response()->json(['message' => 'Webhook received'], 200);
     }
-
 
     /**
      * Register a financial movement.
@@ -771,7 +247,7 @@ class Spacefy extends Controller
      * @param string $description A description of the financial movement.
      * @return null
      */
-    public function entryValues($client_id, $type, $type_movements, $amount, $description)
+    public function makeMovement($client_id, $type, $type_movements, $amount, $description)
     {
         $movement = new MovementModel();
         $movement->client_id = $client_id;
@@ -790,85 +266,13 @@ class Spacefy extends Controller
      * @param float $amount The transfer amount.
      * @return void
      */
-
-    public function payComission($client_id, $client_pay_id, $amount)
+    public function makeNotification($client_id, $amount, $title, $description)
     {
-        $transfer = new TransferUserToUserModel();
-        $transfer->client_id = $client_id;
-        $transfer->client_pay_id = $client_pay_id;
-        $transfer->amount = $amount;
-        $transfer->save();
-    }
-
-
-    /**
-     * Execute a GET request.
-     *
-     * @param string $path
-     * @param array|null $params
-     * @return mixed
-     */
-    public function get(string $path, ?array $params = null): mixed
-    {
-        return $this->execute('GET', $path, null, $params);
-    }
-
-    /**
-     * Execute a POST request.
-     *
-     * @param string $path
-     * @param array|null $body
-     * @param array|null $params
-     * @return mixed
-     */
-    public function post(string $path, ?array $body = null, ?array $params = null): mixed
-    {
-        return $this->execute('POST', $path, $body, $params);
-    }
-
-    /**
-     * Execute a PUT request.
-     *
-     * @param string $path
-     * @param array|null $body
-     * @param array|null $params
-     * @return mixed
-     */
-    public function put(string $path, ?array $body = null, ?array $params = null): mixed
-    {
-        return $this->execute('PUT', $path, $body, $params);
-    }
-
-    /**
-     * Execute a DELETE request.
-     *
-     * @param string $path
-     * @param array|null $params
-     * @return mixed
-     */
-    public function delete(string $path, ?array $params = null): mixed
-    {
-        return $this->execute('DELETE', $path, null, $params);
-    }
-
-    /**
-     * Execute a request.
-     *
-     * @param string $method
-     * @param string $path
-     * @param array|null $body
-     * @param array|null $params
-     * @return mixed
-     */
-    public function execute(string $method, string $path, ?array $body = null, ?array $params = null): mixed
-    {
-        $url = $this->url . $path;
-        $headers = [
-            'Authorization' => 'Basic ' . base64_encode("{$this->secretKey}:x")
-        ];
-
-        $response = Http::withHeaders($headers)->$method($url, $body);
-
-        return $response->json();
+        $notification = new NotificationModel();
+        $notification->icon = 'fa-solid fa-money-bill';
+        $notification->client_id = $client_id;
+        $notification->title = $title;
+        $notification->body = $description;
+        $notification->save();
     }
 }

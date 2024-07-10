@@ -33,4 +33,9 @@ class KeysApiService
     {
         return $this->repository->getLastFourKeysApi($userId);
     }
+
+    public function getByAppIdAndAppKey(string $appId, string $appKey): array
+    {
+        return $this->repository->getByAppIdAndAppKey($appId, $appKey);
+    }
 }

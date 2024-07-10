@@ -126,4 +126,9 @@ class KeysApiRepository implements KeysApiInterface
     {
         return $this->model->find($id);
     }
+
+    public function getByAppIdAndAppKey(string $appId, string $appKey): array
+    {
+        return $this->model->where('appId', $appId)->where('appKey', $appKey)->first()->toArray();
+    }
 }
