@@ -185,6 +185,66 @@ class XpayPixApi extends Controller
         }
     }
 
+    /**
+     * Summary of statusTransactionPix
+     * @param \Illuminate\Http\Request $request
+     * @return string
+     */
+    public function statusTransactionPix(Request $request): string
+    {
+        if ($request->header('X-API-SECRET') !== $this->apiSecret) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $authorizationHeader = $request->header('Authorization');
+        if (empty($authorizationHeader)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $token = str_replace('Bearer ', '', $authorizationHeader);
+        $tokenExists = $this->token::where('token', $token)->exists();
+
+        if (empty($tokenExists)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $tokenModel = $this->token::where('token', $token)->first();
+        $keysApi = $this->keysApiService->getByAppIdAndAppKey($tokenModel->appId, $tokenModel->appKey);
+
+        if (empty($keysApi)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $rules = [
+            'external_reference' => 'required|string'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $validatedData = $validator->validated();
+
+        $data = [
+            'Identifier' => $validatedData['external_reference'],
+            "Bank" => "450",
+            "BankAccount" => "4992752153",
+            "BankAccountDigit" => "0",
+            "BankBranch" => "0001",
+        ];
+
+        $response = Http::withHeaders([
+            'authorizationToken' => $this->key_api,
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+        ])->post($this->url . 'pix/status', $data);
+
+        return response()->json($response->body(), 200);
+    }
+
 
     /**
      * Webhook

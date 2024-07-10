@@ -21,8 +21,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/authenticate', [AuthenticateApi::class, 'authenticateUser']);
 
     Route::prefix('pix')->group(function () {
-
         Route::post('/make', [XpayPixApi::class, 'createTransactionPix']);
+        Route::post('/status', [XpayPixApi::class, 'statusTransactionPix']);
         Route::post('/webhook', [XpayPixApi::class, 'webHook']);
     });
 
