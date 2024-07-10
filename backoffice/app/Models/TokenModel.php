@@ -9,7 +9,7 @@ class TokenModel extends Model
 {
     use HasFactory;
 
-    protected $table = "tokens";
+    protected $table = "token";
 
     protected $fillable = [
         'token',
