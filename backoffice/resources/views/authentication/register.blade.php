@@ -192,7 +192,8 @@
                     </div>
                 </form>
 
-                <div class="form-desc">Ja possuí uma conta? <a href="sign-in.html">Acesse agora mesmo!</a></div>
+                <div class="form-desc">Ja possuí uma conta? <a href="/">Acesse agora
+                        mesmo!</a></div>
             </div>
             <!-- Authentication-section -->
         </div>
