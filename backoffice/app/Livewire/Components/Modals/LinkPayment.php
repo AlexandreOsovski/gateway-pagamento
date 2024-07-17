@@ -35,7 +35,7 @@ class LinkPayment extends Component
             "BankAccountDigit" => "0",
             "BankBranch" => "0001",
             "PrincipalValue" => (float)$this->value,
-            "webhook_url" => 'https://pay.horiizom.com/api/webhook-pix',
+            "webhook_url" => 'https://homolog.horiizom.com/api/webhook-pix',
         ];
 
         $response = Http::withHeaders([

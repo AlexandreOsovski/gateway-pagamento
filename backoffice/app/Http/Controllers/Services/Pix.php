@@ -73,7 +73,7 @@ class Pix extends Controller
         $this->integrationApiUrl = "https://api-br.x-pay.app";
         $this->version = 'v2';
         $this->url = "{$this->integrationApiUrl}/{$this->version}/";
-        $this->urlPostBack = 'https://pay.horiizom.com/api/v1/webhook-pix';
+        $this->urlPostBack = 'https://homolog.horiizom.com/api/v1/webhook-pix';
         $this->pix_key = '69655432-eafe-44b0-934c-3ebd6d6be06c';
     }
 
