@@ -65,7 +65,7 @@ class LinkPayment extends Component
                 'description' => $data['description'],
             ];
 
-            if (env('APP_ENV') == 'local') {
+            if (env('APP_TEST') == true) {
                 $url = env('APP_URL');
             } else {
                 $url = 'https://pay.horiizom.com';
