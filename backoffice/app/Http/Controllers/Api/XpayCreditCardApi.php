@@ -41,6 +41,7 @@ class XpayCreditCardApi extends Controller
         $this->url = 'https://api-br.x-pay.app/v2/';
         $this->authorizationToken = env('AUTHORIZATION_TOKEN');
         $this->apiSecretKey = env('API_SECRET_KEY');
+
         if (env('APP_ENV') == 'local') {
             $this->clientId = env('API_XPAY_CLIENT_ID_CARD_HML');
             $this->clientSecret = env('API_XPAY_CLIENT_SECRET_CARD_HML');

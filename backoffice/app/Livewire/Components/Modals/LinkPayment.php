@@ -65,7 +65,13 @@ class LinkPayment extends Component
                 'description' => $data['description'],
             ];
 
-            $this->hash = env('APP_URL') . '/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=' . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
+            if (env('APP_ENV') == 'local') {
+                $url = env('APP_URL');
+            } else {
+                $url = 'https://pay.horiizom.com';
+            }
+
+            $this->hash = "$url/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=" . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
         }
     }
 }
