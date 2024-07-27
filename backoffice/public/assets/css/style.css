@@ -1,51 +1,3 @@
-/*------------------------------------------------------------------
-[Table of contents]
-@File: Oban Template Style
-[ Default Index Number ]
-- Defult css with Helper css
-    -- Before this comment ( Start Main CSS Style ) defult css continue .
-- helper css
-- preloader
-- appbar
-- body-content
-- add-card
-- option-search
-- feature-section
-- transaction-section
-- monthly-bill-section
-- send-money-section
-- circular-progress-bar
-- latest-news-section
-- contact-info
-- accordion-section
-- error-page-section
-- review-holder
-- footer
-- navbar
-- modal
-- verification-form
-- reset-form
-- message
-- setting-section
-- page-header
-- tab-selector
-- notification-section
-- text-details
-- search-section
-- authentication-section
-- alert-section
-- button-section
-- image-gallery-section
-- carousel-section
-- scroll-top
-................
--------------------------------------------------------------------*/
-/*------------------------------------------------------------------
-[Typography]
-	[ This template has one font typography ]
-		Typography 1: 'Roboto', sans-serif;
-		Typography 2: 'Poppins', sans-serif;
--------------------------------------------------------------------*/
 /*************** Import Fonts ***************/
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&amp;display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&amp;display=swap");
@@ -958,6 +910,18 @@ select.form-control:valid {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.modal-recovery-pass {
+    width: auto !important;
+}
+
+.modal-recovery-pass .modal-content {
+    width: auto !important;
+}
+
+.modal-recovery-pass .modal-body-center {
+    width: auto !important;
 }
 
 .appbar-page-title {

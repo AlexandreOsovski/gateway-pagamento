@@ -155,7 +155,7 @@
 
     <!-- ResetPassword -->
     <div class="modal fade" id="resetPassword" tabindex="-1" aria-labelledby="resetPassword" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-dialog modal-dialog-centered modal-sm modal-recovery-pass">
             <div class="modal-content">
                 <div class="container">
                     <div class="modal-header">
@@ -166,7 +166,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body modal-body-center">
-                        <h3>Digite o e-mail cadastrado na plataforma</h3>
+                        <h3>Digite o e-mail cadastrado<br /> na plataforma</h3>
                         <div class="reset-form">
                             <form action="{{ route('send-code.post') }}" method="POST">
                                 @csrf
