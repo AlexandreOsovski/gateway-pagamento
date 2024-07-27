@@ -61,9 +61,9 @@ class TransactionModelResource extends Resource
                 TextColumn::make('id')->label('ID')->searchable()->sortable(),
                 TextColumn::make('client.name')->label('Nome do Cliente')->searchable()->sortable(),
                 TextColumn::make('type_key')->label('Tipo da chave PIX')->badge()->color('success')->searchable()->sortable(),
-                TextColumn::make('address')->label('chave PIX')->badge()->color('success')->searchable()->sortable(),
+                TextColumn::make('address')->label('Chave PIX')->badge()->color('success')->searchable()->sortable(),
                 TextColumn::make('amount')->label('Valor')->prefix('R$ ')->searchable()->sortable(),
-                TextColumn::make('created_at')->label('Data do saque')->searchable(),
+                TextColumn::make('created_at')->label('Data Solicitação')->searchable(),
             ])
             ->filters([
                 //
