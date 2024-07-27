@@ -66,7 +66,7 @@ class LinkPayment extends Component
             ];
 
             if (env('APP_TEST') == true) {
-                $url = 'https://homolog.horrizom.com';
+                $url = 'https://homolog.horiizom.com';
             } else {
                 $url = 'https://pay.horiizom.com';
             }
