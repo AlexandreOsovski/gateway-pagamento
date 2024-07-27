@@ -63,6 +63,7 @@ class TransactionModelResource extends Resource
                 TextColumn::make('type_key')->label('Tipo da chave PIX')->badge()->color('success')->searchable()->sortable(),
                 TextColumn::make('address')->label('chave PIX')->badge()->color('success')->searchable()->sortable(),
                 TextColumn::make('amount')->label('Valor')->prefix('R$ ')->searchable()->sortable(),
+                TextColumn::make('created_at')->label('Data do saque')->searchable(),
             ])
             ->filters([
                 //
@@ -86,12 +87,12 @@ class TransactionModelResource extends Resource
                             'content-type' => 'application/json',
                         ])->post(env('APP_URL') . '/api/pay-pix-in-admin', $data);
 
-                        if($pixResponse->successful()) {
+                        if ($pixResponse->successful()) {
                             Notification::make()
                                 ->title('Pix pago com sucesso!')
                                 ->success()
                                 ->send();
-                        }else{
+                        } else {
                             Notification::make()
                                 ->title('Erro ao pagar saque!')
                                 ->danger()
@@ -126,8 +127,8 @@ class TransactionModelResource extends Resource
     {
         return [
             'index' => Pages\ListTransactionModels::route('/'),
-//            'create' => Pages\CreateTransactionModel::route('/create'),
-//            'edit' => Pages\EditTransactionModel::route('/{record}/edit'),
+            //            'create' => Pages\CreateTransactionModel::route('/create'),
+            //            'edit' => Pages\EditTransactionModel::route('/{record}/edit'),
         ];
     }
 }

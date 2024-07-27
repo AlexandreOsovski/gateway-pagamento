@@ -62,7 +62,6 @@ class XpayCreditCardApi extends Controller
         $data = [
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
-            // 'env' => 'dev'
         ];
 
         $response = Http::withHeaders([
@@ -197,7 +196,6 @@ class XpayCreditCardApi extends Controller
         $cardData = [
             'access_token' => $xpayAuthorization['access_token'],
             'card_number' => $validatedData['card']['number'],
-            // 'env' => 'dev'
         ];
 
         $tokenizeCard = $this->tokenizeCard($cardData);
@@ -297,7 +295,6 @@ class XpayCreditCardApi extends Controller
             'amount' => intval($validatedData['amount']),
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
-            'env' => 'dev'
         ];
 
         $response = Http::withHeaders([
@@ -356,7 +353,6 @@ class XpayCreditCardApi extends Controller
             'transactionId' => $validatedData['transactionId'],
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
-            // 'env' => 'dev'
         ];
 
         $response = Http::withHeaders([
