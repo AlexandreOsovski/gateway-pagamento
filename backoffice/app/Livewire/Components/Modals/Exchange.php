@@ -82,6 +82,8 @@ class Exchange extends Component
         ]);
 
         toastr('Operação realizada com sucesso', 'success');
+        $this->valueBRL = '';
+        $this->valueUSD = '';
         return redirect()->route('dashboard.get');
     }
 }
