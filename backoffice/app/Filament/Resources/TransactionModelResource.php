@@ -20,6 +20,7 @@ use Filament\{
 };
 use Illuminate\Support\Facades\Http;
 use App\Enums\StatusPix;
+use App\Models\MovementModel;
 
 class TransactionModelResource extends Resource
 {
@@ -70,34 +71,35 @@ class TransactionModelResource extends Resource
             ])
             ->actions([
                 Action::make('approve')
-                    ->label('Pagar Pix')
+                    ->label('Pagar Pix Manual')
                     ->icon('heroicon-s-currency-dollar')
                     ->action(function ($record) {
-                        $data = [
-                            "id" => $record->id,
-                            "client_id" => $record->client_id,
-                            "amount" => $record->amount,
-                            "pixKey" => $record->address,
-                            "externalRef" => $record->client->uuid,
-                        ];
 
-                        $pixResponse = Http::withHeaders([
-                            'authorizationAdmin' => env('KEY_TRANSFER_PIX'),
-                            'accept' => 'application/json',
-                            'content-type' => 'application/json',
-                        ])->post(env('APP_URL') . '/api/pay-pix-in-admin', $data);
+                        $movement = new MovementModel();
+                        $movement->client_id = $record->client_id;
+                        $movement->type = 'EXIT';
+                        $movement->type_movement = 'TRANSFER';
+                        $movement->amount = $record->amount;
+                        $movement->description = 'Admin aprovou sua solicitação de PIX. O valor será creditado em sua conta de destino em breve.';
+                        $result = $movement->save();
 
-                        if ($pixResponse->successful()) {
+                        $transaction = TransactionModel::where('id', $record->id)->first();
+
+                        if ($result == 1) {
+                            $transaction->status = 'approved';
                             Notification::make()
                                 ->title('Pix pago com sucesso!')
                                 ->success()
                                 ->send();
                         } else {
+                            $transaction->status = 'waiting_approval';
                             Notification::make()
                                 ->title('Erro ao pagar saque!')
                                 ->danger()
                                 ->send();
                         }
+
+                        $transaction->save();
                     })
                     ->button()
                     ->size('sm')

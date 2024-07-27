@@ -179,7 +179,10 @@
 
                 @foreach ($transactions as $item)
                     <div class="transaction-card mb-15">
-                        @if ($item['type_movement'] == 'CONVERSION' || $item['type_movement'] == 'DEPOSIT')
+                        @if (
+                            $item['type_movement'] == 'CONVERSION' ||
+                                $item['type_movement'] == 'DEPOSIT' ||
+                                $item['type_movement'] == 'TRANSFER')
                             <div class="transaction-card mb-15">
                                 <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']]) }}">
                                     <div class="transaction-card-info">
@@ -188,6 +191,10 @@
                                         </div>
                                         <div class="transaction-info-text">
                                             @switch($item['type_movement'])
+                                                @case('TRANSFER')
+                                                    <h3>TRANSFERENCIA</h3>
+                                                @break
+
                                                 @case('CONVERSION')
                                                     <h3>CONVERSÃO</h3>
                                                 @break
@@ -204,7 +211,7 @@
                                         <div class="transaction-card-det receive-money">
                                             + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
-                                    @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT')
+                                    @elseif(($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT') || $item['type_movement'] == 'TRANSFER')
                                         <div class="transaction-card-det text-danger">
                                             - R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>

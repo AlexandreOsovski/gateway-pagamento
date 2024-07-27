@@ -35,6 +35,7 @@ use Endroid\QrCode\{
     Writer\PngWriter,
 };
 use App\Jobs\PixCreateJob;
+use App\Services\ClientService;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -67,13 +68,24 @@ class Pix extends Controller
     private string $pix_key;
     public string $urlPostBack;
 
-    public function __construct()
+    public $clientService;
+
+    public function __construct(ClientService $clientService)
     {
+        $this->clientService = $clientService;
+
         $this->key_api = '1e9fee004b24cad7a7fea4cb9bd36d0c4f1e972ex';
         $this->integrationApiUrl = "https://api-br.x-pay.app";
         $this->version = 'v2';
         $this->url = "{$this->integrationApiUrl}/{$this->version}/";
-        $this->urlPostBack = 'https://homolog.horiizom.com/api/v1/webhook-pix';
+
+        if (env('APP_TEST') == true) {
+            $url = 'https://homolog.horiizom.com';
+        } else {
+            $url = 'https://pay.horiizom.com';
+        }
+
+        $this->urlPostBack = "$url/api/v1/webhook-pix";
         $this->pix_key = '69655432-eafe-44b0-934c-3ebd6d6be06c';
     }
 
@@ -88,7 +100,6 @@ class Pix extends Controller
             "BankBranch" => "0001",
             "PrincipalValue" => $value,
             "webhook_url" => $this->urlPostBack
-
         ];
     }
 
@@ -164,7 +175,6 @@ class Pix extends Controller
             return redirect()->back();
         }
 
-
         $rules = [
             'value' => 'required|numeric',
             'description' => 'required|string'
@@ -221,13 +231,17 @@ class Pix extends Controller
                 $transaction->status = 'waiting_approval';
                 $transaction->save();
 
-                // MovementModel::create([
-                //     'client_id' => $transaction->client_id,
-                //     'type' => 'EXIT',
-                //     'type_movement' => 'TRANSFER',
-                //     'amount' => (float)$request->amount,
-                //     'description' => 'Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.',
-                // ]);
+                MovementModel::create([
+                    'client_id' => $transaction->client_id,
+                    'type' => 'EXIT',
+                    'type_movement' => 'TRANSFER',
+                    'amount' => (float)$request->amount,
+                    'description' => 'Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.',
+                ]);
+
+                $client = $this->clientService->find(Auth::guard('client')->user()->id);
+                $client->balance -= $request->amount;
+                $client->save();
 
                 Toastr('Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.');
                 return redirect()->back();
