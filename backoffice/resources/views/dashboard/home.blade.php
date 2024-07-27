@@ -32,7 +32,7 @@
                             if (empty(Auth::guard('client')->user()->avatar)) {
                                 $avatar = asset('assets/images/horiizom/newperfil.svg');
                             } else {
-                                $avatar = asset('storage/' . Auth::guard('client')->user()->avatar);
+                                $avatar = asset(Auth::guard('client')->user()->avatar);
                             }
                         @endphp
                         <div class="appbar-option-item appbar-option-profile">
