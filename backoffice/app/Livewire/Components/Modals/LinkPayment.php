@@ -35,7 +35,7 @@ class LinkPayment extends Component
             "BankAccountDigit" => "0",
             "BankBranch" => "0001",
             "PrincipalValue" => (float)$this->value,
-            "webhook_url" => 'https://pay.horiizom.com/api/webhook-pix',
+            "webhook_url" => 'https://homolog.horiizom.com/api/webhook-pix',
         ];
 
         $response = Http::withHeaders([
@@ -65,7 +65,13 @@ class LinkPayment extends Component
                 'description' => $data['description'],
             ];
 
-            $this->hash = env('APP_URL') . '/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=' . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
+            if (env('APP_TEST') == true) {
+                $url = 'https://homolog.horiizom.com';
+            } else {
+                $url = 'https://pay.horiizom.com';
+            }
+
+            $this->hash = "$url/make-payment?vNQt4LbQj3mL935p09jlBRF1t1vqkrCEldSVKIOELzI=" . JWT::encode($paymentData, env('APP_JWT_KEY'), 'HS256');
         }
     }
 }
