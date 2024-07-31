@@ -170,6 +170,7 @@ class Pix extends Controller
 
     public function makeLinkPaymentPix(Request $request): mixed
     {
+
         if ($request->input('value') < 1) {
             toastr('O valor minimo de deposito e R$1,00', 'error');
             return redirect()->back();
