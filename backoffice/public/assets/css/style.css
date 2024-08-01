@@ -912,6 +912,55 @@ select.form-control:valid {
     justify-content: center;
 }
 
+.badge-success {
+    border: 1px solid rgb(41, 185, 91);
+    color: rgb(41, 185, 91) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
+.badge-danger {
+    border: 1px solid rgb(255, 65, 65);
+    color: rgb(255, 65, 65) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
+.badge-warning {
+    border: 1px solid rgb(255, 159, 67);
+    color: rgb(255, 159, 67) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
+.badge-info {
+    border: 1px solid rgb(0, 123, 255);
+    color: rgb(0, 123, 255) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
+.badge-primary {
+    border: 1px solid rgb(23, 162, 184);
+    color: rgb(23, 162, 184) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
+.badge-secondary {
+    border: 1px solid rgb(108, 117, 125);
+    color: rgb(108, 117, 125) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
+.badge-light {
+    border: 1px solid rgb(248, 249, 250);
+    color: rgb(248, 249, 250) !important;
+    border-radius: 0.2rem;
+    padding: 0px 5px;
+}
+
 .modal-recovery-pass {
     width: auto !important;
 }

@@ -189,15 +189,24 @@
                                         <div class="transaction-info-text">
                                             @switch($item['type_movement'])
                                                 @case('TRANSFER')
-                                                    <h3>TRANSFERENCIA</h3>
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <h3 class="mb-0">TRANSFERÊNCIA</h3>
+                                                        <p class="badge-success">Completo</p>
+                                                    </div>
                                                 @break
 
                                                 @case('CONVERSION')
-                                                    <h3>CONVERSÃO</h3>
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <h3 class="mb-0">CONVERSÃO</h3>
+                                                        <p class="badge-success">Completo</p>
+                                                    </div>
                                                 @break
 
                                                 @case('DEPOSIT')
-                                                    <h3>DEPÓSITO</h3>
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <h3 class="mb-0">DEPÓSITO</h3>
+                                                        <p class="badge-success">Completo</p>
+                                                    </div>
                                                 @break
                                             @endswitch
 
@@ -209,7 +218,7 @@
                                             + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
                                     @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT')
-                                        <div class="transaction-card-det text-danger">
+                                        <div class="transaction-card-det text-danger text-nowrap">
                                             - R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
                                     @else
@@ -228,19 +237,39 @@
                                     <div class="transaction-info-text">
                                         @switch($item['type_movement'])
                                             @case('TRANSFER')
-                                                <h3>TRANSFERÊNCIA</h3>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <h3 class="mb-0">TRANSFERÊNCIA</h3>
+                                                    <p class="badge-success">Completo</p>
+                                                    <p class="badge-warning">Pendente</p>
+                                                    <p class="badge-danger">Cancelado</p>
+                                                </div>
                                             @break
 
                                             @case('DEPOSIT')
-                                                <h3>DEPÓSITO</h3>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <h3 class="mb-0">DEPÓSITO</h3>
+                                                    <p class="badge-success">Completo</p>
+                                                    <p class="badge-warning">Pendente</p>
+                                                    <p class="badge-danger">Cancelado</p>
+                                                </div>
                                             @break
 
                                             @case('WITHDRAWAL')
-                                                <h3>SAQUE</h3>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <h3 class="mb-0">SAQUE</h3>
+                                                    <p class="badge-success">Completo</p>
+                                                    <p class="badge-warning">Pendente</p>
+                                                    <p class="badge-danger">Cancelado</p>
+                                                </div>
                                             @break
 
                                             @case('CONVERSION')
-                                                <h3>CONVERSÃO</h3>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <h3 class="mb-0">CONVERSÃO</h3>
+                                                    <p class="badge-success">Completo</p>
+                                                    <p class="badge-warning">Pendente</p>
+                                                    <p class="badge-danger">Cancelado</p>
+                                                </div>
                                             @break
                                         @endswitch
                                         <p>{!! $item['description'] !!}</p>
@@ -251,7 +280,7 @@
                                         + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
                                 @else
-                                    <div class="transaction-card-det text-danger">
+                                    <div class="transaction-card-det text-danger text-nowrap">
                                         - R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
                                 @endif
