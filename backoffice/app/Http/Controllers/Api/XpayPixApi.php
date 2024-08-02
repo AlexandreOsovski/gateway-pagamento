@@ -249,7 +249,7 @@ class XpayPixApi extends Controller
             'content-type' => 'application/json',
         ])->post($this->url . 'pix/status', $data);
 
-        return response()->json($response->body(), 200);
+        return response()->json(json_decode($response->body(), true), 200);
     }
 
 
