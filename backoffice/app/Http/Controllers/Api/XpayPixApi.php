@@ -197,7 +197,7 @@ class XpayPixApi extends Controller
      * @param \Illuminate\Http\Request $request
      * @return string
      */
-    public function statusTransactionPix(Request $request): string
+    public function statusTransactionPix(Request $request): mixed
     {
         if ($request->header('X-API-SECRET') !== $this->apiSecret) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -249,7 +249,7 @@ class XpayPixApi extends Controller
             'content-type' => 'application/json',
         ])->post($this->url . 'pix/status', $data);
 
-        return response()->json($response, 200);
+        return $response;
     }
 
 
