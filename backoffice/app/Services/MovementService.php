@@ -15,7 +15,6 @@ class MovementService
         $this->repository = $clientRepository;
     }
 
-
     /**
      * Undocumented function
      *
@@ -24,22 +23,24 @@ class MovementService
      * @param string $type_movement ('DEPOSIT', 'WITHDRAWAL', 'TRANSFER')
      * @param float $amount
      * @param string $description
+     * @param string $status (completed, pending, canceled)
      * @return boolean
      */
-    public function create(int $userId, string $type, string $type_movement, float $amount, string $description): string
+    public function create(int $userId, string $type, string $type_movement, float $amount, string $description, string $status): string
     {
         $movement = $this->repository->create(new MovementModel([
             "client_id" => $userId,
             'type' => $type,
             'type_movement' => $type_movement,
             'amount' => $amount,
+            'status' => $status,
             'description' => $description,
         ]));
 
         return $movement->uuid;
     }
 
-    public function findByUuid(string $uuid):array
+    public function findByUuid(string $uuid): array
     {
         return $this->repository->findByUuid($uuid);
     }

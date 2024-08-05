@@ -75,12 +75,8 @@ class TransactionModelResource extends Resource
                     ->icon('heroicon-s-currency-dollar')
                     ->action(function ($record) {
 
-                        $movement = new MovementModel();
-                        $movement->client_id = $record->client_id;
-                        $movement->type = 'EXIT';
-                        $movement->type_movement = 'TRANSFER';
-                        $movement->amount = $record->amount;
-                        $movement->description = 'Admin aprovou sua solicitação de PIX. O valor será creditado em sua conta de destino em breve.';
+                        $movement = MovementModel::where('external_reference', $record->id)->first();
+                        $movement->status = 'completed';
                         $result = $movement->save();
 
                         $transaction = TransactionModel::where('id', $record->id)->first();
@@ -105,6 +101,38 @@ class TransactionModelResource extends Resource
                     ->size('sm')
                     ->visible(fn ($record) => $record->status == 'waiting_approval')
                     ->color('success'),
+
+                Action::make('cancel')
+                    ->label('Cancelar Pix Manual')
+                    ->icon('heroicon-s-currency-dollar')
+                    ->action(function ($record) {
+
+                        $movement = MovementModel::where('external_reference', $record->id)->first();
+                        $movement->status = 'canceled';
+                        $result = $movement->save();
+
+                        $transaction = TransactionModel::where('id', $record->id)->first();
+
+                        if ($result == 1) {
+                            $transaction->status = 'canceled';
+                            Notification::make()
+                                ->title('Pix cancelado com sucesso!')
+                                ->success()
+                                ->send();
+                        } else {
+                            $transaction->status = 'waiting_approval';
+                            Notification::make()
+                                ->title('Erro ao cancelar saque!')
+                                ->danger()
+                                ->send();
+                        }
+
+                        $transaction->save();
+                    })
+                    ->button()
+                    ->size('sm')
+                    ->visible(fn ($record) => $record->status == 'waiting_approval')
+                    ->color('danger'),
 
                 Tables\Actions\ViewAction::make()->label('Visualizar')
                     ->visible(fn ($record) => $record->status == 'approved'),

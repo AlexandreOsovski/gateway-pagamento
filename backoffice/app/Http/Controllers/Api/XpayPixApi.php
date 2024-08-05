@@ -282,19 +282,24 @@ class XpayPixApi extends Controller
                 $order->save();
                 $client_uuid = $order->client_uuid;
 
+                if ($data['data']['Value'] > 29.00) {
+                    $adminBalance = ($data['data']['Value'] * 4.99) / 100;
+                } else {
+                    $adminBalance = 1.50;
+                }
+
                 $admin = AdminModel::find(1);
-                $adminBalance = ($data['data']['Value'] * 20) / 100;
                 $admin->balance += $adminBalance;
                 $admin->save();
 
                 $client = ClientModel::where('uuid', $client_uuid)->first();
-                $userBalance = ($data['data']['Value'] * 80) / 100;
+                $userBalance = $data['data']['Value'] - $adminBalance;
                 $client->balance += $userBalance;
                 $client->save();
 
-                $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
+                $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX', 'completed');
 
-                $description = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($data['data']['Value'], 2, ',', '.') . ' (Valor total retirando as taxas)';
+                $description = 'Entrada PIX no valor de: R$' . number_format($data['data']['Value'], 2, ',', '.') . ' (Valor total retirando as taxas)';
                 $this->makeNotification($client->id, $userBalance, 'Deposito PIX', $description);
 
                 Http::post($order->url_webhook, $data);
@@ -314,7 +319,7 @@ class XpayPixApi extends Controller
      * @param string $description A description of the financial movement.
      * @return null
      */
-    public function makeMovement($client_id, $type, $type_movements, $amount, $description)
+    public function makeMovement($client_id, $type, $type_movements, $amount, $description, $status)
     {
         $movement = new MovementModel();
         $movement->client_id = $client_id;
@@ -322,6 +327,7 @@ class XpayPixApi extends Controller
         $movement->type_movement = $type_movements;
         $movement->amount = $amount;
         $movement->description = $description;
+        $movement->status = $status;
         $movement->save();
     }
 

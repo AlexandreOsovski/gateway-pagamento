@@ -53,8 +53,8 @@ class TransferUserToUser extends Controller
                 return redirect()->back();
             }
 
-            $movementExit = $this->movementService->create($user->id, 'EXIT', 'TRANSFER', $request->value, 'Transferência interna entre Usuários');
-            $movementEntry = $this->movementService->create($client_to_received->id, 'ENTRY', 'TRANSFER', $request->value, 'Transferência interna entre Usuários');
+            $movementExit = $this->movementService->create($user->id, 'EXIT', 'TRANSFER', $request->value, 'Transferência interna entre Usuários', 'completed');
+            $movementEntry = $this->movementService->create($client_to_received->id, 'ENTRY', 'TRANSFER', $request->value, 'Transferência interna entre Usuários', 'completed');
 
             if (!$movementExit || !$movementEntry) {
                 toastr('Falha ao criar movimento de transferencia.', 'error');

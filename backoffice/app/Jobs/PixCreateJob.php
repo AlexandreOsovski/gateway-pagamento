@@ -41,6 +41,7 @@ class PixCreateJob implements ShouldQueue
                 'external_reference' => $this->data['external_reference'],
                 'amount' => $this->data['amount'],
                 'status' => $this->data['status'],
+                'url_webhook' => $this->data['url_webhook'],
                 'qrcode' => $this->data['qrcode']
             ]);
         } catch (\Exception $e) {

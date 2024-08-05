@@ -19,6 +19,8 @@ class MovementModel extends Model
         'type_movement',
         'amount',
         'description',
+        'status',
+        'external_reference'
     ];
 
     public function client()

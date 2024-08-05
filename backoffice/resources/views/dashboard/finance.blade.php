@@ -72,6 +72,9 @@
                 @foreach ($last_one_days as $item)
                     <div class="transaction-card mb-15">
                         @if ($item['type_movement'] == 'CONVERSION' || $item['type_movement'] == 'DEPOSIT')
+                            {{-- @php
+                                dd($item);
+                            @endphp --}}
                             <div class="transaction-card mb-15">
                                 <a href="{{ route('movement.get', ["$see_transaction_key" => $item['uuid']]) }}">
                                     <div class="transaction-card-info">
@@ -83,14 +86,26 @@
                                                 @case('CONVERSION')
                                                     <div class="d-flex align-items-center gap-1">
                                                         <h3 class="mb-0">CONVERSÃO</h3>
-                                                        <p class="badge-success">Completo</p>
+                                                        @if ($item['status'] == 'completed')
+                                                            <p class="badge-success">Completo</p>
+                                                        @elseif($item['status'] == 'pending')
+                                                            <p class="badge-warning">Pendente</p>
+                                                        @elseif($item['status'] == 'canceled')
+                                                            <p class="badge-danger">Cancelado</p>
+                                                        @endif
                                                     </div>
                                                 @break
 
                                                 @case('DEPOSIT')
                                                     <div class="d-flex align-items-center gap-1">
                                                         <h3 class="mb-0">DEPÓSITO</h3>
-                                                        <p class="badge-success">Completo</p>
+                                                        @if ($item['status'] == 'completed')
+                                                            <p class="badge-success">Completo</p>
+                                                        @elseif($item['status'] == 'pending')
+                                                            <p class="badge-warning">Pendente</p>
+                                                        @elseif($item['status'] == 'canceled')
+                                                            <p class="badge-danger">Cancelado</p>
+                                                        @endif
                                                     </div>
                                                 @break
                                             @endswitch
@@ -99,16 +114,20 @@
                                         </div>
                                     </div>
                                     @if ($item['type'] == 'ENTRY' && $item['type_movement'] == 'DEPOSIT')
-                                        <div class="transaction-card-det receive-money">
+                                        <div class="transaction-card-det text-success receive-money">
                                             + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
                                     @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT')
                                         <div class="transaction-card-det text-danger text-nowrap">
                                             - R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                         </div>
-                                    @else
-                                        <div class="transaction-card-det receive-money">
-                                            + USDT {{ number_format($item['amount'], '2', ',', '.') }}
+                                    @elseif($item['type'] == 'ENTRY' && $item['type_movement'] == 'CONVERSION')
+                                        <div class="transaction-card-det text-success text-nowrap">
+                                            + USDT {{ number_format($item['amount'], '2', '.', ',') }}
+                                        </div>
+                                    @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'CONVERSION')
+                                        <div class="transaction-card-det text-danger text-nowrap">
+                                            - R$ {{ number_format($item['amount'], '2', '.', ',') }}
                                         </div>
                                     @endif
                                 </a>
@@ -124,36 +143,52 @@
                                             @case('TRANSFER')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">TRANSFERÊNCIA</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
 
                                             @case('DEPOSIT')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">DEPÓSITO</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
 
                                             @case('WITHDRAWAL')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">SAQUE</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
 
                                             @case('CONVERSION')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">CONVERSÃO</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
                                         @endswitch
@@ -195,18 +230,26 @@
                                             @case('CONVERSION')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">CONVERSÃO</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
 
                                             @case('DEPOSIT')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">DEPÓSITO</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
                                         @endswitch
@@ -215,16 +258,20 @@
                                     </div>
                                 </div>
                                 @if ($item['type'] == 'ENTRY' && $item['type_movement'] == 'DEPOSIT')
-                                    <div class="transaction-card-det receive-money">
+                                    <div class="transaction-card-det text-success receive-money">
                                         + R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
-                                @elseif(($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT') || $item['type_movement'] == 'TRANSFER')
+                                @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'DEPOSIT')
                                     <div class="transaction-card-det text-danger text-nowrap">
                                         - R$ {{ number_format($item['amount'], '2', ',', '.') }}
                                     </div>
-                                @else
-                                    <div class="transaction-card-det receive-money">
-                                        + USDT {{ number_format($item['amount'], '2', ',', '.') }}
+                                @elseif($item['type'] == 'ENTRY' && $item['type_movement'] == 'CONVERSION')
+                                    <div class="transaction-card-det text-success text-nowrap">
+                                        + USDT {{ number_format($item['amount'], '2', '.', ',') }}
+                                    </div>
+                                @elseif($item['type'] == 'EXIT' && $item['type_movement'] == 'CONVERSION')
+                                    <div class="transaction-card-det text-danger text-nowrap">
+                                        - R$ {{ number_format($item['amount'], '2', '.', ',') }}
                                     </div>
                                 @endif
                             </a>
@@ -241,27 +288,39 @@
                                             @case('TRANSFER')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">TRANSFERÊNCIA</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
 
                                             @case('DEPOSIT')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">DEPÓSITO</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
 
                                             @case('WITHDRAWAL')
                                                 <div class="d-flex align-items-center gap-1">
                                                     <h3 class="mb-0">SAQUE</h3>
-                                                    <p class="badge-success">Completo</p>
-                                                    <p class="badge-warning">Pendente</p>
-                                                    <p class="badge-danger">Cancelado</p>
+                                                    @if ($item['status'] == 'completed')
+                                                        <p class="badge-success">Completo</p>
+                                                    @elseif($item['status'] == 'pending')
+                                                        <p class="badge-warning">Pendente</p>
+                                                    @elseif($item['status'] == 'canceled')
+                                                        <p class="badge-danger">Cancelado</p>
+                                                    @endif
                                                 </div>
                                             @break
                                         @endswitch

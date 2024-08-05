@@ -237,6 +237,7 @@ class Pix extends Controller
                     'type' => 'EXIT',
                     'type_movement' => 'TRANSFER',
                     'amount' => (float)$request->amount,
+                    'external_reference' => $transaction->id,
                     'description' => 'Transação PIX realizada com sucesso! Aguardando aprovação! Iremos verificar os detalhes e processar a transação. Pode levar algum tempo para o dinheiro estar disponível em sua conta de destino.',
                 ]);
 
@@ -282,17 +283,17 @@ class Pix extends Controller
                 $order->save();
                 $client_uuid = $order->client_uuid;
 
-                $admin = AdminModel::find(1);
-                $adminBalance = ($data['data']['Value'] * 20) / 100;
-                $admin->balance += $adminBalance;
-                $admin->save();
+                // $admin = AdminModel::find(1);
+                // $adminBalance = ($data['data']['Value'] * 20) / 100;
+                // $admin->balance += $adminBalance;
+                // $admin->save();
 
                 $client = ClientModel::where('uuid', $client_uuid)->first();
-                $userBalance = ($data['data']['Value'] * 80) / 100;
+                $userBalance = $data['data']['Value'];
                 $client->balance += $userBalance;
                 $client->save();
 
-                $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX');
+                $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Deposito PIX', 'completed');
 
                 $description = 'Voce realizou um deposito total via PIX no valor de: R$' . number_format($data['data']['Value'], 2, ',', '.') . ' (Valor total retirando as taxas)';
                 $this->makeNotification($client->id, $userBalance, 'Deposito PIX', $description);
@@ -307,17 +308,17 @@ class Pix extends Controller
 
                     $client_uuid = $externalPayment->client_uuid;
 
-                    $admin = AdminModel::find(1);
-                    $adminBalance = ($data['data']['Value'] * 20) / 100;
-                    $admin->balance += $adminBalance;
-                    $admin->save();
+                    // $admin = AdminModel::find(1);
+                    // $adminBalance = ($data['data']['Value'] * 20) / 100;
+                    // $admin->balance += $adminBalance;
+                    // $admin->save();
 
                     $client = ClientModel::where('uuid', $client_uuid)->first();
-                    $userBalance = ($data['data']['Value'] * 80) / 100;
+                    $userBalance = $data['data']['Value'];
                     $client->balance += $userBalance;
                     $client->save();
 
-                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Pagamento externo realizado por: ' . $data['data']['FromName']);
+                    $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Pagamento externo realizado por: ' . $data['data']['FromName'], 'completed');
 
                     $description = 'Pagamento externo realizado com sucesso por: ' . $data['data']['FromName'] . ' No valor de: R$' . number_format($data['data']['value'], 2, ',', '.');
                     $this->makeNotification($client->id, $userBalance, 'Pagamento Externo', $description);
@@ -338,13 +339,14 @@ class Pix extends Controller
      * @param string $description A description of the financial movement.
      * @return null
      */
-    public function makeMovement($client_id, $type, $type_movements, $amount, $description)
+    public function makeMovement($client_id, $type, $type_movements, $amount, $description, $status)
     {
         $movement = new MovementModel();
         $movement->client_id = $client_id;
         $movement->type = $type;
         $movement->type_movement = $type_movements;
         $movement->amount = $amount;
+        $movement->status = $status;
         $movement->description = $description;
         $movement->save();
     }

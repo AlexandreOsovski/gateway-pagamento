@@ -21,7 +21,8 @@ class PixApiModel extends Model
         'amount',
         'external_reference',
         'status',
-        'qrcode'
+        'qrcode',
+        'url_webhook'
     ];
 
     public static function getOrders($user, $status = null)

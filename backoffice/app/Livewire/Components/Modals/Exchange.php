@@ -63,6 +63,7 @@ class Exchange extends Component
             'type' => 'ENTRY',
             'type_movement' => 'CONVERSION',
             'amount' => $this->valueUSD,
+            'status' => 'completed',
             'description' => 'Conversão de BRL para USDT'
         ]);
 
@@ -71,6 +72,7 @@ class Exchange extends Component
             'type' => 'EXIT',
             'type_movement' => 'CONVERSION',
             'amount' => $this->valueBRL,
+            'status' => 'completed',
             'description' => 'Conversão de BRL para USDT'
         ]);
 
