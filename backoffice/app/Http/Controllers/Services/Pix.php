@@ -320,7 +320,7 @@ class Pix extends Controller
 
                     $this->makeMovement($client->id, 'ENTRY', 'DEPOSIT', $userBalance, 'Pagamento externo realizado por: ' . $data['data']['FromName'], 'completed');
 
-                    $description = 'Pagamento externo realizado com sucesso por: ' . $data['data']['FromName'] . ' No valor de: R$' . number_format($data['data']['value'], 2, ',', '.');
+                    $description = 'Pagamento externo realizado com sucesso por: ' . $data['data']['FromName'] . ' No valor de: R$' . number_format($data['data']['Value'], 2, ',', '.');
                     $this->makeNotification($client->id, $userBalance, 'Pagamento Externo', $description);
 
                     return response()->json(['message' => 'Webhook received'], 200);
