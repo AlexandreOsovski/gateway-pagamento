@@ -186,7 +186,7 @@ class XpayPixApi extends Controller
 
             PixCreateJob::dispatch($data, $token)->delay(now()->addSeconds(5))->onQueue('pix-insert');
 
-            return response()->json(json_decode($response->body(), true), 200);
+            return response()->json($data, 200);
         } else {
             return response()->json($response, 400);
         }
