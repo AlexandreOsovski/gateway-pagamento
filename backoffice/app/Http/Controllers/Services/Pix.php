@@ -155,7 +155,7 @@ class Pix extends Controller
                 "external_reference" => $response['qrCodeData']['Identifier'],
                 "status" => 'pending',
                 "qrcode" => $response['qrCodeData']['QRCodeBase64'],
-
+                "url_webhook" => $this->urlPostBack,
                 "expirationDate" => 1,
                 "created_at" => now(),
             ];
