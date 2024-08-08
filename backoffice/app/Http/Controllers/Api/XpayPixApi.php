@@ -282,17 +282,25 @@ class XpayPixApi extends Controller
                 $order->save();
                 $client_uuid = $order->client_uuid;
 
-                if ($data['data']['Value'] > 29.00) {
-                    $adminBalance = ($data['data']['Value'] * 4.99) / 100;
+                $client = ClientModel::where('uuid', $client_uuid)->first();
+
+                //!Pedido do ROGERIO, deixar 2% pra esse usuario
+                if ($client->email == 'lottoking@gmail.com') {
+                    $adminBalance = ($data['data']['Value'] * 2) / 100;
                 } else {
-                    $adminBalance = 1.50;
+                    if ($data['data']['Value'] > 29.00) {
+                        $adminBalance = ($data['data']['Value'] * 4.99) / 100;
+                    } else {
+                        $adminBalance = 1.50;
+                    }
                 }
+
 
                 $admin = AdminModel::find(1);
                 $admin->balance += $adminBalance;
                 $admin->save();
 
-                $client = ClientModel::where('uuid', $client_uuid)->first();
+
                 $userBalance = $data['data']['Value'] - $adminBalance;
                 $client->balance += $userBalance;
                 $client->save();
