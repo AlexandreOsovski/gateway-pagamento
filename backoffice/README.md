@@ -7,6 +7,7 @@ pra fazer os testes de API necessario ter dentro do .env a chame "API_SECRET_KEY
 -   composer install
 -   npm i
 -   npm run build
+-   php artisan storage:link
 
 ### 2. Crie um Arquivo .ENV
 
